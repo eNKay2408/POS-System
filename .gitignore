@@ -1,0 +1,16 @@
+# Visual Studio temporary files
+.vs/
+
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# NuGet packages directory
+packages/
+
+# Configuration files
+appsettings.json
