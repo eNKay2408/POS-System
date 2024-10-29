@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="POSSystem.Views.BrandsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:POSSystem.Views">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Brands" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
+            <Button Content="✚ Brand" Click="AddBrand_Click" FontFamily="{StaticResource Poppins}" HorizontalAlignment="Right" Background="{StaticResource PinkBrush}"/>
+        </Grid>
+
+        <Border BorderBrush="{StaticResource GrayBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
+            <ListView ItemsSource="{Binding Brands}">
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,2" Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="NO." FontWeight="Bold" Grid.Column="0"/>
+                            <TextBlock Text="BRAND NAME" FontWeight="Bold" Grid.Column="1" />
+                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="2"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Index}" Grid.Column="0" />
+                            <TextBlock Text="{Binding Name}" Grid.Column="1" />
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                <Button Click="UpdateBrand_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
+                                </Button>
+
+                                <Button Click="DeleteBrand_Click" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/delete.png" Width="20" Height="20" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+    </Grid>
+</Page>
