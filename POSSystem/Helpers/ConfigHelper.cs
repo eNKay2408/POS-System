@@ -30,5 +30,25 @@ namespace POSSystem.Helpers
         {
             return _configuration["Google:ClientSecret:ClientSecret"];
         }
+
+        public string GetDatabaseHost()
+        {
+            return _configuration["Database:Host"];
+        }
+
+        public string GetDatabaseUsername()
+        {
+            return _configuration["Database:Username"];
+        }
+
+        public string GetDatabasePassword()
+        {
+            return _configuration["Database:Password"];
+        }
+
+        public string GetDatabaseName()
+        {
+            return _configuration["Database:Database"];
+        }
     }
 }
