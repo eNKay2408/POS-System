@@ -22,10 +22,11 @@
     <None Remove="Assets\Fonts\Poppins-Regular.ttf" />
     <None Remove="Views\AddProductPage.xaml" />
     <None Remove="Views\CategoriesPage.xaml" />
+    <None Remove="Views\EmployeesPage.xaml" />
+    <None Remove="Views\ItemListTemplate.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\MainWindow.xaml" />
-    <None Remove="Views\ManufacturersPage.xaml" />
     <None Remove="Views\ProductsPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
   </ItemGroup>
@@ -45,6 +46,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
@@ -76,6 +78,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\ItemListTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\EmployeesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\RegisterPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,7 +113,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\ManufacturersPage.xaml">
+    <Page Update="Views\BrandsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
