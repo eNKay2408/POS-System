@@ -27,6 +27,11 @@ $ docker run -e "POSTGRES_PASSWORD=pass123" -e "POSTGRES_USER=user123" -e "POSTG
 Ensure you can run `knex` as a command in your CLI (Command Prompts, PowerShell, Bash...) like `knex migrate:latest`.
 This can be achieved if you have installed knex globally (and also inside this project), please refer to [this](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977) for more information.
 
+### run the script in package.json
+
+Finally, in your CLI, run `npm run setup` to prepare the setup.
+For further insights, inspection of `package.json` and files in _migrations_ folder are encouraged. Or you can reach us through our work mail: _22120144@student.fit.hcmus.edu.vn_ and _22120149@student.fit.hcmus.edu.vn_
+
 ### Configure the .env file
 
 The host, port, database name should be received from the project owners.
