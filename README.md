@@ -1,10 +1,8 @@
 # POS-SYSTEM
 
-## Database migration
+## Database set-up
 
-This is the database migration set-up for the POS-System project.
-
-**To run the set-up**
+This is the database set-up for the POS-System project. _To run this:_
 
 ### Node and PostgreSQL
 
