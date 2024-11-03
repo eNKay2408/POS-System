@@ -4,7 +4,7 @@
 
 This is the database set-up for the POS-System project. _To run this:_
 
-### Node and PostgreSQL
+### Have Node and PostgreSQL
 
 Make sure you have **Node** and **you can create a PostgreSQL database and access, query, interact with it**.
 If you don't, you can checkout this [link](https://tdquang7.notion.site/T-o-migration-cho-database-v-i-docker-v-node-12d8139672a080cabe27d29f5da82c7f) (of Mr.Tran Duy Quang) to install Node (and Docker if you want).
@@ -22,17 +22,28 @@ where `...` means something you type in (your database credential), the host is 
 $ docker run -e "POSTGRES_PASSWORD=pass123" -e "POSTGRES_USER=user123" -e "POSTGRES_DB=POSSystem" -p 5432:5432 --name postgres_db_POS_system -d postgres
 ```
 
-### `knex` in CLI
+### Be able to run `knex` in CLI
 
 Ensure you can run `knex` as a command in your CLI (Command Prompts, PowerShell, Bash...) like `knex migrate:latest`.
 This can be achieved if you have installed knex globally (and also inside this project), please refer to [this](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977) for more information.
 
-### run the script in package.json
-
-Finally, in your CLI, run `npm run setup` to prepare the setup.
-For further insights, inspection of `package.json` and files in _migrations_ folder are encouraged. Or you can reach us through our work mail: _22120144@student.fit.hcmus.edu.vn_ and _22120149@student.fit.hcmus.edu.vn_
-
 ### Configure the .env file
 
-The host, port, database name should be received from the project owners.
-<br>However, the **username**, **password** should be your own database credential, just make sure that yours have enough privilages so that the app can perform CRUD operations, login using Google Auth, and use Stripe API.
+The host, port, database name should be received from the project owners. However, the **username**, **password** should be your own database credential, just make sure that yours have enough privilages so that the app can perform CRUD operations, login using Google Auth, and use Stripe API.
+
+### Run the script defined in package.json
+
+In your CLI, go to inside the _database_setup_ folder. For example, the current working folder should be looking like this in your CLI:
+
+```
+D:\My_project\POS_System\database_setup>
+```
+
+Then run `npm run setup` to prepare the setup.
+
+Further inspection into `package.json` and files in _migrations_ folder are encouraged if needed.
+
+### Assistance
+
+You can reach us through our work mail: _22120144@student.fit.hcmus.edu.vn_ and _22120149@student.fit.hcmus.edu.vn_.
+<br>_We may be slow to response but will do ASAP_.
