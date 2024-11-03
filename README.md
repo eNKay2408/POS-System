@@ -1,8 +1,10 @@
-# DATABASE MIAGRATION FOR POS-SYSTEM
+# POS-SYSTEM
 
-This is the db migration set-up for the POS-System project of the Windows Programming class.
+## Database migration
 
-## To run the set-up
+This is the database migration set-up for the POS-System project.
+
+**To run the set-up**
 
 ### Node and PostgreSQL
 

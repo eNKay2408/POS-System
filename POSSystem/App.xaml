@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="POSSystem.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:POSSystem"
+    xmlns:converters="using:POSSystem.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="PinkColor">#8946A6</Color>
+            <Color x:Key="BlackColor">#191A19</Color>
+            <Color x:Key="GrayColor">#2C2C2C</Color>
+            <Color x:Key="WhiteColor">#C8C8C8</Color>
+
+            <SolidColorBrush x:Key="PinkBrush" Color="{StaticResource PinkColor}" />
+            <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}" />
+            <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}" />
+            <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}" />
+
+            <FontFamily x:Key="Poppins">ms-appx:///Assets/Fonts/Poppins-Regular.ttf#Poppins</FontFamily>
+            <FontFamily x:Key="PoppinsBold">ms-appx:///Assets/Fonts/Poppins-Bold.ttf#Poppins</FontFamily>
+            <FontFamily x:Key="PoppinsLight">ms-appx:///Assets/Fonts/Poppins-Light.ttf#Poppins</FontFamily>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource Poppins}" />
+            </Style>
+
+            <converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
+            <converters:IntToStringConverter x:Key="IntToStringConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
