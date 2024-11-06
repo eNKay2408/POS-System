@@ -6,7 +6,8 @@
 	"scripts": {
 		"create-db": "node createDatabase.js",
 		"migrate": "knex migrate:latest",
-		"setup": "npm run create-db && npm run migrate"
+		"seed": "knex seed:run",
+		"setup": "npm run create-db && npm run migrate && npm run seed"
 	},
 	"author": "Duc Khai, Cat Huynh",
 	"license": "ISC",
