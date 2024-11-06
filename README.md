@@ -1,49 +1,115 @@
-# POS-SYSTEM
+<div align="center">
 
-## Database set-up
+  <h1> 🖥️ POS System - Milestone 1</h1>
 
-This is the database set-up for the POS-System project. _To run this:_
+  *A comprehensive point-of-sale application built using WinUI and .NET.*
 
-### Have Node and PostgreSQL
+  ![WinUI](https://img.shields.io/badge/WinUI-blue?style=for-the-badge)
+  ![.NET](https://img.shields.io/badge/.NET-blue?style=for-the-badge)
+  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue?style=for-the-badge)
 
-Make sure you have **Node** and **you can create a PostgreSQL database and access, query, interact with it**.
-If you don't, you can checkout this [link](https://tdquang7.notion.site/T-o-migration-cho-database-v-i-docker-v-node-12d8139672a080cabe27d29f5da82c7f) (of Mr.Tran Duy Quang) to install Node (and Docker if you want).
-_Also, there should be **default database "postgres"** to be connected to initially._
+  <img width=500 src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905586/POSSystem/3-Products.png">
 
-**Note**: In the provided link, the docker command was used to make a `mssql` server, this project requires a `postgresql` server. So after installing Docker, you can run this line instead:
+</div>
 
-```
-$ docker run -e "POSTGRES_PASSWORD=..." -e "POSTGRES_USER=..." -e "POSTGRES_DB=POSSystem" -p 5432:5432 --name postgres_db_POS_system -d postgres
-```
+## Table of Contents 📘
+1. [UI/UX Design](#uiux-design-)
+2. [Design Patterns / Architecture](#design-patterns--architecture-)
+3. [Key Features](#key-features-)
+4. [Advanced Topics](#advanced-topics-)
+5. [Teamwork / Git Flow](#teamwork--git-flow-)
+6. [Quality Assurance](#quality-assurance-)
 
-where `...` means something you type in (your database credential), the host is `localhost` by default, `5432` is the default port for `postgresql`. If your username, password is `user123`, `pass123`, then the line should be:
+## UI/UX Design 🎨
+The UI/UX design of the POS System is inspired by the modern design of Windows 11. The application is built using WinUI, which is a native user interface (UI) framework for Windows Desktop applications. The application is designed to be user-friendly and intuitive, with a focus on simplicity and ease of use.
 
-```
-$ docker run -e "POSTGRES_PASSWORD=pass123" -e "POSTGRES_USER=user123" -e "POSTGRES_DB=POSSystem" -p 5432:5432 --name postgres_db_POS_system -d postgres
-```
+Highlights:
+- Modern design inspired by Windows 11
+- Intuitive and user-friendly interface
+- Easy navigation and accessibility
+- Consistent design across all screens
 
-### Be able to run `knex` in CLI
+Here are some screenshots of the project showcasing its features and design:
 
-Ensure you can run `knex` as a command in your CLI (Command Prompts, PowerShell, Bash...) like `knex migrate:latest`.
-This can be achieved if you have installed knex globally (and also inside this project), please refer to [this](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977) for more information.
+<img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/1-Login.png"> <img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905584/POSSystem/2-Register.png">
 
-### Configure the .env file
+<img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905586/POSSystem/3-Products.png"> <img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/4-AddProduct.png">
 
-The host, port, database name should be received from the project owners. However, the **username**, **password** should be your own database credential, just make sure that yours have enough privilages so that the app can perform CRUD operations, login using Google Auth, and use Stripe API.
+<img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730906633/POSSystem/9-Google.png"> <img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/10-Stripe.png">
 
-### Run the script defined in package.json
+<img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/5-Categories.png"> <img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/6-AddCategory.png">
 
-In your CLI, go to inside the _database_setup_ folder. For example, the current working folder should be looking like this in your CLI:
+<img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/7-Brands.png"> <img width="49%" src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730905585/POSSystem/8-AddBrand.png">
 
-```
-D:\My_project\POS_System\database_setup>
-```
+## Design Patterns / Architecture 🧩
+This project applies widely adopted software design patterns to ensure maintainability, scalability, and separation of concerns.
 
-Then run `npm run setup` to prepare the setup.
+#### Design Patterns:
+- MVVM (Model-View-ViewModel): Separation of concerns between the UI, business logic, and data.
+- Repository Pattern: Abstraction of data access logic from the rest of the application.
 
-Further inspection into `package.json` and files in _migrations_ folder are encouraged if needed.
+#### Architecture:
+- The application is structured using the MVVM design pattern, with separate folders for Models, Views, and ViewModels.
+- The Views are responsible for the UI elements and layout of the application.
+- The Models represent the data entities used in the application, such as employees, products, categories, and brands.
+- The ViewModels interact with the repositories to fetch and update data from the database.
 
-### Assistance
+## Key Features 🗝️
 
-You can reach us through our work mail: _22120144@student.fit.hcmus.edu.vn_ and _22120149@student.fit.hcmus.edu.vn_.
-<br>_We may be slow to response but will do ASAP_.
+#### User Management:
+- Users can register and log in to the application using email and password.
+- Password strength is checked during registration to ensure security.
+- Email validation is performed to verify the format of the email address.
+- Users can choose to save their login credentials for future sessions using the "Remember Me" feature.
+- Users can log out of the application to securely end their session.
+
+#### CRUD Operations:
+- Users can perform CRUD (Create, Read, Update, Delete) operations on products, categories, and brands.
+- Products, categories, and brands are displayed in a list format with details information. 
+- Products can be added with details such as name, price, stock, category, and brand.
+- Categories and brands can be added with a name.
+- Products, categories, and brands can be updated with new information.
+- Products, categories, and brands can be deleted from the database.
+
+#### Search, Filter, and Sort:
+- Users can search for products by name using the search bar.
+- Products can be filtered by category to narrow down the search results.
+- Products can be filtered by price to display products with a maximum price.
+- Products can be sorted by price in ascending or descending order.
+
+## Advanced Topics 🚀
+The POS system integrates advanced features to improve functionality and user experience.
+
+#### Google Authentication:
+- Google authentication provides a secure and convenient way for users to log in to the application.
+- The application uses OAuth 2.0 to authenticate users with Google and obtain user information.
+
+#### Stripe Integration:
+- The application supports online payments using the Stripe payment gateway.
+- Users can make payments for their orders using VISA cards securely through Stripe.
+
+## Teamwork / Git Flow 🤝
+The project follows a collaborative workflow using Git and GitHub to manage code changes and contributions.
+
+#### Teamwork:
+- The team collaborates on feature development, bug fixes, and code reviews.
+- Each team member is assigned tasks and works collaboratively to achieve project milestones.
+- Regular meetings are held to discuss progress, challenges, and next steps.
+
+#### Git Flow:
+- Source code management with Git and GitHub for version control.
+- Regular commit messages follow a consistent format and provide context for changes.
+- Feature branches are created for new features and merged into the main branch after code review.
+
+<div align="center">
+
+  *Here is an example of the Git flow used in the project:*
+  
+  <img width=500 src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730909718/POSSystem/11-PullRequest.png">
+  
+  <img width=500 src="https://res.cloudinary.com/dvzhmi7a9/image/upload/v1730909717/POSSystem/12-Commits.png">
+</div>
+
+
+## Quality Assurance 🛡️
+Currently, quality assurance for the POS system project has focused on manual testing through UI navigation. Formalized testing processes, such as unit and integration tests, are planned for future milestones.
