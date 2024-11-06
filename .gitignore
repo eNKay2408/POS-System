@@ -14,3 +14,7 @@ packages/
 
 # Configuration files
 appsettings.json
+
+# database set-up files
+node_modules
+.env
