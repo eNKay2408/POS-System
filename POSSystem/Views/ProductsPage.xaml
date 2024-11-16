@@ -18,15 +18,15 @@
 
             <TextBlock Text="Products" FontSize="30" FontFamily="{StaticResource PoppinsBold}" Grid.Column="0"/>
 
-            <TextBox Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalToStringConverter}}" Width="160" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="1" PlaceholderText="🔍 Search..." Margin="5,0" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="160" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="1" PlaceholderText="🔍 Search..." Margin="3,0" VerticalAlignment="Center"/>
 
-            <TextBox Text="{Binding MaxPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalToStringConverter}}" Width="90" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="2" PlaceholderText="💸 Max" Margin="0,5,0,5" VerticalAlignment="Center" BeforeTextChanging="DecimalTextBox_BeforeTextChanging"/>
+            <TextBox Text="{Binding MaxPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalToStringConverter}}" Width="90" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="2" PlaceholderText="💸 Max" Margin="3,0" VerticalAlignment="Center" BeforeTextChanging="DecimalTextBox_BeforeTextChanging"/>
 
-            <ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="3" PlaceholderText="📂 Category" Margin="5,0" VerticalAlignment="Center" Width="138"/>
+            <ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="3" PlaceholderText="📂 Category" Margin="3,0" VerticalAlignment="Center" Width="138"/>
 
-            <Button Content="🔃 Price" Click="SortByPrice_Click" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="4" Margin="5,0"/>
+            <Button Content="🔃 Price" Click="SortByPrice_Click" FontFamily="{StaticResource Poppins}" Background="{StaticResource GrayBrush}" Grid.Column="4" Margin="3,0"/>
 
-            <Button Content="✚ Product" Click="AddProduct_Click" FontFamily="{StaticResource Poppins}" Background="{StaticResource PinkBrush}" Grid.Column="5"/>
+            <Button Content="✚ Product" Click="AddProduct_Click" FontFamily="{StaticResource Poppins}" Background="{StaticResource PinkBrush}" Grid.Column="5" Margin="3,0,0,0"/>
         </Grid>
 
         <Border BorderBrush="{StaticResource GrayBrush}" BorderThickness="2" CornerRadius="8" Padding="2" Grid.Row="1">
