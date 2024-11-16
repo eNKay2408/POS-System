@@ -1,12 +1,9 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using POSSystem.Models;
+﻿using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Repository;
 using POSSystem.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -129,6 +126,8 @@ namespace POSSystem.ViewModels
         {
             var categories = await _categoryRepository.GetAllCategories();
 
+            categories.Insert(0, new Category { Id = 0, Name = "All" });
+
             Categories = categories;
         }
 
@@ -173,55 +172,41 @@ namespace POSSystem.ViewModels
         private async void FilterProducts()
         {
             await LoadProducts();
-            var products = Products.ToList();
+
+            var filteredProducts = Products.ToList();
 
             if (!string.IsNullOrEmpty(FilterText))
             {
-                products = Products.Where(p => p.Name.Contains(FilterText, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredProducts = filteredProducts.Where(p => p.Name.Contains(FilterText, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            if (SelectedCategory != null)
+            if (SelectedCategory != null && SelectedCategory.Id != 0)
             {
-                products = products.Where(p => p.CategoryId == SelectedCategory.Id).ToList();
+                filteredProducts = filteredProducts.Where(p => p.CategoryId == SelectedCategory.Id).ToList();
             }
 
-            if (MaxPrice != null)
+            if (MaxPrice != null && MaxPrice != 0)
             {
-                products = products.Where(p => p.Price <= MaxPrice).ToList();
+                filteredProducts = filteredProducts.Where(p => p.Price <= MaxPrice).ToList();
             }
 
-            Products.Clear();
-
-            foreach (var product in products)
-            {
-                Products.Add(product);
-            }
+            Products = filteredProducts;
         }
 
         public void SortByPrice()
         {
-            if (Products.Count == 0)
-            {
-                return;
-            }
-
-            var orderedProducts = new List<Product>();
+            var sortedProducts = Products.ToList();
 
             if (Products[0].Price > Products[Products.Count - 1].Price)
             {
-                orderedProducts = Products.OrderBy(p => p.Price).ToList();
+                sortedProducts = sortedProducts.OrderBy(p => p.Price).ToList();
             }
             else
             {
-                orderedProducts = Products.OrderByDescending(p => p.Price).ToList();
+                sortedProducts = sortedProducts.OrderByDescending(p => p.Price).ToList();
             }
 
-            Products.Clear();
-
-            foreach (var product in orderedProducts)
-            {
-                Products.Add(product);
-            }
+            Products = sortedProducts;
         }
 
         public async void PayProduct(Product product, int quantity)
