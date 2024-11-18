@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POSSystem", "POSSystem\POSSystem.csproj", "{D494CE54-EA65-4C5A-A67D-41193BB31FD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POSSystem", "POSSystem\POSSystem.csproj", "{D494CE54-EA65-4C5A-A67D-41193BB31FD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POSSystem.Tests", "POSSystem.Tests\POSSystem.Tests.csproj", "{CDC4F333-9995-47F6-9863-1D95AE5B2229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,24 @@ Global
 		{D494CE54-EA65-4C5A-A67D-41193BB31FD2}.Release|x86.ActiveCfg = Release|x86
 		{D494CE54-EA65-4C5A-A67D-41193BB31FD2}.Release|x86.Build.0 = Release|x86
 		{D494CE54-EA65-4C5A-A67D-41193BB31FD2}.Release|x86.Deploy.0 = Release|x86
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|ARM64.Build.0 = Debug|ARM64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|x64.ActiveCfg = Debug|x64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|x64.Build.0 = Debug|x64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|x64.Deploy.0 = Debug|x64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|x86.ActiveCfg = Debug|x86
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|x86.Build.0 = Debug|x86
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Debug|x86.Deploy.0 = Debug|x86
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|ARM64.ActiveCfg = Release|ARM64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|ARM64.Build.0 = Release|ARM64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|ARM64.Deploy.0 = Release|ARM64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|x64.ActiveCfg = Release|x64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|x64.Build.0 = Release|x64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|x64.Deploy.0 = Release|x64
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|x86.ActiveCfg = Release|x86
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|x86.Build.0 = Release|x86
+		{CDC4F333-9995-47F6-9863-1D95AE5B2229}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

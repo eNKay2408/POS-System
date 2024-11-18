@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "POSSystem.Tests (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "POSSystem.Tests (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
