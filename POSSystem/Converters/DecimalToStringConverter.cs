@@ -16,7 +16,7 @@ namespace POSSystem.Converters
             {
                 return result;
             }
-            return 0m; 
+            return null;
         }
     }
 }
