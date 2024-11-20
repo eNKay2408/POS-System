@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using POSSystem.Models;
 using POSSystem.ViewModels;
-using System.Diagnostics;
+using System;
 
 namespace POSSystem.Views
 {
@@ -22,10 +22,25 @@ namespace POSSystem.Views
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (AddProductViewModel)this.DataContext;
-            await viewModel.SaveProduct();
+            try
+            {
+                var viewModel = (AddProductViewModel)this.DataContext;
+                await viewModel.SaveProduct();
 
-            Frame.GoBack();
+                Frame.GoBack();
+            }
+            catch (Exception ex)
+            {
+                ContentDialog errorDialog = new ContentDialog
+                {
+                    Title = "Error",
+                    Content = ex.Message,
+                    CloseButtonText = "Ok",
+                    XamlRoot = App.AppMainWindow.Content.XamlRoot
+                };
+
+                await errorDialog.ShowAsync();
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

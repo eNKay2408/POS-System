@@ -1,11 +1,8 @@
-﻿using Microsoft.UI.Xaml.Media;
-using POSSystem.Models;
+﻿using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Repository;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
@@ -73,16 +70,24 @@ namespace POSSystem.ViewModels
 
         public AddProductViewModel()
         {
-            _productRepository = new ProductRepository(ConnectionString);
-            _categoryRepository = new CategoryRepository(ConnectionString);
-            _brandRepository = new BrandRepository(ConnectionString);
+            _productRepository = new ProductRepository();
+            _categoryRepository = new CategoryRepository();
+            _brandRepository = new BrandRepository();
 
             Categories = new List<Category>();
             Brands = new List<Brand>();
 
             LoadData();
         }
-        
+
+        // Constructor for unit testing
+        public AddProductViewModel(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository)
+        {
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _brandRepository = brandRepository;
+        }
+
         private async void LoadData()
         {
             await LoadCategories();
@@ -91,7 +96,7 @@ namespace POSSystem.ViewModels
             LoadSelectedValues();
         }
 
-        private void LoadSelectedValues()
+        public void LoadSelectedValues()
         {
             if (Product.Id != 0)
             {
@@ -105,14 +110,14 @@ namespace POSSystem.ViewModels
             }
         }
 
-        private async Task LoadCategories()
+        public async Task LoadCategories()
         {
             var categories = await _categoryRepository.GetAllCategories();
 
             Categories = categories;
         }
 
-        private async Task LoadBrands()
+        public async Task LoadBrands()
         {
             var brands = await _brandRepository.GetAllBrands();
 
@@ -121,6 +126,41 @@ namespace POSSystem.ViewModels
 
         public async Task SaveProduct()
         {
+            if (string.IsNullOrWhiteSpace(Product.Name))
+            {
+                throw new ArgumentException("Product name is required and cannot only contain white spaces.");
+            }
+
+            if (Product.Price == null)
+            {
+                throw new ArgumentNullException("Product price is required and must be a decimal.");
+            }
+
+            if (Product.Price <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Product price must be greater than 0.");
+            }
+
+            if (Product.Stock == null)
+            {
+                throw new ArgumentNullException("Product stock is required and must be an integer.");
+            }
+
+            if (Product.Stock <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Product stock must be greater than 0.");
+            }
+
+            if (SelectedCategory == null)
+            {
+                throw new ArgumentNullException("Category is required.");
+            }
+
+            if (SelectedBrand == null)
+            {
+                throw new ArgumentNullException("Brand is required.");
+            }
+
             Product.CategoryId = SelectedCategory.Id;
             Product.BrandId = SelectedBrand.Id;
 
