@@ -15,7 +15,8 @@ namespace POSSystem.ViewModels
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBrandRepository _brandRepository;
 
-        private readonly StripeService _stripeService;
+        private readonly IStripeService _stripeService;
+        private readonly IUriLauncher _uriLauncher;
 
         private List<Product> _products;
         public List<Product> Products
@@ -49,7 +50,7 @@ namespace POSSystem.ViewModels
                 {
                     _selectedCategory = value;
                     OnPropertyChanged();
-                    FilterProducts();
+                    _ = FilterProducts();
                 }
             }
         }
@@ -64,7 +65,7 @@ namespace POSSystem.ViewModels
                 {
                     _filterText = value;
                     OnPropertyChanged();
-                    FilterProducts();
+                    _ = FilterProducts();
                 }
             }
         }
@@ -79,18 +80,19 @@ namespace POSSystem.ViewModels
                 {
                     _maxPrice = value;
                     OnPropertyChanged();
-                    FilterProducts();
+                    _ = FilterProducts();
                 }
             }
         }
 
         public ProductViewModel()
         {
-            _productRepository = new ProductRepository(ConnectionString);
-            _categoryRepository = new CategoryRepository(ConnectionString);
-            _brandRepository = new BrandRepository(ConnectionString);
+            _productRepository = new ProductRepository();
+            _categoryRepository = new CategoryRepository();
+            _brandRepository = new BrandRepository();
 
             _stripeService = new StripeService();
+            _uriLauncher = new UriLauncher();
 
             Products = new List<Product>();
             Categories = new List<Category>();
@@ -98,13 +100,24 @@ namespace POSSystem.ViewModels
             LoadData();
         }
 
-        private async void LoadData()
+        // Constructor for unit testing
+        public ProductViewModel(IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository, IStripeService stripeService, IUriLauncher uriLauncher)
         {
-            await LoadProducts();
-            LoadCategories();
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _brandRepository = brandRepository;
+
+            _stripeService = stripeService;
+            _uriLauncher = uriLauncher;
         }
 
-        private async Task LoadProducts()
+        public async void LoadData()
+        {
+            await LoadProducts();
+            await LoadCategories();
+        }
+
+        public async Task LoadProducts()
         {
             var products = await _productRepository.GetAllProducts();
 
@@ -122,7 +135,7 @@ namespace POSSystem.ViewModels
             Products = products;
         }
 
-        private async void LoadCategories()
+        public async Task LoadCategories()
         {
             var categories = await _categoryRepository.GetAllCategories();
 
@@ -131,7 +144,7 @@ namespace POSSystem.ViewModels
             Categories = categories;
         }
 
-        public async void AddProduct(string name, decimal price, int stock, int categoryId, int brandId)
+        public async Task AddProduct(string name, decimal price, int stock, int categoryId, int brandId)
         {
             var product = new Product
             {
@@ -147,7 +160,7 @@ namespace POSSystem.ViewModels
             await LoadProducts();
         }
 
-        public async void UpdateProduct(int id, string newName, decimal newPrice, int newStock, int newCategoryId, int newBrandId)
+        public async Task UpdateProduct(int id, string newName, decimal newPrice, int newStock, int newCategoryId, int newBrandId)
         {
             var product = await _productRepository.GetProductById(id);
 
@@ -162,14 +175,14 @@ namespace POSSystem.ViewModels
             await LoadProducts();
         }
 
-        public async void DeleteProduct(int id)
+        public async Task DeleteProduct(int id)
         {
             await _productRepository.DeleteProduct(id);
 
             await LoadProducts();
         }
 
-        private async void FilterProducts()
+        public async Task FilterProducts()
         {
             await LoadProducts();
 
@@ -209,14 +222,15 @@ namespace POSSystem.ViewModels
             Products = sortedProducts;
         }
 
-        public async void PayProduct(Product product, int quantity)
+        public async Task PayProduct(Product product, int quantity)
         {
             try
             {
                 var checkoutUrl = await _stripeService.CreateCheckoutSession(product, quantity);
 
                 var uri = new Uri(checkoutUrl);
-                await Windows.System.Launcher.LaunchUriAsync(uri);
+
+                await _uriLauncher.LaunchUriAsync(uri);
             }
             catch (Exception)
             {

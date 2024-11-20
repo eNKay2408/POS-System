@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml.Controls;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
-using System.Linq;
 
 namespace POSSystem.Views
 {
