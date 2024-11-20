@@ -1,9 +1,8 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using POSSystem.Models;
+﻿using POSSystem.Models;
 using POSSystem.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
 {
@@ -24,14 +23,20 @@ namespace POSSystem.ViewModels
 
         public CategoryViewModel()
         {
-            _categoryRepository = new CategoryRepository(ConnectionString);
+            _categoryRepository = new CategoryRepository();
 
             Categories = new List<Category>();
 
-            LoadCategories();
+            _ = LoadCategories();
         }
 
-        private async void LoadCategories()
+        // Constructor for unit testing
+        public CategoryViewModel(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
+
+        public async Task LoadCategories()
         {
             var categories = await _categoryRepository.GetAllCategories();
 
@@ -39,12 +44,17 @@ namespace POSSystem.ViewModels
             {
                 category.Index = categories.IndexOf(category) + 1;
             }
-                
+
             Categories = categories;
         }
 
-        public async void AddCategory(string categoryName)
+        public async Task AddCategory(string categoryName)
         {
+            if (string.IsNullOrWhiteSpace(categoryName))
+            {
+                throw new ArgumentException("Category name cannot be empty.");
+            }
+
             var category = new Category
             {
                 Name = categoryName
@@ -52,25 +62,30 @@ namespace POSSystem.ViewModels
 
             await _categoryRepository.AddCategory(category);
 
-            LoadCategories();
+            await LoadCategories();
         }
 
-        public async void UpdateCategory(int categoryId, string newName)
+        public async Task UpdateCategory(int categoryId, string newName)
         {
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                throw new ArgumentException("Category name cannot be empty.");
+            }
+
             var category = await _categoryRepository.GetCategoryById(categoryId);
 
             category.Name = newName;
 
             await _categoryRepository.UpdateCategory(category);
 
-            LoadCategories();
+            await LoadCategories();
         }
 
-        public async void DeleteCategory(int categoryId)
+        public async Task DeleteCategory(int categoryId)
         {
             await _categoryRepository.DeleteCategory(categoryId);
 
-            LoadCategories();
+            await LoadCategories();
         }
     }
 }

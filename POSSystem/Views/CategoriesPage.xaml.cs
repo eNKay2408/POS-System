@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml.Controls;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
-using System.Windows.Input;
 
 namespace POSSystem.Views
 {
@@ -38,10 +37,25 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                string newCategoryName = nameTextBox.Text.Trim();
+                string newCategoryName = nameTextBox.Text;
 
-                var viewModel = (CategoryViewModel)this.DataContext;
-                viewModel.AddCategory(newCategoryName);
+                try
+                {
+                    var viewModel = (CategoryViewModel)this.DataContext;
+                    await viewModel.AddCategory(newCategoryName);
+                }
+                catch (Exception ex)
+                {
+                    ContentDialog errorDialog = new ContentDialog
+                    {
+                        Title = "ERROR",
+                        Content = ex.Message,
+                        CloseButtonText = "Ok",
+                        XamlRoot = App.AppMainWindow.Content.XamlRoot
+                    };
+
+                    await errorDialog.ShowAsync();
+                }
             }
         }
 
@@ -70,10 +84,25 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                string updatedCategoryName = nameTextBox.Text.Trim();
+                string updatedCategoryName = nameTextBox.Text;
 
-                var viewModel = (CategoryViewModel)this.DataContext;
-                viewModel.UpdateCategory(category.Id, updatedCategoryName);
+                try
+                {
+                    var viewModel = (CategoryViewModel)this.DataContext;
+                    await viewModel.UpdateCategory(category.Id, updatedCategoryName);
+                }
+                catch (Exception ex)
+                {
+                    ContentDialog errorDialog = new ContentDialog
+                    {
+                        Title = "ERROR",
+                        Content = ex.Message,
+                        CloseButtonText = "Ok",
+                        XamlRoot = App.AppMainWindow.Content.XamlRoot
+                    };
+
+                    await errorDialog.ShowAsync();
+                }
             }
         }
 
@@ -102,7 +131,7 @@ namespace POSSystem.Views
             if (result == ContentDialogResult.Primary)
             {
                 var viewModel = (CategoryViewModel)this.DataContext;
-                viewModel.DeleteCategory(category.Id);
+                await viewModel.DeleteCategory(category.Id);
             }
         }
     }

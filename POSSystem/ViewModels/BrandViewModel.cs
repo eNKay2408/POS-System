@@ -1,8 +1,8 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
 {
@@ -23,18 +23,24 @@ namespace POSSystem.ViewModels
 
         public BrandViewModel()
         {
-            _brandRepository = new BrandRepository(ConnectionString);
+            _brandRepository = new BrandRepository();
 
             Brands = new List<Brand>();
 
-            LoadBrands();
+            _ = LoadBrands();
         }
 
-        private async void LoadBrands()
+        // Constructor for unit testing
+        public BrandViewModel(IBrandRepository brandRepository)
+        {
+            _brandRepository = brandRepository;
+        }
+
+        public async Task LoadBrands()
         {
             var brands = await _brandRepository.GetAllBrands();
 
-            foreach (var brand in brands) 
+            foreach (var brand in brands)
             {
                 brand.Index = brands.IndexOf(brand) + 1;
             }
@@ -42,8 +48,13 @@ namespace POSSystem.ViewModels
             Brands = brands;
         }
 
-        public async void AddBrand(string brandName)
+        public async Task AddBrand(string brandName)
         {
+            if (string.IsNullOrWhiteSpace(brandName))
+            {
+                throw new ArgumentException("Brand name cannot be empty.");
+            }
+
             var brand = new Brand
             {
                 Name = brandName
@@ -51,25 +62,30 @@ namespace POSSystem.ViewModels
 
             await _brandRepository.AddBrand(brand);
 
-            LoadBrands();
+            await LoadBrands();
         }
 
-        public async void UpdateBrand(int brandId, string newName)
+        public async Task UpdateBrand(int brandId, string newName)
         {
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                throw new ArgumentException("Brand name cannot be empty.");
+            }
+
             var brand = await _brandRepository.GetBrandById(brandId);
 
             brand.Name = newName;
 
             await _brandRepository.UpdateBrand(brand);
 
-            LoadBrands();
+            await LoadBrands();
         }
 
-        public async void DeleteBrand(int brandId)
+        public async Task DeleteBrand(int brandId)
         {
             await _brandRepository.DeleteBrand(brandId);
 
-            LoadBrands();
+            await LoadBrands();
         }
     }
 }

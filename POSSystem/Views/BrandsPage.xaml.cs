@@ -2,7 +2,6 @@ using Microsoft.UI.Xaml.Controls;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
-using System.Net.WebSockets;
 
 namespace POSSystem.Views
 {
@@ -35,10 +34,25 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                string newBrandName = nameTextBox.Text.Trim();
+                string newBrandName = nameTextBox.Text;
 
-                var viewModel = (BrandViewModel)this.DataContext;
-                viewModel.AddBrand(newBrandName);
+                try
+                {
+                    var viewModel = (BrandViewModel)this.DataContext;
+                    await viewModel.AddBrand(newBrandName);
+                }
+                catch (Exception ex)
+                {
+                    ContentDialog errorDialog = new ContentDialog
+                    {
+                        Title = "Error",
+                        Content = ex.Message,
+                        CloseButtonText = "Ok",
+                        XamlRoot = App.AppMainWindow.Content.XamlRoot
+                    };
+
+                    await errorDialog.ShowAsync();
+                }
             }
         }
 
@@ -67,10 +81,25 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                string updatedBrandName = nameTextBox.Text.Trim();
+                string updatedBrandName = nameTextBox.Text;
 
-                var viewModel = (BrandViewModel)this.DataContext;
-                viewModel.UpdateBrand(brand.Id, updatedBrandName);
+                try
+                {
+                    var viewModel = (BrandViewModel)this.DataContext;
+                    await viewModel.UpdateBrand(brand.Id, updatedBrandName);
+                }
+                catch (Exception ex)
+                {
+                    ContentDialog errorDialog = new ContentDialog
+                    {
+                        Title = "Error",
+                        Content = ex.Message,
+                        CloseButtonText = "Ok",
+                        XamlRoot = App.AppMainWindow.Content.XamlRoot
+                    };
+
+                    await errorDialog.ShowAsync();
+                }
             }
         }
 
@@ -99,7 +128,7 @@ namespace POSSystem.Views
             if (result == ContentDialogResult.Primary)
             {
                 var viewModel = (BrandViewModel)this.DataContext;
-                viewModel.DeleteBrand(brand.Id);
+                await viewModel.DeleteBrand(brand.Id);
             }
         }
     }
