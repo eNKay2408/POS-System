@@ -49,12 +49,12 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
     <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="Npgsql" Version="8.0.5" />
-    <PackageReference Include="Stripe.net" Version="46.2.1" />
+    <PackageReference Include="Npgsql" Version="9.0.0" />
+    <PackageReference Include="Stripe.net" Version="47.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>

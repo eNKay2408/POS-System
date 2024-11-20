@@ -8,11 +8,11 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="b03f99c7-bbf6-4a5d-b30b-633679da5845"
+    Name="03dd3ff5-a262-4d1d-88fb-93ed6134f464"
     Publisher="CN=ENKAY"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="b03f99c7-bbf6-4a5d-b30b-633679da5845" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="03dd3ff5-a262-4d1d-88fb-93ed6134f464" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>POSSystem.Tests</DisplayName>
