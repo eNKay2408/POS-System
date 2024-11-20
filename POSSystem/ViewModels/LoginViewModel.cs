@@ -1,26 +1,17 @@
 ﻿using POSSystem.Repository;
 using POSSystem.Models;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
-using static System.Net.WebRequestMethods;
-using System.Threading;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using POSSystem.Services;
-using POSSystem.Views;
-using Windows.Security.Cryptography.DataProtection;
-using Windows.Security.Cryptography;
-using Windows.Storage.Streams;
-using Microsoft.Windows.Storage;
-
 
 namespace POSSystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly GoogleOAuthService _googleOAuthService;
-        private ApplicationDataContainer _localSettings;
+        private readonly IGoogleOAuthService _googleOAuthService;
+        private readonly ISettingsService _settingsService;
+        private readonly IEncryptionService _encryptionService;
 
         private string _email;
         public string Email
@@ -57,21 +48,31 @@ namespace POSSystem.ViewModels
 
         public LoginViewModel()
         {
-            _employeeRepository = new EmployeeRepository(ConnectionString);
+            _employeeRepository = new EmployeeRepository();
             _googleOAuthService = new GoogleOAuthService();
-            _localSettings = ApplicationData.GetDefault().LocalSettings;
+            _settingsService = new SettingsService();
+            _encryptionService = new EncryptionService();
+        }
+
+        // Constructor for unit testing
+        public LoginViewModel(IEmployeeRepository employeeRepository, IGoogleOAuthService googleOAuthService, ISettingsService settingsService, IEncryptionService encryptionService)
+        {
+            _employeeRepository = employeeRepository;
+            _googleOAuthService = googleOAuthService;
+            _settingsService = settingsService;
+            _encryptionService = encryptionService;
         }
 
         public async Task<string> Login()
         {
-            Employee employee = await _employeeRepository.GetEmployeeByEmail(_email);
+            Employee employee = await _employeeRepository.GetEmployeeByEmail(Email);
 
             if (employee == null)
             {
                 return null;
             }
 
-            if (BCrypt.Net.BCrypt.Verify(_password, employee.Password))
+            if (BCrypt.Net.BCrypt.Verify(Password, employee.Password))
             {
 
                 if (_isRememberMeChecked == true)
@@ -93,30 +94,22 @@ namespace POSSystem.ViewModels
 
         public async Task SaveCredentialsAsync()
         {
-            var provider = new DataProtectionProvider("LOCAL=user");
-            IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(Password, BinaryStringEncoding.Utf8);
-            IBuffer protectedBuffer = await provider.ProtectAsync(buffer);
-            string encryptedPassword = CryptographicBuffer.EncodeToBase64String(protectedBuffer);
+            var encryptedPassword = await _encryptionService.EncryptAsync(Password);
 
-            _localSettings.Values["Email"] = _email;
-            _localSettings.Values["Password"] = encryptedPassword;
+            _settingsService.Save("Email", Email);
+            _settingsService.Save("Password", encryptedPassword);
         }
 
-        public async void LoadSavedCredentials()
+        public async Task LoadSavedCredentials()
         {
-            if (_localSettings.Values.ContainsKey("Email") && _localSettings.Values.ContainsKey("Password"))
+            if (_settingsService.Load("Email") != null && _settingsService.Load("Password") != null)
             {
-                string savedEmail = _localSettings.Values["Email"] as string;
-                string encryptedPassword = _localSettings.Values["Password"] as string;
+                string savedEmail = _settingsService.Load("Email");
+                string encryptedPassword = _settingsService.Load("Password");
 
                 Email = savedEmail;
 
-                var provider = new DataProtectionProvider("LOCAL=user");
-                IBuffer protectedBuffer = CryptographicBuffer.DecodeFromBase64String(encryptedPassword);
-                IBuffer unprotectedBuffer = await provider.UnprotectAsync(protectedBuffer);
-                string decryptedPassword = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, unprotectedBuffer);
-
-                Password = decryptedPassword;
+                Password = await _encryptionService.DecryptAsync(encryptedPassword);
 
                 IsRememberMeChecked = true;
             }
@@ -124,14 +117,8 @@ namespace POSSystem.ViewModels
 
         public void ClearSavedCredentials()
         {
-            if (_localSettings.Values.ContainsKey("Email"))
-            {
-                _localSettings.Values.Remove("Email");
-            }
-            if (_localSettings.Values.ContainsKey("Password"))
-            {
-                _localSettings.Values.Remove("Password");
-            }
+            _settingsService.Remove("Email");
+            _settingsService.Remove("Password");
         }
 
         public async Task<string> AuthenticateWithGoogle()
