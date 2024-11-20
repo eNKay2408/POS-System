@@ -1,29 +1,22 @@
 ﻿using Npgsql;
 using POSSystem.Models;
+using POSSystem.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace POSSystem.Repository
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : BaseRepository, IProductRepository
     {
-        private readonly NpgsqlConnection _connection;
-
-        public ProductRepository(string connectionString)
-        {
-            _connection = new NpgsqlConnection(connectionString);
-        }
-
         public async Task<List<Product>> GetAllProducts()
         {
             var products = new List<Product>();
             string query = "SELECT * FROM Product";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -40,7 +33,7 @@ namespace POSSystem.Repository
                 }
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
             return products;
         }
 
@@ -54,9 +47,9 @@ namespace POSSystem.Repository
         public async Task AddProduct(Product product)
         {
             string query = "INSERT INTO Product (Name, Price, Stock, CategoryId, BrandId) VALUES (@Name, @Price, @Stock, @CategoryId, @BrandId)";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             {
                 cmd.Parameters.AddWithValue("Name", product.Name);
                 cmd.Parameters.AddWithValue("Price", product.Price);
@@ -66,15 +59,15 @@ namespace POSSystem.Repository
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
         }
 
         public async Task UpdateProduct(Product product)
         {
             string query = "UPDATE Product SET Name = @Name, Price = @Price, Stock = @Stock, CategoryId = @CategoryId, BrandId = @BrandId WHERE Id = @Id";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             {
                 cmd.Parameters.AddWithValue("Id", product.Id);
                 cmd.Parameters.AddWithValue("Name", product.Name);
@@ -85,21 +78,21 @@ namespace POSSystem.Repository
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
         }
 
         public async Task DeleteProduct(int id)
         {
             string query = "DELETE FROM Product WHERE Id = @Id";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             {
                 cmd.Parameters.AddWithValue("Id", id);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
         }
     }
 }

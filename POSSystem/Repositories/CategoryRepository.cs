@@ -7,22 +7,15 @@ using System.Threading.Tasks;
 
 namespace POSSystem.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        private readonly NpgsqlConnection _connection;
-
-        public CategoryRepository(string connectionString)
-        {
-            _connection = new NpgsqlConnection(connectionString);
-        }
-
         public async Task<List<Category>> GetAllCategories()
         {
             var categories = new List<Category>();
             string query = "SELECT * FROM Category";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -35,7 +28,7 @@ namespace POSSystem.Repositories
                 }
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
             return categories;
         }
 
@@ -49,44 +42,44 @@ namespace POSSystem.Repositories
         public async Task AddCategory(Category category)
         {
             string query = "INSERT INTO Category (Name) VALUES (@Name)";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             {
                 cmd.Parameters.AddWithValue("Name", category.Name);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
         }
 
         public async Task UpdateCategory(Category category)
         {
             string query = "UPDATE Category SET Name = @Name WHERE Id = @Id";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             {
                 cmd.Parameters.AddWithValue("Id", category.Id);
                 cmd.Parameters.AddWithValue("Name", category.Name);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
         }
 
         public async Task DeleteCategory(int id)
         {
             string query = "DELETE FROM Category WHERE Id = @Id";
-            await _connection.OpenAsync();
+            await Connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            using (var cmd = new NpgsqlCommand(query, Connection))
             {
                 cmd.Parameters.AddWithValue("Id", id);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await _connection.CloseAsync();
+            await Connection.CloseAsync();
         }
     }
 }
