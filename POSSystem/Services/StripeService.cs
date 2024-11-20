@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace POSSystem.Services
 {
-    public class StripeService
+    public class StripeService : IStripeService
     {
         private ConfigHelper _configHelper;
 
@@ -47,7 +47,8 @@ namespace POSSystem.Services
                 var service = new Stripe.Checkout.SessionService();
                 var session = await service.CreateAsync(options);
                 return session.Url;
-            } catch (StripeException)
+            }
+            catch (StripeException)
             {
                 throw;
             }

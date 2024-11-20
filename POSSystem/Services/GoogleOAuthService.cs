@@ -9,7 +9,7 @@ using POSSystem.Helpers;
 
 namespace POSSystem.Services
 {
-    public class GoogleOAuthService
+    public class GoogleOAuthService : IGoogleOAuthService
     {
         private static readonly string[] _scopes = { Oauth2Service.Scope.UserinfoEmail, Oauth2Service.Scope.UserinfoProfile };
         private string _applicationName = "POS System";
