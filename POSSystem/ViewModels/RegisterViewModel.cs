@@ -1,5 +1,6 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repository;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -11,10 +12,16 @@ namespace POSSystem.ViewModels
 
         public RegisterViewModel()
         {
-            _employeeRepository = new EmployeeRepository(ConnectionString);
+            _employeeRepository = new EmployeeRepository();
         }
 
-        private bool IsStrongPassword(string password)
+        // Constructor for unit testing
+        public RegisterViewModel(IEmployeeRepository employeeRepository)
+        {
+            _employeeRepository = employeeRepository;
+        }
+
+        public static bool IsStrongPassword(string password)
         {
             if (password.Length < 8)
             {
@@ -49,7 +56,7 @@ namespace POSSystem.ViewModels
             return true;
         }
 
-        bool IsEmail(string email)
+        public static bool IsEmail(string email)
         {
             return Regex.IsMatch(email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w)+)+)$");
         }
@@ -58,17 +65,17 @@ namespace POSSystem.ViewModels
         {
             if (Password != ConfirmPassword)
             {
-                throw new System.Exception("Passwords do not match");
+                throw new ArgumentException("Passwords do not match");
             }
 
             if (!IsStrongPassword(Password))
             {
-                throw new System.Exception("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
+                throw new ArgumentException("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
             }
 
             if (!IsEmail(Email))
             {
-                throw new System.Exception("Invalid email address");
+                throw new FormatException("Invalid email address");
             }
 
             Employee employee = new Employee

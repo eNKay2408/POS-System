@@ -1,6 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
 using POSSystem.ViewModels;
-using POSSystem.Models;
 using Microsoft.UI.Xaml;
 using System;
 
@@ -38,7 +37,8 @@ namespace POSSystem.Views
                 await successDialog.ShowAsync();
 
                 App.AppMainWindow.Content = new LoginPage();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ContentDialog errorDialog = new ContentDialog
                 {
