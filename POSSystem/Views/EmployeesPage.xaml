@@ -7,9 +7,63 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:model="using:POSSystem.Models" 
+    xmlns:viewmodels="using:POSSystem.ViewModels" 
+    d:DataContext="{d:DesignInstance Type=viewmodels:EmployeeViewModel}">
 
-    <Grid>
+    <Grid Padding="20" RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Employees" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
+            <Button Content="✚ Employee" Click="AddEmployee_Click" FontFamily="{StaticResource Poppins}" HorizontalAlignment="Right" Background="{StaticResource PinkBrush}"/>
+        </Grid>
 
+        <Border BorderBrush="{StaticResource GrayBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
+            <ListView ItemsSource="{Binding Employees}">
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="NO." FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Text="NAME" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="2" Text="EMAIL" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="3" Text="ACTION" FontWeight="Bold"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Employee">
+                        <Grid Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="{x:Bind Index}" Grid.Column="0" TextWrapping="Wrap" />
+                            <TextBlock Text="{x:Bind Name}" Grid.Column="1" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Bind Email}" Grid.Column="2" TextWrapping="Wrap"/>
+                            
+                            <StackPanel Orientation="Horizontal" Grid.Column="3">
+                                <Button Click="UpdateEmployee_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
+                                </Button>
+                                
+                                <Button Click="DeleteEmployee_Click" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/delete.png" Width="20" Height="20" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
     </Grid>
 </Page>
