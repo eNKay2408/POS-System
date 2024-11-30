@@ -18,3 +18,6 @@ appsettings.json
 # database set-up files
 node_modules
 .env
+
+# Test Results
+TestResults/
