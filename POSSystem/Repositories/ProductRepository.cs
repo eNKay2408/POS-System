@@ -10,13 +10,26 @@ namespace POSSystem.Repository
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
+        private readonly NpgsqlConnection _connection;
+
+        public ProductRepository()
+        {
+            _connection = new NpgsqlConnection(ConnectionString);
+        }
+
+        // Constructor for integration testing
+        public ProductRepository(string connectionString)
+        {
+            _connection = new NpgsqlConnection(connectionString);
+        }
+
         public async Task<List<Product>> GetAllProducts()
         {
             var products = new List<Product>();
-            string query = "SELECT * FROM Product";
-            await Connection.OpenAsync();
+            string query = "SELECT * FROM Product ORDER BY Id";
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -33,7 +46,7 @@ namespace POSSystem.Repository
                 }
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
             return products;
         }
 
@@ -46,10 +59,16 @@ namespace POSSystem.Repository
 
         public async Task AddProduct(Product product)
         {
-            string query = "INSERT INTO Product (Name, Price, Stock, CategoryId, BrandId) VALUES (@Name, @Price, @Stock, @CategoryId, @BrandId)";
-            await Connection.OpenAsync();
+            var products = await GetAllProducts();
+            if (products.Any(p => p.Name == product.Name))
+            {
+                throw new Exception("Product name already exists");
+            }
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            string query = "INSERT INTO Product (Name, Price, Stock, CategoryId, BrandId) VALUES (@Name, @Price, @Stock, @CategoryId, @BrandId)";
+            await _connection.OpenAsync();
+
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Name", product.Name);
                 cmd.Parameters.AddWithValue("Price", product.Price);
@@ -59,15 +78,21 @@ namespace POSSystem.Repository
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
 
         public async Task UpdateProduct(Product product)
         {
-            string query = "UPDATE Product SET Name = @Name, Price = @Price, Stock = @Stock, CategoryId = @CategoryId, BrandId = @BrandId WHERE Id = @Id";
-            await Connection.OpenAsync();
+            var products = await GetAllProducts();
+            if (products.Any(p => p.Id != product.Id && p.Name == product.Name))
+            {
+                throw new Exception("Product name already exists");
+            }
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            string query = "UPDATE Product SET Name = @Name, Price = @Price, Stock = @Stock, CategoryId = @CategoryId, BrandId = @BrandId WHERE Id = @Id";
+            await _connection.OpenAsync();
+
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Id", product.Id);
                 cmd.Parameters.AddWithValue("Name", product.Name);
@@ -78,21 +103,21 @@ namespace POSSystem.Repository
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
 
         public async Task DeleteProduct(int id)
         {
             string query = "DELETE FROM Product WHERE Id = @Id";
-            await Connection.OpenAsync();
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Id", id);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
     }
 }
