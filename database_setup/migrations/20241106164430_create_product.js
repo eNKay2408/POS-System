@@ -4,7 +4,7 @@
  */
 exports.up = async function(knex) {
   await knex.raw(` 
-    CREATE TABLE product (
+    CREATE TABLE IF NOT EXISTS product (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     price NUMERIC(18, 2) NOT NULL,
@@ -20,5 +20,5 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-  await knex.raw('DROP TABLE product');
+  await knex.raw('DROP TABLE IF EXISTS product');
 };

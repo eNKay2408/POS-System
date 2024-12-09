@@ -4,7 +4,7 @@
  */
 exports.up = async function(knex) {
   await knex.raw(`
-    CREATE TABLE brand (
+    CREATE TABLE IF NOT EXISTS brand (
       id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL)`);
 };
@@ -14,5 +14,5 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-  await knex.raw('DROP TABLE brand');
+  await knex.raw('DROP TABLE IF EXISTS brand');
 };
