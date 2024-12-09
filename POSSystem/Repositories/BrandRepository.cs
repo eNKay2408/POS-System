@@ -9,13 +9,26 @@ namespace POSSystem.Repositories
 {
     public class BrandRepository : BaseRepository, IBrandRepository
     {
+        private readonly NpgsqlConnection _connection;
+
+        public BrandRepository()
+        {
+            _connection = new NpgsqlConnection(ConnectionString);
+        }
+
+        // Constructor for integration testing
+        public BrandRepository(string connectionString)
+        {
+            _connection = new NpgsqlConnection(connectionString);
+        }
+
         public async Task<List<Brand>> GetAllBrands()
         {
             var brands = new List<Brand>();
-            string query = "SELECT * FROM Brand";
-            await Connection.OpenAsync();
+            string query = "SELECT * FROM Brand ORDER BY Id";
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -28,7 +41,7 @@ namespace POSSystem.Repositories
                 }
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
             return brands;
         }
 
@@ -41,45 +54,52 @@ namespace POSSystem.Repositories
 
         public async Task AddBrand(Brand brand)
         {
-            string query = "INSERT INTO Brand (Name) VALUES (@Name)";
-            await Connection.OpenAsync();
+            // check if brand already exists
+            var brands = await GetAllBrands();
+            if (brands.Any(m => m.Name == brand.Name))
+            {
+                throw new Exception("Brand already exists");
+            }
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            string query = "INSERT INTO Brand (Name) VALUES (@Name)";
+            await _connection.OpenAsync();
+
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Name", brand.Name);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
 
         public async Task UpdateBrand(Brand brand)
         {
             string query = "UPDATE Brand SET Name = @Name WHERE Id = @Id";
-            await Connection.OpenAsync();
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Id", brand.Id);
                 cmd.Parameters.AddWithValue("Name", brand.Name);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
 
         public async Task DeleteBrand(int id)
         {
             string query = "DELETE FROM Brand WHERE Id = @Id";
-            await Connection.OpenAsync();
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Id", id);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
     }
 }
