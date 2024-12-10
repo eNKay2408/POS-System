@@ -69,7 +69,9 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Index}" Grid.Column="0" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding Name}" Grid.Column="1" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding Price}" Grid.Column="2" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Column="2" TextWrapping="Wrap">
+                                $<Run Text="{Binding Price}"/>
+                            </TextBlock>
                             <TextBlock Text="{Binding Stock}" Grid.Column="3" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding CategoryName}" Grid.Column="4" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding BrandName}" Grid.Column="5" TextWrapping="Wrap"/>

@@ -7,9 +7,67 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:model="using:POSSystem.Models"    
+    xmlns:viewmodels="using:POSSystem.ViewModels" 
+    d:DataContext="{d:DesignInstance Type=viewmodels:InvoiceViewModel}">
 
-    <Grid>
-        <TextBlock Text="Testing" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+    <Grid Padding="20" RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Invoices" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
+            <Button x:Name="AddInvoiceBtn" Content="✚ Invoice" Click="AddInvoiceBtn_Click" FontFamily="{StaticResource Poppins}" HorizontalAlignment="Right" Background="{StaticResource PinkBrush}" Foreground="{StaticResource WhiteColor}"/>
+        </Grid>
+
+        <Border BorderBrush="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
+            <ListView ItemsSource="{Binding Invoices}">
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,2" Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="NO." FontWeight="Bold" Grid.Column="0"/>
+                            <TextBlock Text="EMPLOYEE NAME" FontWeight="Bold" Grid.Column="1"/>
+                            <TextBlock Text="TOTAL" FontWeight="Bold" Grid.Column="2"/>
+                            <TextBlock Text="TIMESTAMP" FontWeight="Bold" Grid.Column="3"/>
+                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="4"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Invoice">
+                        <Grid Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind Index}" Grid.Column="0" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Bind EmployeeName}" Grid.Column="1" TextWrapping="Wrap" />
+                            <TextBlock Grid.Column="2" TextWrapping="Wrap">
+                                $<Run Text="{x:Bind Total}"/>
+                            </TextBlock>
+                            <TextBlock Text="{x:Bind Date}" Grid.Column="3" TextWrapping="Wrap" />
+                            <StackPanel Orientation="Horizontal" Grid.Column="4">
+                                <Button Click="UpdateInvoice_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
+                                </Button>
+
+                                <Button Click="DeleteInvoice_Click" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/delete.png" Width="20" Height="20" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
     </Grid>
 </Page>
