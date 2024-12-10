@@ -55,6 +55,19 @@ namespace POSSystem.Views
         public void Login_Click(object sender, RoutedEventArgs e)
         {
             App.AppMainWindow.Content = new LoginPage();
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string theme = localSettings.Values["POSAppTheme"].ToString();
+            if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
+            {
+                if (theme == "dark")
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Dark;
+                }
+                else if (theme == "light")
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Light;
+                }
+            }
         }
     }
 }

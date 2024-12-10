@@ -22,7 +22,7 @@
             <Color x:Key="PinkColor">#8946A6</Color>
             <Color x:Key="BlackColor">#191A19</Color>
             <Color x:Key="GrayColor">#2C2C2C</Color>
-            <Color x:Key="WhiteColor">#C8C8C8</Color>
+            <Color x:Key="WhiteColor">#FFFFFF</Color>
 
             <SolidColorBrush x:Key="PinkBrush" Color="{StaticResource PinkColor}" />
             <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}" />

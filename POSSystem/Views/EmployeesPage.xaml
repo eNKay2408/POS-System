@@ -17,7 +17,7 @@
             <TextBlock Text="Employees" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
         </Grid>
 
-        <Border BorderBrush="{StaticResource GrayBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
+        <Border BorderBrush="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
             <ListView ItemsSource="{Binding Employees}">
                 <ListView.HeaderTemplate>
                     <DataTemplate>
