@@ -19,30 +19,29 @@ namespace POSSystem.Views
         private async void Login_Click(object sender, RoutedEventArgs e)
         {
             //for development purposes
-            //string name = "John Doe"; 
-            //App.AppMainWindow.Content = new MainPage(name);
-            //Debug.WriteLine(name);
+            string name = "John Doe";
+            App.AppMainWindow.Content = new MainPage(name);
 
-            LoginViewModel loginViewModel = (LoginViewModel)this.DataContext;
+            //LoginViewModel loginViewModel = (LoginViewModel)this.DataContext;
 
-            string name = await loginViewModel.Login();
+            //string name = await loginViewModel.Login();
 
-            if (name != null)
-            {
-                App.AppMainWindow.Content = new MainPage(name);
-            }
-            else
-            {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "ERROR",
-                    Content = "Invalid email or password",
-                    CloseButtonText = "OK",
-                    XamlRoot = App.AppMainWindow.Content.XamlRoot
-                };
+            //if (name != null)
+            //{
+            //    App.AppMainWindow.Content = new MainPage(name);
+            //}
+            //else
+            //{
+            //    ContentDialog contentDialog = new ContentDialog
+            //    {
+            //        Title = "ERROR",
+            //        Content = "Invalid email or password",
+            //        CloseButtonText = "OK",
+            //        XamlRoot = App.AppMainWindow.Content.XamlRoot
+            //    };
 
-                await contentDialog.ShowAsync();
-            }
+            //    await contentDialog.ShowAsync();
+            //}
         }
 
         private void LoadSavedCredentials()
