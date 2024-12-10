@@ -20,7 +20,23 @@ namespace POSSystem.Views
         {
             //for development purposes
             string name = "John Doe";
+            
             App.AppMainWindow.Content = new MainPage(name);
+
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string theme = localSettings.Values["POSAppTheme"].ToString();
+            if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
+            {
+                if (theme == "dark")
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Dark;
+                }
+                else if (theme == "light")
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Light;
+                }
+            }
+
 
             //LoginViewModel loginViewModel = (LoginViewModel)this.DataContext;
 
@@ -29,6 +45,21 @@ namespace POSSystem.Views
             //if (name != null)
             //{
             //    App.AppMainWindow.Content = new MainPage(name);
+
+            //var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            //string theme = localSettings.Values["POSAppTheme"].ToString();
+            //if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
+            //{
+            //    if (theme == "dark")
+            //    {
+            //        frameworkElement.RequestedTheme = ElementTheme.Dark;
+            //    }
+            //    else if (theme == "light")
+            //    {
+            //        frameworkElement.RequestedTheme = ElementTheme.Light;
+            //    }
+            //}
+
             //}
             //else
             //{

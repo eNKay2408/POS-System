@@ -12,7 +12,7 @@
     <StackPanel  Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Image Source="ms-appx:///Assets/logo.png" Height="50" Width="50" HorizontalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBlock Text="POS System" Foreground="{StaticResource WhiteBrush}" FontFamily="{StaticResource PoppinsBold}" FontSize="20" VerticalAlignment="Center" Margin="0,20,0,20"/>
+            <TextBlock Text="POS System" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontFamily="{StaticResource PoppinsBold}" FontSize="20" VerticalAlignment="Center" Margin="0,20,0,20"/>
         </StackPanel>
 
         <Button Content="Login with Google" Click="GoogleLogin_Click" Width="300" FontSize="16" Height="40" Background="{StaticResource WhiteBrush}" Foreground="{StaticResource GrayBrush}" FontFamily="{StaticResource PoppinsBold}"/>
