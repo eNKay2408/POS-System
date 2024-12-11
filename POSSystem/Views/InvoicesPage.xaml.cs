@@ -14,7 +14,7 @@ namespace POSSystem.Views
             this.DataContext = ViewModel;
         }
 
-        private async void AddInvoiceBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void AddInvoiceBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             Frame.Navigate(typeof(InvoiceAddPage));
         }

@@ -52,7 +52,7 @@ namespace POSSystem.Views
             if (result == ContentDialogResult.Primary)
             {
                 var viewModel = (ProductViewModel)this.DataContext;
-                viewModel.DeleteProduct(product.Id);
+                await viewModel.DeleteProduct(product.Id);
             }
         }
 
@@ -111,7 +111,7 @@ namespace POSSystem.Views
 
                 try
                 {
-                    viewModel.PayProduct(product, quantity);
+                    await viewModel.PayProduct(product, quantity);
                 }
                 catch (Exception ex)
                 {

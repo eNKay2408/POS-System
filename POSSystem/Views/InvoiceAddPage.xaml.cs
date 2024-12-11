@@ -32,7 +32,7 @@ namespace POSSystem.Views
             await dialog.ShowAsync();
         }
 
-        private async void Discard_Click(object sender, RoutedEventArgs e)
+        private void Discard_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
         }
