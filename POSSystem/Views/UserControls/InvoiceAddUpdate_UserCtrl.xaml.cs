@@ -13,9 +13,9 @@ namespace POSSystem;
 /// </summary>
 public sealed partial class InvoiceUserCtrl : Microsoft.UI.Xaml.Controls.UserControl
 {
-    public static readonly DependencyProperty EmployeesInfoProperty = 
-        DependencyProperty.Register("EmployeesInfo", 
-            typeof(List<Employee>), 
+    public static readonly DependencyProperty EmployeesInfoProperty =
+        DependencyProperty.Register("EmployeesInfo",
+            typeof(List<Employee>),
             typeof(InvoiceUserCtrl), new PropertyMetadata(null));
 
     public static readonly DependencyProperty ProductsInfoProperty =
@@ -50,5 +50,16 @@ public sealed partial class InvoiceUserCtrl : Microsoft.UI.Xaml.Controls.UserCon
         };
         await dialog.ShowAsync();
 
+    }
+
+    private async void AddProduct_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new Microsoft.UI.Xaml.Controls.ContentDialog()
+        {
+            Title = "add product clicked",
+            PrimaryButtonText = "OK",
+            XamlRoot = this.XamlRoot
+        };
+        await dialog.ShowAsync();
     }
 }

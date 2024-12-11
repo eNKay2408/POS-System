@@ -31,7 +31,7 @@
     <None Remove="Views\MainWindow.xaml" />
     <None Remove="Views\ProductsPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
-    <None Remove="Views\UserControls\InvoiceUserCtrl.xaml" />
+    <None Remove="Views\UserControls\InvoiceAddUpdate_UserCtrl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -142,7 +142,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\UserControls\InvoiceUserCtrl.xaml">
+    <Page Update="Views\UserControls\InvoiceAddUpdate_UserCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
