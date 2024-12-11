@@ -34,7 +34,7 @@ namespace POSSystem.Repositories
                             Id = reader.GetInt32(0),
                             EmployeeId = reader.GetInt32(1),
                             Total = reader.GetDecimal(2),
-                            Date = reader.GetDateTime(3),
+                            Timestamp = reader.GetDateTime(3),
                             EmployeeName = reader.GetString(4)
                         });
                     }

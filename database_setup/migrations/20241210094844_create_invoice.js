@@ -8,7 +8,7 @@ exports.up = async function(knex) {
     id SERIAL PRIMARY KEY,
     employeeid INT NOT NULL,
     total numeric(18, 2) NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+    timestamp TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
     FOREIGN KEY (employeeid) REFERENCES employee(id)
 );
     `)

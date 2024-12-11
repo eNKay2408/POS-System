@@ -11,6 +11,7 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\Fonts\Poppins-Light.ttf" />
@@ -23,12 +24,14 @@
     <None Remove="Views\AddProductPage.xaml" />
     <None Remove="Views\CategoriesPage.xaml" />
     <None Remove="Views\EmployeesPage.xaml" />
+    <None Remove="Views\InvoiceAddPage.xaml" />
     <None Remove="Views\ItemListTemplate.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\MainWindow.xaml" />
     <None Remove="Views\ProductsPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
+    <None Remove="Views\UserControls\InvoiceUserCtrl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,6 +82,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\InvoiceAddPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\ItemListTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,6 +133,16 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\UserControl\InvoiceUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\UserControls\InvoiceUserCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

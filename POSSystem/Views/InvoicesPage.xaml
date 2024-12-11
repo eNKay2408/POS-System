@@ -54,7 +54,7 @@
                             <TextBlock Grid.Column="2" TextWrapping="Wrap">
                                 $<Run Text="{x:Bind Total}"/>
                             </TextBlock>
-                            <TextBlock Text="{x:Bind Date}" Grid.Column="3" TextWrapping="Wrap" />
+                            <TextBlock Text="{x:Bind Timestamp}" Grid.Column="3" TextWrapping="Wrap" />
                             <StackPanel Orientation="Horizontal" Grid.Column="4">
                                 <Button Click="UpdateInvoice_Click" Margin="5,0" Background="Transparent">
                                     <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />

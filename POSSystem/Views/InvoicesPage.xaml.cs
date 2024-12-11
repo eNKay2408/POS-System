@@ -16,13 +16,7 @@ namespace POSSystem.Views
 
         private async void AddInvoiceBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            var dialog = new ContentDialog()
-            {
-                Title = "add invoice clicked",
-                PrimaryButtonText = "OK",
-                XamlRoot = this.XamlRoot
-            };
-            await dialog.ShowAsync();
+            Frame.Navigate(typeof(InvoiceAddPage));
         }
 
         private async void DeleteInvoice_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
