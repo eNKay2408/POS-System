@@ -24,9 +24,15 @@ namespace POSSystem.Repository
 
         public async Task SaveEmployee(Employee employee)
         {
-
             try
             {
+                var existingEmployee = await GetEmployeeByEmail(employee.Email);
+
+                if (existingEmployee != null)
+                {
+                    throw new Exception("Email already exists");
+                }
+
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(employee.Password);
 
                 await _connection.OpenAsync();
@@ -101,6 +107,19 @@ namespace POSSystem.Repository
                     await _connection.OpenAsync();
 
                     string query = "INSERT INTO Employee (Name, Email) VALUES (@Name, @Email)";
+
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("Name", employee.Name);
+                        cmd.Parameters.AddWithValue("Email", employee.Email);
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+                else
+                {
+                    await _connection.OpenAsync();
+
+                    string query = "UPDATE Employee SET Name = @Name WHERE Email = @Email";
 
                     using (var cmd = new NpgsqlCommand(query, _connection))
                     {
