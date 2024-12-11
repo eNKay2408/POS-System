@@ -14,6 +14,8 @@ namespace POSSystem.Models
         public DateTime Timestamp { get; set; }
         public string EmployeeName { get; set; }
         public decimal? Total { get; set; }
+
+        //public List<Product> Products { get; set; }
         public int Index { get; set; }
     }
 }

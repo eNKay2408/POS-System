@@ -37,7 +37,10 @@ namespace POSSystem.Views
             Frame.GoBack();
         }
 
-       
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(InvoiceAddProductPage));
+        }
     }
 
 }

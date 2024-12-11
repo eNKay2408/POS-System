@@ -8,8 +8,8 @@ using POSSystem.Models;
 
 namespace POSSystem.Repositories
 {
-    internal class InvoiceRepository: BaseRepository, IInvoiceRepository
-    {
+    internal class InvoiceRepository : BaseRepository, IInvoiceRepository
+    {     
         public Task SaveInvoice(Invoice invoice)
         {
             throw new NotImplementedException();
@@ -42,7 +42,7 @@ namespace POSSystem.Repositories
 
                 return invoices;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 throw;
@@ -53,19 +53,72 @@ namespace POSSystem.Repositories
             }
         }
 
-        public Task<Invoice> GetInvoiceById(int id)
+        public Task<Invoice> GetInvoiceById(int invoiceId)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateInvoice(Invoice invoice)
+        public Task UpdateInvoice(int invoiceId, Product product)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteInvoice(int id)
+        public Task DeleteInvoice(int invoiceId)
         {
             throw new NotImplementedException();
+        }
+
+        public  Task RemoveProductFromInvoice(int invoiceId, int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public  Task AddProductToInvoice(int invoiceId, Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public async Task<List<Product>> GetAllProductsOfInvoice(int invoiceId)
+        {
+            try
+            {
+                var products = new List<Product>();
+                string query = "SELECT i.quantity, p.name, p.price, b.name, c.name FROM invoice_detail i JOIN product p ON i.productid = p.id JOIN brand b on b.id = p.brandid JOIN category c on c.id = p.categoryid WHERE invoiceid = @invoiceid";
+                await Connection.OpenAsync();
+
+                using (var cmd = new NpgsqlCommand(query, Connection))
+                {
+                    cmd.Parameters.AddWithValue("id", invoiceId);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            products.Add(new Product
+                            {
+                                Stock = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Price = reader.GetDecimal(2),
+                                BrandName = reader.GetString(3),
+                                CategoryName = reader.GetString(4)
+                            });
+                        }
+                    }
+                }
+
+                return products;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                await Connection.CloseAsync();
+            }
+
+
         }
     }
 }

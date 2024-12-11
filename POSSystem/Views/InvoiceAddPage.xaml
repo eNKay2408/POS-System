@@ -22,10 +22,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <local:InvoiceUserCtrl EmployeesInfo="{x:Bind ViewModel.Employees, Mode=TwoWay}" ProductsInfo="{x:Bind ViewModel.Products, Mode=TwoWay}" Grid.Row="0"/>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,0,0">
+                <local:InvoiceUserCtrl EmployeesInfo="{x:Bind ViewModel.Employees, Mode=TwoWay}" Grid.Row="0"/>
+                <Button Content="✚ Product" Click="AddProduct_Click" 
+                        FontFamily="{StaticResource Poppins}" 
+                        Background="{StaticResource PinkBrush}" 
+                        Grid.Row="1" Margin="3,0,0,0" Foreground="{StaticResource WhiteColor}"
+                        HorizontalAlignment="Right"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,0,0">
                     <Button Content="Discard" Click="Discard_Click"
                             Width="120" Margin="0,0,10,0" Padding="10,5" FontSize="16"/>
                     <Button Content="Save" Click="Save_Click" Background="{StaticResource PinkBrush}"
@@ -34,5 +40,6 @@
             </Grid>
             
         </Border>
+        
     </Grid>
 </Page>

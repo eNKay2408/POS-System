@@ -15,11 +15,10 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Employee" FontSize="16" FontFamily="{StaticResource PoppinsBold}" Grid.Row="0" Margin="0,0,0,10"/>
         <ComboBox Grid.Row="1" ItemsSource="{x:Bind EmployeesInfo, Mode=TwoWay}" FontSize="16" Padding="10" DisplayMemberPath="Name" HorizontalAlignment="Stretch"/>
-        
+
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ListView ItemsSource="{x:Bind ProductsInfo, Mode=TwoWay}">
                 <ListView.HeaderTemplate>
@@ -76,11 +75,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-
-        <Button Content="✚ Product" Click="AddProduct_Click" 
-                FontFamily="{StaticResource Poppins}" 
-                Background="{StaticResource PinkBrush}" 
-                Grid.Row="3" Margin="3,0,0,0" Foreground="{StaticResource WhiteColor}"
-                HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

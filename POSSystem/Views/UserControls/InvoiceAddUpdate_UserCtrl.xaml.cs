@@ -51,15 +51,4 @@ public sealed partial class InvoiceUserCtrl : Microsoft.UI.Xaml.Controls.UserCon
         await dialog.ShowAsync();
 
     }
-
-    private async void AddProduct_Click(object sender, RoutedEventArgs e)
-    {
-        var dialog = new Microsoft.UI.Xaml.Controls.ContentDialog()
-        {
-            Title = "add product clicked",
-            PrimaryButtonText = "OK",
-            XamlRoot = this.XamlRoot
-        };
-        await dialog.ShowAsync();
-    }
 }

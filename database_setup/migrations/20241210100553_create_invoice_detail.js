@@ -5,7 +5,6 @@
 exports.up = async function(knex) {
   await knex.raw(`
     CREATE TABLE IF NOT EXISTS invoice_detail (
-    id SERIAL PRIMARY KEY,
     invoiceid INT NOT NULL,
     productid INT NOT NULL,
     quantity INT NOT NULL,

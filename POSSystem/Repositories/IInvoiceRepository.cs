@@ -13,10 +13,16 @@ namespace POSSystem.Repositories
 
         Task<List<Invoice>> GetAllInvoices();
 
-        Task<Invoice> GetInvoiceById(int id);
+        Task<Invoice> GetInvoiceById(int invoiceId);
 
-        Task UpdateInvoice(Invoice invoice);
+        Task UpdateInvoice(int invoiceId, Product product);
 
-        Task DeleteInvoice(int id);
+        Task DeleteInvoice(int invoiceId);
+
+        Task RemoveProductFromInvoice(int invoiceId, int productId);
+
+        Task AddProductToInvoice(int invoiceId, Product product);
+
+        Task <List<Product>> GetAllProductsOfInvoice(int invoiceId);
     }
 }

@@ -25,6 +25,7 @@
     <None Remove="Views\CategoriesPage.xaml" />
     <None Remove="Views\EmployeesPage.xaml" />
     <None Remove="Views\InvoiceAddPage.xaml" />
+    <None Remove="Views\InvoiceAddProductPage.xaml" />
     <None Remove="Views\ItemListTemplate.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
@@ -80,6 +81,11 @@
     <Content Update="Assets\Fonts\Poppins-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\InvoiceAddProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\InvoiceAddPage.xaml">
