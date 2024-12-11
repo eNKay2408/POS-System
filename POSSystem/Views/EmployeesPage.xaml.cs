@@ -17,60 +17,6 @@ namespace POSSystem.Views
             this.DataContext = ViewModel;
         }
 
-        private async void AddEmployee_Click(object sender, RoutedEventArgs e)
-        {
-
-            TextBox nameTextBox = new TextBox
-            {
-                PlaceholderText = "Employee Name",
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 10)
-            };
-
-            TextBox emailTextBox = new TextBox
-            {
-                PlaceholderText = "Employee Email",
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 10)
-            };
-
-            TextBox passwordTextBox = new TextBox
-            {
-                PlaceholderText = "Employee Password",
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 10)
-            };
-
-            StackPanel panel = new StackPanel();
-            panel.Children.Add(nameTextBox);
-            panel.Children.Add(emailTextBox);
-            panel.Children.Add(passwordTextBox);
-
-            ContentDialog addEmployeeDialog = new ContentDialog
-            {
-                Title = "NEW EMPLOYEE",
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
-                Content = panel,
-                XamlRoot = this.XamlRoot
-            };
-
-            var result = await addEmployeeDialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-                string newEmployeeName = nameTextBox.Text;
-                string newEmployeeEmail = emailTextBox.Text;
-                string newEmployeePassword = passwordTextBox.Text;
-
-                try
-                {
-                    await ViewModel.AddEmployee(newEmployeeName, newEmployeeEmail, newEmployeePassword);
-                }
-                catch (Exception ex)
-                {
-                    DisplayErrorDialog(ex.Message);
-                }
-            }
-        }
-
         private async void DeleteEmployee_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("Delete Employee Clicked");

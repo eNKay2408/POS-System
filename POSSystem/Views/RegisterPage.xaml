@@ -12,26 +12,26 @@
     <StackPanel  Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Image Source="ms-appx:///Assets/logo.png" Height="50" Width="50" HorizontalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBlock Text="POS System" Foreground="{StaticResource WhiteBrush}" FontFamily="{StaticResource PoppinsBold}" FontSize="20" VerticalAlignment="Center" Margin="0,20,0,20"/>
+            <TextBlock Text="POS System" Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}" FontFamily="{StaticResource PoppinsBold}" FontSize="20" VerticalAlignment="Center" Margin="0,20,0,20"/>
         </StackPanel>
         
-        <TextBlock Text="Your Name" Foreground="{StaticResource WhiteBrush}" FontSize="16" FontFamily="{StaticResource Poppins}"/>
+        <TextBlock Text="Your Name" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="16" FontFamily="{StaticResource Poppins}"/>
         <TextBox x:Name="NameTextBox" Height="35" FontSize="14" FontFamily="{StaticResource Poppins}"/>
 
-        <TextBlock Text="Your Email" Foreground="{StaticResource WhiteBrush}" FontSize="16" FontFamily="{StaticResource Poppins}"/>
+        <TextBlock Text="Your Email" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="16" FontFamily="{StaticResource Poppins}"/>
         <TextBox x:Name="EmailTextBox" Height="35" FontSize="14" FontFamily="{StaticResource Poppins}"/>
 
-        <TextBlock Text="Your Password" Foreground="{StaticResource WhiteBrush}" FontSize="16"  FontFamily="{StaticResource Poppins}"/>
+        <TextBlock Text="Your Password" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="16"  FontFamily="{StaticResource Poppins}"/>
         <PasswordBox x:Name="PasswordBox" Height="35" FontSize="14" FontFamily="{StaticResource Poppins}"/>
 
-        <TextBlock Text="Confirm Password" Foreground="{StaticResource WhiteBrush}" FontSize="16" FontFamily="{StaticResource Poppins}"/>
+        <TextBlock Text="Confirm Password" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="16" FontFamily="{StaticResource Poppins}"/>
         <PasswordBox x:Name="ConfirmPasswordBox" Height="35" FontSize="14" FontFamily="{StaticResource Poppins}"/>
 
         <Button Content="Register" Width="300" FontSize="16" Click="Register_Click" Height="40" Background="{StaticResource WhiteBrush}"  Foreground="{StaticResource GrayBrush}" FontFamily="{StaticResource PoppinsBold}" Margin="0,10,0,0"/>
 
         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-            <TextBlock Text="Already have an account?" Foreground="{StaticResource WhiteBrush}" FontSize="14" VerticalAlignment="Center" FontFamily="{StaticResource Poppins}" Margin="0,0,5,0"/>
-            <HyperlinkButton Content="Login" Click="Login_Click" Foreground="{StaticResource WhiteBrush}" FontSize="14" FontFamily="{StaticResource PoppinsBold}"/>
+            <TextBlock Text="Already have an account?" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" FontSize="14" VerticalAlignment="Center" FontFamily="{StaticResource Poppins}" Margin="0,0,5,0"/>
+            <HyperlinkButton Content="Login" Click="Login_Click" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush }" FontSize="14" FontFamily="{StaticResource PoppinsBold}"/>
         </StackPanel>
     </StackPanel>
 </Page>

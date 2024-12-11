@@ -65,42 +65,6 @@ namespace POSSystem.ViewModels
             }
         }
 
-        public async Task AddEmployee(string name, string email, string password)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    throw new ArgumentException("Name cannot be empty.");
-                }
-
-                if (string.IsNullOrWhiteSpace(email))
-                {
-                    throw new ArgumentException("Email cannot be empty.");
-                }
-
-                if(string.IsNullOrWhiteSpace(password))
-                {
-                    throw new ArgumentException("Password cannot be empty.");
-                }
-
-                var employee = new Employee
-                {
-                    Name = name,
-                    Email = email,
-                    Password = password
-                };
-
-                await _employeeRepository.SaveEmployee(employee);
-                await LoadEmployees();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        }
-
         public async Task DeleteEmployee(int employeeID)
         {
             try

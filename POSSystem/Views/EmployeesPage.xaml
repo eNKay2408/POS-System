@@ -15,10 +15,9 @@
     <Grid Padding="20" RowDefinitions="Auto, *">
         <Grid Grid.Row="0" Margin="0,0,0,20">
             <TextBlock Text="Employees" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
-            <Button Content="✚ Employee" Click="AddEmployee_Click" FontFamily="{StaticResource Poppins}" HorizontalAlignment="Right" Background="{StaticResource PinkBrush}"/>
         </Grid>
 
-        <Border BorderBrush="{StaticResource GrayBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
+        <Border BorderBrush="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" BorderThickness="2" CornerRadius="8" Padding="10" Grid.Row="1">
             <ListView ItemsSource="{Binding Employees}">
                 <ListView.HeaderTemplate>
                     <DataTemplate>

@@ -4,18 +4,25 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:POSSystem"
-    xmlns:converters="using:POSSystem.Converters"
-    RequestedTheme="Dark">
+    xmlns:converters="using:POSSystem.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
 
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="ApplicationPageBackgroundThemeBrush">white</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="ApplicationPageBackgroundThemeBrush">black</Color>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
             <Color x:Key="PinkColor">#8946A6</Color>
             <Color x:Key="BlackColor">#191A19</Color>
             <Color x:Key="GrayColor">#2C2C2C</Color>
-            <Color x:Key="WhiteColor">#C8C8C8</Color>
+            <Color x:Key="WhiteColor">#FFFFFF</Color>
 
             <SolidColorBrush x:Key="PinkBrush" Color="{StaticResource PinkColor}" />
             <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}" />

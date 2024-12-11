@@ -12,7 +12,7 @@
     <NavigationView x:Name="NavView"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
-            Background="{StaticResource BlackBrush}">
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="Shop" Content="Products" Tag="products" />
             <NavigationViewItem Content="Categories" Tag="categories">
@@ -29,6 +29,16 @@
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
         </NavigationView.MenuItems>
+
+        <!-- Add the button to the PaneFooter -->
+        <NavigationView.PaneFooter>
+            <Button x:Name="ChangeThemeBtn" Click="ChangeThemeBtn_Click">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE793;" />
+                    <TextBlock x:Name ="ChangeThemeBtnContent" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </NavigationView.PaneFooter>
 
         <Frame x:Name="ContentFrame"/>
     </NavigationView>

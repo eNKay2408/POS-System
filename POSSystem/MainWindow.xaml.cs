@@ -13,6 +13,7 @@ namespace POSSystem.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            this.Title = "POS System";
 
             //_appWindow = GetAppWindowForCurrentWindow();
             //_appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
