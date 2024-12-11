@@ -39,8 +39,6 @@ namespace POSSystem.Repository
 
                 await _connection.OpenAsync();
                 string query = "INSERT INTO Employee (Name, Email, Password) VALUES (@Name, @Email, @Password)";
-                await _connection.OpenAsync();
-                string query = "INSERT INTO Employee (Name, Email, Password) VALUES (@Name, @Email, @Password)";
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 {
@@ -68,11 +66,6 @@ namespace POSSystem.Repository
                 await _connection.OpenAsync();
                 string query = "SELECT * FROM Employee WHERE Email = @Email";
                 Employee employee = null;
-            try
-            {
-                await _connection.OpenAsync();
-                string query = "SELECT * FROM Employee WHERE Email = @Email";
-                Employee employee = null;
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 {
@@ -91,35 +84,7 @@ namespace POSSystem.Repository
                         }
                     }
                 }
-                using (var cmd = new NpgsqlCommand(query, _connection))
-                {
-                    cmd.Parameters.AddWithValue("Email", email);
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            employee = new Employee
-                            {
-                                Id = reader.GetInt32(0),
-                                Name = reader.GetString(1),
-                                Email = reader.GetString(2),
-                                Password = reader.IsDBNull(3) ? null : reader.GetString(3)
-                            };
-                        }
-                    }
-                }
 
-                return employee;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-            finally
-            {
-                await _connection.CloseAsync();
-            }
                 return employee;
             }
             catch (Exception ex)
@@ -138,19 +103,11 @@ namespace POSSystem.Repository
             try
             {
                 var existingEmployee = await GetEmployeeByEmail(employee.Email);
-        {
-            try
-            {
-                var existingEmployee = await GetEmployeeByEmail(employee.Email);
 
                 if (existingEmployee == null)
                 {
                     await _connection.OpenAsync();
-                if (existingEmployee == null)
-                {
-                    await _connection.OpenAsync();
 
-                    string query = "INSERT INTO Employee (Name, Email) VALUES (@Name, @Email)";
                     string query = "INSERT INTO Employee (Name, Email) VALUES (@Name, @Email)";
 
                     using (var cmd = new NpgsqlCommand(query, _connection))
@@ -232,7 +189,6 @@ namespace POSSystem.Repository
                 {
                     cmd.Parameters.AddWithValue("Name", employee.Name);
                     cmd.Parameters.AddWithValue("Email", employee.Email);
-                    cmd.Parameters.AddWithValue("Id", employee.Id);
                     cmd.Parameters.AddWithValue("Id", employee.Id);
                     await cmd.ExecuteNonQueryAsync();
                 }
