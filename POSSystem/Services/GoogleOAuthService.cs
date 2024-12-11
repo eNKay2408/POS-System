@@ -14,11 +14,16 @@ namespace POSSystem.Services
         private static readonly string[] _scopes = { Oauth2Service.Scope.UserinfoEmail, Oauth2Service.Scope.UserinfoProfile };
         private string _applicationName = "POS System";
 
-        private ConfigHelper _configHelper;
+        private IConfigHelper _configHelper;
 
         public GoogleOAuthService()
         {
             _configHelper = new ConfigHelper();
+        }
+
+        public GoogleOAuthService(IConfigHelper configHelper)
+        {
+            _configHelper = configHelper;
         }
 
         public async Task<Employee> AuthenticateAsync()
