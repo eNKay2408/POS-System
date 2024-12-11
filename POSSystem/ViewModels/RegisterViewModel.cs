@@ -85,7 +85,14 @@ namespace POSSystem.ViewModels
                 Password = Password
             };
 
-            await _employeeRepository.SaveEmployee(employee);
+            try
+            {
+                await _employeeRepository.SaveEmployee(employee);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

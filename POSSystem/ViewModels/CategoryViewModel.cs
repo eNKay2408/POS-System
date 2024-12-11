@@ -55,14 +55,21 @@ namespace POSSystem.ViewModels
                 throw new ArgumentException("Category name cannot be empty.");
             }
 
-            var category = new Category
+            try
             {
-                Name = categoryName
-            };
+                var category = new Category
+                {
+                    Name = categoryName
+                };
 
-            await _categoryRepository.AddCategory(category);
+                await _categoryRepository.AddCategory(category);
 
-            await LoadCategories();
+                await LoadCategories();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateCategory(int categoryId, string newName)

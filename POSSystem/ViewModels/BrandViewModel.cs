@@ -55,14 +55,21 @@ namespace POSSystem.ViewModels
                 throw new ArgumentException("Brand name cannot be empty.");
             }
 
-            var brand = new Brand
+            try
             {
-                Name = brandName
-            };
+                var brand = new Brand
+                {
+                    Name = brandName
+                };
 
-            await _brandRepository.AddBrand(brand);
+                await _brandRepository.AddBrand(brand);
 
-            await LoadBrands();
+                await LoadBrands();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateBrand(int brandId, string newName)

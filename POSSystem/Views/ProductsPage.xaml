@@ -49,7 +49,7 @@
                             <TextBlock Text="STOCK" FontWeight="Bold" Grid.Column="3"/>
                             <TextBlock Text="CATEGORY" FontWeight="Bold" Grid.Column="4"/>
                             <TextBlock Text="BRAND" FontWeight="Bold" Grid.Column="5" />
-                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="6"/>
+                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="6" HorizontalTextAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.HeaderTemplate>
@@ -66,12 +66,12 @@
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Index}" Grid.Column="0"/>
-                            <TextBlock Text="{Binding Name}" Grid.Column="1"/>
-                            <TextBlock Text="{Binding Price}" Grid.Column="2"/>
-                            <TextBlock Text="{Binding Stock}" Grid.Column="3"/>
-                            <TextBlock Text="{Binding CategoryName}" Grid.Column="4"/>
-                            <TextBlock Text="{Binding BrandName}" Grid.Column="5"/>
+                            <TextBlock Text="{Binding Index}" Grid.Column="0" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Name}" Grid.Column="1" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Price}" Grid.Column="2" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Stock}" Grid.Column="3" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding CategoryName}" Grid.Column="4" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding BrandName}" Grid.Column="5" TextWrapping="Wrap"/>
 
                             <StackPanel Orientation="Horizontal" Grid.Column="6">
                                 <Button Click="UpdateProduct_Click" Margin="4,0" Background="Transparent">

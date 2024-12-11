@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using POSSystem.ViewModels;
+using System.Diagnostics;
 
 namespace POSSystem.Views
 {
@@ -17,6 +18,11 @@ namespace POSSystem.Views
 
         private async void Login_Click(object sender, RoutedEventArgs e)
         {
+            //for development purposes
+            //string name = "John Doe"; 
+            //App.AppMainWindow.Content = new MainPage(name);
+            //Debug.WriteLine(name);
+
             LoginViewModel loginViewModel = (LoginViewModel)this.DataContext;
 
             string name = await loginViewModel.Login();

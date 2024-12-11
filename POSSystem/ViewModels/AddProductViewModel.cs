@@ -166,11 +166,25 @@ namespace POSSystem.ViewModels
 
             if (Product.Id == 0)
             {
-                await _productRepository.AddProduct(Product);
+                try
+                {
+                    await _productRepository.AddProduct(Product);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
             else
             {
-                await _productRepository.UpdateProduct(Product);
+                try
+                {
+                    await _productRepository.UpdateProduct(Product);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
     }

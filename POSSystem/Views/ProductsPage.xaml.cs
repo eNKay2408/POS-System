@@ -111,7 +111,7 @@ namespace POSSystem.Views
 
                 try
                 {
-                    viewModel.PayProduct(product, quantity);
+                    await viewModel.PayProduct(product, quantity);
                 }
                 catch (Exception ex)
                 {
