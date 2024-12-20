@@ -8,8 +8,6 @@ namespace POSSystem.Views
 {
     public sealed partial class MainWindow : Window
     {
-        private AppWindow _appWindow;
-
         public MainWindow()
         {
             this.InitializeComponent();
