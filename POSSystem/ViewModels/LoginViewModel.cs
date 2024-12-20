@@ -48,7 +48,7 @@ namespace POSSystem.ViewModels
 
         public LoginViewModel()
         {
-            _employeeRepository = new EmployeeRepository();
+            _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
             _googleOAuthService = new GoogleOAuthService();
             _settingsService = new SettingsService();
             _encryptionService = new EncryptionService();

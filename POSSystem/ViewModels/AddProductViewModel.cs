@@ -70,8 +70,8 @@ namespace POSSystem.ViewModels
 
         public AddProductViewModel()
         {
-            _productRepository = new ProductRepository();
-            _categoryRepository = new CategoryRepository();
+            _productRepository = ServiceFactory.GetChildOf<IProductRepository>();
+            _categoryRepository = ServiceFactory.GetChildOf<ICategoryRepository>();
             _brandRepository = ServiceFactory.GetChildOf<IBrandRepository>();
 
             Categories = new List<Category>();

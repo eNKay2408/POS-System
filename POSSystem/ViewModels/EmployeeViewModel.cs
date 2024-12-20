@@ -1,5 +1,6 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
+using POSSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace POSSystem.ViewModels
 
         public EmployeeViewModel()
         {
-            _employeeRepository = new EmployeeRepository();
+            _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
 
             Employees = new List<Employee>();
 

@@ -86,8 +86,8 @@ namespace POSSystem.ViewModels
 
         public ProductViewModel()
         {
-            _productRepository = new ProductRepository();
-            _categoryRepository = new CategoryRepository();
+            _productRepository = ServiceFactory.GetChildOf<IProductRepository>();
+            _categoryRepository = ServiceFactory.GetChildOf<ICategoryRepository>();
             _brandRepository = ServiceFactory.GetChildOf<IBrandRepository>();
 
             _stripeService = new StripeService();
