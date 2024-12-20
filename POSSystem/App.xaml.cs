@@ -2,6 +2,7 @@
 using POSSystem.Views;
 using POSSystem.Services;
 using POSSystem.Repositories;
+using POSSystem.Helpers;
 
 namespace POSSystem
 {
@@ -28,6 +29,7 @@ namespace POSSystem
             ServiceFactory.Register<IGoogleOAuthService, GoogleOAuthService>();
             ServiceFactory.Register<IStripeService, StripeService>();
             ServiceFactory.Register<IUriLauncher, UriLauncher>();
+            ServiceFactory.Register<IConfigHelper, ConfigHelper>();
 
 
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;

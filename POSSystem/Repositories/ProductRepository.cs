@@ -1,6 +1,5 @@
 ﻿using Npgsql;
 using POSSystem.Models;
-using POSSystem.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

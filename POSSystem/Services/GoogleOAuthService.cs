@@ -18,7 +18,7 @@ namespace POSSystem.Services
 
         public GoogleOAuthService()
         {
-            _configHelper = new ConfigHelper();
+            _configHelper = ServiceFactory.GetChildOf<IConfigHelper>();
         }
 
         public GoogleOAuthService(IConfigHelper configHelper)

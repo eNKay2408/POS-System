@@ -49,7 +49,7 @@ namespace POSSystem.ViewModels
         public LoginViewModel()
         {
             _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
-            _googleOAuthService = ServiceFactory.GetChildOf<GoogleOAuthService>();
+            _googleOAuthService = ServiceFactory.GetChildOf<IGoogleOAuthService>();
             _settingsService = ServiceFactory.GetChildOf<ISettingsService>();
             _encryptionService = ServiceFactory.GetChildOf<IEncryptionService>();
         }

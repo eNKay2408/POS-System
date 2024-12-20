@@ -13,7 +13,7 @@ namespace POSSystem.Services
 
         public StripeService()
         {
-            _configHelper = new ConfigHelper();
+            _configHelper = ServiceFactory.GetChildOf<IConfigHelper>();
             _sessionService = new SessionService();
             StripeConfiguration.ApiKey = _configHelper.GetStripeSecretKey();
         }
