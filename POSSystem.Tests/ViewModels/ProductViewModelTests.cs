@@ -2,9 +2,8 @@
 using Moq;
 using POSSystem.ViewModels;
 using POSSystem.Models;
-using POSSystem.Repository;
-using System.Collections.Generic;
 using POSSystem.Repositories;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using POSSystem.Services;
 using System;

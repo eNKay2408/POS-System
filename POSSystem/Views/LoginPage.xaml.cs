@@ -75,11 +75,11 @@ namespace POSSystem.Views
             }
         }
 
-        private void LoadSavedCredentials()
+        private async void LoadSavedCredentials()
         {
             var viewModel = (LoginViewModel)this.DataContext;
 
-            viewModel.LoadSavedCredentials();
+            await viewModel.LoadSavedCredentials();
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)

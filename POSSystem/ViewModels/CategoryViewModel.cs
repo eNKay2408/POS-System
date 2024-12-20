@@ -1,5 +1,6 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
+using POSSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace POSSystem.ViewModels
 
         public CategoryViewModel()
         {
-            _categoryRepository = new CategoryRepository();
+            _categoryRepository = ServiceFactory.GetChildOf<ICategoryRepository>();
 
             Categories = new List<Category>();
 

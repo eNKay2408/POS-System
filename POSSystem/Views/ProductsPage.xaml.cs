@@ -52,7 +52,7 @@ namespace POSSystem.Views
             if (result == ContentDialogResult.Primary)
             {
                 var viewModel = (ProductViewModel)this.DataContext;
-                viewModel.DeleteProduct(product.Id);
+                await viewModel.DeleteProduct(product.Id);
             }
         }
 
