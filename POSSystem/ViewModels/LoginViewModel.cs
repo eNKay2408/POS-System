@@ -49,9 +49,9 @@ namespace POSSystem.ViewModels
         public LoginViewModel()
         {
             _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
-            _googleOAuthService = new GoogleOAuthService();
-            _settingsService = new SettingsService();
-            _encryptionService = new EncryptionService();
+            _googleOAuthService = ServiceFactory.GetChildOf<GoogleOAuthService>();
+            _settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+            _encryptionService = ServiceFactory.GetChildOf<IEncryptionService>();
         }
 
         // Constructor for unit testing

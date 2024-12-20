@@ -23,6 +23,12 @@ namespace POSSystem
             ServiceFactory.Register<IProductRepository, ProductRepository>();
             ServiceFactory.Register<IEmployeeRepository, EmployeeRepository>();
 
+            ServiceFactory.Register<ISettingsService, SettingsService>();
+            ServiceFactory.Register<IEncryptionService, EncryptionService>();
+            ServiceFactory.Register<IGoogleOAuthService, GoogleOAuthService>();
+            ServiceFactory.Register<IStripeService, StripeService>();
+            ServiceFactory.Register<IUriLauncher, UriLauncher>();
+
 
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values["POSAppTheme"] == null)
