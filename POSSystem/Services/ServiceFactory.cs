@@ -6,52 +6,52 @@ namespace POSSystem.Services
     /// <summary>
     /// A factory class for managing service instances as singletons.
     /// </summary>
-    public class ServiceFactory
+    public static class ServiceFactory
     {
-        private static Dictionary<string, Type> _choices = new Dictionary<string, Type>();
-        private static Dictionary<string, object> _instances = new Dictionary<string, object>();
+        private static Dictionary<Type, Type> _choices = new Dictionary<Type, Type>();
+        private static Dictionary<Type, object> _instances = new Dictionary<Type, object>();
 
         /// <summary>
         /// Registers a child type for a given parent type.
         /// </summary>
-        /// <param name="parent">The parent type to register.</param>
-        /// <param name="child">The child type to associate with the parent type.</param>
+        /// <typeparam name="TParent">The parent type to register.</typeparam>
+        /// <typeparam name="TChild">The child type to associate with the parent type.</typeparam>
         /// <exception cref="InvalidOperationException">Thrown if the parent type has already been registered.</exception>
-        public static void Register(Type parent, Type child)
+        public static void Register<TParent, TChild>() where TChild : TParent
         {
-            string parentName = parent.Name;
+            Type parentType = typeof(TParent);
 
-            if (_choices.ContainsKey(parentName))
+            if (_choices.ContainsKey(parentType))
             {
-                throw new InvalidOperationException($"The type {parentName} has already been registered.");
+                throw new InvalidOperationException($"The type {parentType.Name} has already been registered.");
             }
 
-            _choices.Add(parentName, child);
+            _choices.Add(parentType, typeof(TChild));
         }
 
         /// <summary>
         /// Gets the singleton instance of the child type associated with the given parent type.
         /// </summary>
-        /// <param name="parent">The parent type whose child instance is required.</param>
+        /// <typeparam name="TParent">The parent type whose child instance is required.</typeparam>
         /// <returns>The singleton instance of the child type.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the parent type has not been registered.</exception>
-        public static object GetChildOf(Type parent)
+        public static TParent GetChildOf<TParent>()
         {
-            string parentName = parent.Name;
+            Type parentType = typeof(TParent);
 
-            if (!_choices.ContainsKey(parentName))
+            if (!_choices.TryGetValue(parentType, out Type childType))
             {
-                throw new InvalidOperationException($"The type {parentName} has not been registered.");
+                throw new InvalidOperationException($"The type {parentType.Name} has not been registered.");
             }
 
-            if (!_instances.ContainsKey(parentName))
+
+            if (!_instances.TryGetValue(parentType, out object instance))
             {
-                Type type = _choices[parentName];
-                object instance = Activator.CreateInstance(type);
-                _instances.Add(parentName, instance);
+                instance = Activator.CreateInstance(childType);
+                _instances.Add(parentType, instance);
             }
 
-            return _instances[parentName];
+            return (TParent)instance;
         }
     }
 }

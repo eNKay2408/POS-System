@@ -24,7 +24,7 @@ namespace POSSystem.ViewModels
 
         public BrandViewModel()
         {
-            _brandRepository = ServiceFactory.GetChildOf(typeof(IBrandRepository)) as IBrandRepository;
+            _brandRepository = ServiceFactory.GetChildOf<IBrandRepository>();
 
             Brands = new List<Brand>();
 

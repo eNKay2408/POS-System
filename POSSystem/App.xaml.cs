@@ -18,7 +18,7 @@ namespace POSSystem
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             //register repositories
-            ServiceFactory.Register(typeof(IBrandRepository), typeof(BrandRepository));
+            ServiceFactory.Register<IBrandRepository, BrandRepository>();
 
 
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;

@@ -73,7 +73,7 @@ namespace POSSystem.ViewModels
         {
             _productRepository = new ProductRepository();
             _categoryRepository = new CategoryRepository();
-            _brandRepository = ServiceFactory.GetChildOf(typeof(IBrandRepository)) as IBrandRepository;
+            _brandRepository = ServiceFactory.GetChildOf<IBrandRepository>();
 
             Categories = new List<Category>();
             Brands = new List<Brand>();
