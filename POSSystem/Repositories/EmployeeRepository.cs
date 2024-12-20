@@ -5,7 +5,7 @@ using POSSystem.Repositories;
 using System.Collections.Generic;
 using System;
 
-namespace POSSystem.Repository
+namespace POSSystem.Repositories
 {
     public class EmployeeRepository : BaseRepository, IEmployeeRepository
     {

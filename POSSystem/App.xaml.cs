@@ -20,7 +20,6 @@ namespace POSSystem
             //register repositories
             ServiceFactory.Register<IBrandRepository, BrandRepository>();
 
-
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values["POSAppTheme"] == null)
             {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using POSSystem.Models;
 
-namespace POSSystem.Repository
+namespace POSSystem.Repositories
 {
     public interface IEmployeeRepository
     {

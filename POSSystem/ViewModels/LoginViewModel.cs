@@ -1,4 +1,4 @@
-﻿using POSSystem.Repository;
+﻿using POSSystem.Repositories;
 using POSSystem.Models;
 using System.Threading.Tasks;
 using System;

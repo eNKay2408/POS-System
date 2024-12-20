@@ -1,6 +1,5 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
-using POSSystem.Repository;
 using POSSystem.Services;
 using System;
 using System.Collections.Generic;

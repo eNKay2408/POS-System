@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace POSSystem.Repository
+namespace POSSystem.Repositories
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
