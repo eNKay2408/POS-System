@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Npgsql;
 using POSSystem.Models;
-using POSSystem.Repository;
 using System;
 using System.Threading.Tasks;
 using Testcontainers.PostgreSql;
+using POSSystem.Repositories;
 
 namespace POSSystem.Tests.Repositories
 {

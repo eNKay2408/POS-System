@@ -2,9 +2,7 @@
 using Npgsql;
 using POSSystem.Models;
 using POSSystem.Repositories;
-using POSSystem.Repository;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Testcontainers.PostgreSql;
 
