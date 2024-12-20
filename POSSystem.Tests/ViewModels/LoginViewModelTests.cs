@@ -5,7 +5,6 @@ using POSSystem.Services;
 using POSSystem.ViewModels;
 using POSSystem.Models;
 using System.Threading.Tasks;
-using POSSystem.Repositories;
 
 namespace POSSystem.Tests.ViewModels
 {

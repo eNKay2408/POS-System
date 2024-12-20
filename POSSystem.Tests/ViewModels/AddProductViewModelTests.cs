@@ -2,7 +2,6 @@
 using Moq;
 using POSSystem.Models;
 using POSSystem.Repositories;
-using POSSystem.Repositories;
 using POSSystem.ViewModels;
 using System;
 using System.Collections.Generic;

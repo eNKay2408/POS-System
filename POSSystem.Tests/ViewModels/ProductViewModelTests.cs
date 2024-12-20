@@ -4,7 +4,6 @@ using POSSystem.ViewModels;
 using POSSystem.Models;
 using POSSystem.Repositories;
 using System.Collections.Generic;
-using POSSystem.Repositories;
 using System.Threading.Tasks;
 using POSSystem.Services;
 using System;
