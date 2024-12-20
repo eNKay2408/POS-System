@@ -1,5 +1,6 @@
 ﻿using POSSystem.Models;
-using POSSystem.Repository;
+using POSSystem.Repositories;
+using POSSystem.Services;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace POSSystem.ViewModels
 
         public RegisterViewModel()
         {
-            _employeeRepository = new EmployeeRepository();
+            _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
         }
 
         // Constructor for unit testing

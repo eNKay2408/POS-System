@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using POSSystem.Models;
-using POSSystem.Repository;
+using POSSystem.Repositories;
 using POSSystem.ViewModels;
 using System;
 using System.Threading.Tasks;

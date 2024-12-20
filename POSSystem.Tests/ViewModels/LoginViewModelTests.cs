@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using POSSystem.Repository;
+using POSSystem.Repositories;
 using POSSystem.Services;
 using POSSystem.ViewModels;
 using POSSystem.Models;

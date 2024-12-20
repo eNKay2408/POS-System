@@ -1,6 +1,5 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
-using POSSystem.Repository;
 using POSSystem.Services;
 using System;
 using System.Collections.Generic;
@@ -87,12 +86,12 @@ namespace POSSystem.ViewModels
 
         public ProductViewModel()
         {
-            _productRepository = new ProductRepository();
-            _categoryRepository = new CategoryRepository();
-            _brandRepository = new BrandRepository();
+            _productRepository = ServiceFactory.GetChildOf<IProductRepository>();
+            _categoryRepository = ServiceFactory.GetChildOf<ICategoryRepository>();
+            _brandRepository = ServiceFactory.GetChildOf<IBrandRepository>();
 
-            _stripeService = new StripeService();
-            _uriLauncher = new UriLauncher();
+            _stripeService = ServiceFactory.GetChildOf<IStripeService>();
+            _uriLauncher = ServiceFactory.GetChildOf<IUriLauncher>();
 
             Products = new List<Product>();
             Categories = new List<Category>();

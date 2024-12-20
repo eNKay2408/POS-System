@@ -1,5 +1,8 @@
 ﻿using Microsoft.UI.Xaml;
 using POSSystem.Views;
+using POSSystem.Services;
+using POSSystem.Repositories;
+using POSSystem.Helpers;
 
 namespace POSSystem
 {
@@ -15,6 +18,20 @@ namespace POSSystem
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            //register repositories
+            ServiceFactory.Register<IBrandRepository, BrandRepository>();
+            ServiceFactory.Register<ICategoryRepository, CategoryRepository>();
+            ServiceFactory.Register<IProductRepository, ProductRepository>();
+            ServiceFactory.Register<IEmployeeRepository, EmployeeRepository>();
+
+            ServiceFactory.Register<ISettingsService, SettingsService>();
+            ServiceFactory.Register<IEncryptionService, EncryptionService>();
+            ServiceFactory.Register<IGoogleOAuthService, GoogleOAuthService>();
+            ServiceFactory.Register<IStripeService, StripeService>();
+            ServiceFactory.Register<IUriLauncher, UriLauncher>();
+            ServiceFactory.Register<IConfigHelper, ConfigHelper>();
+
+
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values["POSAppTheme"] == null)
             {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace POSSystem.Repository
+namespace POSSystem.Repositories
 {
     public interface IProductRepository
     {
