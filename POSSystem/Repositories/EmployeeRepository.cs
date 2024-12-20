@@ -4,8 +4,6 @@ using POSSystem.Models;
 using POSSystem.Repositories;
 using System.Collections.Generic;
 using System;
-using System.Collections.Generic;
-using System;
 
 namespace POSSystem.Repository
 {

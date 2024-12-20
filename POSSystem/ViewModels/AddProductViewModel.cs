@@ -1,6 +1,7 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Repository;
+using POSSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace POSSystem.ViewModels
         {
             _productRepository = new ProductRepository();
             _categoryRepository = new CategoryRepository();
-            _brandRepository = new BrandRepository();
+            _brandRepository = ServiceFactory.GetChildOf(typeof(IBrandRepository)) as IBrandRepository;
 
             Categories = new List<Category>();
             Brands = new List<Brand>();

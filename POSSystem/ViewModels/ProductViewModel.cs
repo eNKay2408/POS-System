@@ -89,7 +89,7 @@ namespace POSSystem.ViewModels
         {
             _productRepository = new ProductRepository();
             _categoryRepository = new CategoryRepository();
-            _brandRepository = new BrandRepository();
+            _brandRepository = ServiceFactory.GetChildOf(typeof(IBrandRepository)) as IBrandRepository;
 
             _stripeService = new StripeService();
             _uriLauncher = new UriLauncher();
