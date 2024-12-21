@@ -9,13 +9,26 @@ namespace POSSystem.Repositories
 {
     public class CategoryRepository : BaseRepository, ICategoryRepository
     {
+        private readonly NpgsqlConnection _connection;
+
+        public CategoryRepository()
+        {
+            _connection = new NpgsqlConnection(ConnectionString);
+        }
+
+        // Constructor for integration testing
+        public CategoryRepository(string connectionString)
+        {
+            _connection = new NpgsqlConnection(connectionString);
+        }
+
         public async Task<List<Category>> GetAllCategories()
         {
             var categories = new List<Category>();
-            string query = "SELECT * FROM Category";
-            await Connection.OpenAsync();
+            string query = "SELECT * FROM Category ORDER BY Id";
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -28,7 +41,7 @@ namespace POSSystem.Repositories
                 }
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
             return categories;
         }
 
@@ -41,45 +54,51 @@ namespace POSSystem.Repositories
 
         public async Task AddCategory(Category category)
         {
-            string query = "INSERT INTO Category (Name) VALUES (@Name)";
-            await Connection.OpenAsync();
+            var categories = await GetAllCategories();
+            if (categories.Any(c => c.Name == category.Name))
+            {
+                throw new Exception("Category already exists");
+            }
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            string query = "INSERT INTO Category (Name) VALUES (@Name)";
+            await _connection.OpenAsync();
+
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Name", category.Name);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
 
         public async Task UpdateCategory(Category category)
         {
             string query = "UPDATE Category SET Name = @Name WHERE Id = @Id";
-            await Connection.OpenAsync();
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Id", category.Id);
                 cmd.Parameters.AddWithValue("Name", category.Name);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
 
         public async Task DeleteCategory(int id)
         {
             string query = "DELETE FROM Category WHERE Id = @Id";
-            await Connection.OpenAsync();
+            await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, Connection))
+            using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("Id", id);
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            await Connection.CloseAsync();
+            await _connection.CloseAsync();
         }
     }
 }

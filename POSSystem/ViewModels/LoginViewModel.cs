@@ -1,4 +1,4 @@
-﻿using POSSystem.Repository;
+﻿using POSSystem.Repositories;
 using POSSystem.Models;
 using System.Threading.Tasks;
 using System;
@@ -48,10 +48,10 @@ namespace POSSystem.ViewModels
 
         public LoginViewModel()
         {
-            _employeeRepository = new EmployeeRepository();
-            _googleOAuthService = new GoogleOAuthService();
-            _settingsService = new SettingsService();
-            _encryptionService = new EncryptionService();
+            _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
+            _googleOAuthService = ServiceFactory.GetChildOf<IGoogleOAuthService>();
+            _settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+            _encryptionService = ServiceFactory.GetChildOf<IEncryptionService>();
         }
 
         // Constructor for unit testing

@@ -3,15 +3,15 @@ using System;
 
 namespace POSSystem.Helpers
 {
-    public class ConfigHelper
+    public class ConfigHelper : IConfigHelper
     {
         private readonly IConfiguration _configuration;
 
         public ConfigHelper()
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory) 
-                .AddJsonFile("appsettings.json"); 
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json");
 
             _configuration = builder.Build();
         }

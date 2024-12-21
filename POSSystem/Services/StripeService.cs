@@ -1,5 +1,6 @@
 ﻿using POSSystem.Helpers;
 using Stripe;
+using Stripe.Checkout;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,28 +8,38 @@ namespace POSSystem.Services
 {
     public class StripeService : IStripeService
     {
-        private ConfigHelper _configHelper;
+        private IConfigHelper _configHelper;
+        private SessionService _sessionService;
 
         public StripeService()
         {
-            _configHelper = new ConfigHelper();
+            _configHelper = ServiceFactory.GetChildOf<IConfigHelper>();
+            _sessionService = new SessionService();
+            StripeConfiguration.ApiKey = _configHelper.GetStripeSecretKey();
+        }
+
+        // Constructor for unit testing
+        public StripeService(IConfigHelper configHelper, SessionService sessionService)
+        {
+            _configHelper = configHelper;
+            _sessionService = sessionService;
             StripeConfiguration.ApiKey = _configHelper.GetStripeSecretKey();
         }
 
         public async Task<string> CreateCheckoutSession(Models.Product product, int quantity)
         {
-            var options = new Stripe.Checkout.SessionCreateOptions
+            var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
-                LineItems = new List<Stripe.Checkout.SessionLineItemOptions>
+                LineItems = new List<SessionLineItemOptions>
                 {
-                    new Stripe.Checkout.SessionLineItemOptions
+                    new SessionLineItemOptions
                     {
-                        PriceData = new Stripe.Checkout.SessionLineItemPriceDataOptions
+                        PriceData = new SessionLineItemPriceDataOptions
                         {
                             Currency = "usd",
                             UnitAmount = (long)(product.Price * 100),
-                            ProductData = new Stripe.Checkout.SessionLineItemPriceDataProductDataOptions
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
                                 Name = product.Name,
                                 Description = $"Category: {product.CategoryName}, Brand: {product.BrandName}",
@@ -44,8 +55,7 @@ namespace POSSystem.Services
 
             try
             {
-                var service = new Stripe.Checkout.SessionService();
-                var session = await service.CreateAsync(options);
+                var session = await _sessionService.CreateAsync(options);
                 return session.Url;
             }
             catch (StripeException)

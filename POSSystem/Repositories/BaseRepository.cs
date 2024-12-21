@@ -5,9 +5,8 @@ namespace POSSystem.Repositories
 {
     public abstract class BaseRepository
     {
-        private readonly ConfigHelper _configHelper;
-        private readonly string _connectionString;
-        protected NpgsqlConnection Connection;
+        private readonly IConfigHelper _configHelper;
+        protected string ConnectionString;
 
         public BaseRepository()
         {
@@ -17,9 +16,7 @@ namespace POSSystem.Repositories
             string username = _configHelper.GetDatabaseUsername();
             string password = _configHelper.GetDatabasePassword();
             string database = _configHelper.GetDatabaseName();
-            _connectionString = $"Host={host};Username={username};Password={password};Database={database}";
-
-            Connection = new NpgsqlConnection(_connectionString);
+            ConnectionString = $"Host={host};Username={username};Password={password};Database={database}";
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using POSSystem.Models;
 using POSSystem.Repositories;
+using POSSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace POSSystem.ViewModels
 
         public BrandViewModel()
         {
-            _brandRepository = new BrandRepository();
+            _brandRepository = ServiceFactory.GetChildOf<IBrandRepository>();
 
             Brands = new List<Brand>();
 
@@ -55,14 +56,21 @@ namespace POSSystem.ViewModels
                 throw new ArgumentException("Brand name cannot be empty.");
             }
 
-            var brand = new Brand
+            try
             {
-                Name = brandName
-            };
+                var brand = new Brand
+                {
+                    Name = brandName
+                };
 
-            await _brandRepository.AddBrand(brand);
+                await _brandRepository.AddBrand(brand);
 
-            await LoadBrands();
+                await LoadBrands();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateBrand(int brandId, string newName)
