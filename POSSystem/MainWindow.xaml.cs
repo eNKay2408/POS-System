@@ -12,15 +12,16 @@ namespace POSSystem.Views
         {
             this.InitializeComponent();
             this.Title = "POS System";
+            this.Activated += MainWindow_Activated;
+        }
 
-            //_appWindow = GetAppWindowForCurrentWindow();
-            //_appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
-        }
-        private AppWindow GetAppWindowForCurrentWindow()
+        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
-            IntPtr hWnd = WindowNative.GetWindowHandle(this);
-            WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            return AppWindow.GetFromWindowId(myWndId);
+            IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WindowId windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
+            AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.SetIcon(@"Assets\logo.ico");
         }
+
     }
 }
