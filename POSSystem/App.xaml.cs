@@ -96,7 +96,6 @@ namespace POSSystem
 
             // Set both the big and small icons
             SendMessage(hWnd, WM_SETICON, ICON_BIG, ico.Handle);
-            SendMessage(hWnd, WM_SETICON, ICON_SMALL, ico.Handle);
         }
     }
 }
