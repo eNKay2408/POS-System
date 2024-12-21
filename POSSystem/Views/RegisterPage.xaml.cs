@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml.Controls;
 using POSSystem.ViewModels;
 using Microsoft.UI.Xaml;
 using System;
+using POSSystem.Services;
 
 namespace POSSystem.Views
 {
@@ -37,8 +38,8 @@ namespace POSSystem.Views
                 await successDialog.ShowAsync();
 
                 App.AppMainWindow.Content = new LoginPage();
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                string theme = localSettings.Values["POSAppTheme"].ToString();
+                var settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+                string theme = settingsService.Load("POSAppTheme");
                 if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
                 {
                     if (theme == "dark")
@@ -68,8 +69,8 @@ namespace POSSystem.Views
         public void Login_Click(object sender, RoutedEventArgs e)
         {
             App.AppMainWindow.Content = new LoginPage();
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            string theme = localSettings.Values["POSAppTheme"].ToString();
+            var settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+            string theme = settingsService.Load("POSAppTheme");
             if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
             {
                 if (theme == "dark")

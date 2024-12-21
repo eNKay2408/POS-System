@@ -31,22 +31,22 @@ namespace POSSystem
             ServiceFactory.Register<IUriLauncher, UriLauncher>();
             ServiceFactory.Register<IConfigHelper, ConfigHelper>();
 
-
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values["POSAppTheme"] == null)
+            var settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+            var theme = settingsService.Load("POSAppTheme");
+            if (theme == null)
             {
                 if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
                 {
-                    localSettings.Values["POSAppTheme"] = "dark";
+                    settingsService.Save("POSAppTheme", "dark");
                 }
                 else if(Application.Current.RequestedTheme == ApplicationTheme.Light)
                 {
-                    localSettings.Values["POSAppTheme"] = "light";
+                    settingsService.Save("POSAppTheme", "light");
                 }
                 else
                 {
                     //default to dark theme (in case user's system theme is not light nor dark)
-                    localSettings.Values["POSAppTheme"] = "dark";
+                    settingsService.Save("POSAppTheme", "dark");
                 }
             }
 
@@ -55,7 +55,6 @@ namespace POSSystem
             AppMainWindow.Content = LoginPage;
 
             var frameworkElement = AppMainWindow.Content as FrameworkElement;
-            string theme = localSettings.Values["POSAppTheme"].ToString();
             if (theme == "dark")
             {
                 frameworkElement.RequestedTheme = ElementTheme.Dark;
