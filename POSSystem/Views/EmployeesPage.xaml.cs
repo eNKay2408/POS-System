@@ -60,13 +60,15 @@ namespace POSSystem.Views
             var employee = (Employee)button.DataContext;
             TextBox updateNameTextBox = new TextBox
             {
-                PlaceholderText = employee.Name,
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 10)
+                PlaceholderText = "Employee's name",
+                Text = employee.Name,
+                Margin = new Thickness(0, 0, 0, 10)
             };
             TextBox updateEmailTextBox = new TextBox
             {
-                PlaceholderText = employee.Email,
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 10)
+                PlaceholderText = "Employee's email",
+                Text = employee.Email,
+                Margin = new Thickness(0, 0, 0, 10)
             };
 
             StackPanel panel = new StackPanel();

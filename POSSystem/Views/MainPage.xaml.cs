@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using POSSystem.Services;
 using System.Diagnostics;
 
 namespace POSSystem.Views
@@ -7,18 +8,18 @@ namespace POSSystem.Views
     public sealed partial class MainPage : Page
     {
         private bool isDarkTheme;
-        private Windows.Storage.ApplicationDataContainer _localSettings= Windows.Storage.ApplicationData.Current.LocalSettings;
+        private readonly ISettingsService settingsService = ServiceFactory.GetChildOf<ISettingsService>();
 
         public MainPage(string employeeName)
         {
             this.InitializeComponent();
 
             // Determine the current system theme
-            if (_localSettings.Values["POSAppTheme"].ToString() == "dark")
+            if (settingsService.Load("POSAppTheme") == "dark")
             {
                 isDarkTheme = true;
             }
-            else if (_localSettings.Values["POSAppTheme"].ToString() == "light")
+            else if (settingsService.Load("POSAppTheme") == "light")
             {
                 isDarkTheme = false;
             }
@@ -74,8 +75,8 @@ namespace POSSystem.Views
             }
 
             ChangeThemeBtnContent.Text = isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme";
-            
-            _localSettings.Values["POSAppTheme"] = isDarkTheme ? "dark" : "light";
+
+            settingsService.Save("POSAppTheme", isDarkTheme ? "dark" : "light");
         }
 
     }
