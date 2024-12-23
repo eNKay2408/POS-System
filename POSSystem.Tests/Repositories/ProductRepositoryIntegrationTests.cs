@@ -12,7 +12,6 @@ namespace POSSystem.Tests.Repositories
     public class ProductRepositoryIntegrationTests
     {
         private static readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder().Build();
-        private NpgsqlConnection _connection;
         private IProductRepository _repository;
 
         [ClassInitialize()]
