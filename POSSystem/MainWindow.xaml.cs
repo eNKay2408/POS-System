@@ -12,15 +12,8 @@ namespace POSSystem.Views
         {
             this.InitializeComponent();
             this.Title = "POS System";
+        }
 
-            //_appWindow = GetAppWindowForCurrentWindow();
-            //_appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
-        }
-        private AppWindow GetAppWindowForCurrentWindow()
-        {
-            IntPtr hWnd = WindowNative.GetWindowHandle(this);
-            WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            return AppWindow.GetFromWindowId(myWndId);
-        }
+
     }
 }

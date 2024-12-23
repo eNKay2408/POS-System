@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using POSSystem.ViewModels;
 using System.Diagnostics;
+using POSSystem.Services;
 
 namespace POSSystem.Views
 {
@@ -23,8 +24,8 @@ namespace POSSystem.Views
 
             //App.AppMainWindow.Content = new MainPage(name);
 
-            //var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            //string theme = localSettings.Values["POSAppTheme"].ToString();
+            //var settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+            //string theme = settingsService.Load("POSAppTheme");
             //if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
             //{
             //    if (theme == "dark")
@@ -46,8 +47,8 @@ namespace POSSystem.Views
             {
                 App.AppMainWindow.Content = new MainPage(name);
 
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                string theme = localSettings.Values["POSAppTheme"].ToString();
+                var settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+                string theme = settingsService.Load("POSAppTheme");
                 if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
                 {
                     if (theme == "dark")
@@ -85,19 +86,7 @@ namespace POSSystem.Views
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             App.AppMainWindow.Content = new RegisterPage();
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            string theme = localSettings.Values["POSAppTheme"].ToString();
-            if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
-            {
-                if (theme == "dark")
-                {
-                    frameworkElement.RequestedTheme = ElementTheme.Dark;
-                }
-                else if (theme == "light")
-                {
-                    frameworkElement.RequestedTheme = ElementTheme.Light;
-                }
-            }
+            setTheme();
         }
 
         private async void GoogleLogin_Click(object sender, RoutedEventArgs e)
@@ -109,20 +98,9 @@ namespace POSSystem.Views
                 string name = await loginViewModel.AuthenticateWithGoogle();
 
                 App.AppMainWindow.Content = new MainPage(name);
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                string theme = localSettings.Values["POSAppTheme"].ToString();
-                if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
-                {
-                    if (theme == "dark")
-                    {
-                        frameworkElement.RequestedTheme = ElementTheme.Dark;
-                    }
-                    else if (theme == "light")
-                    {
-                        frameworkElement.RequestedTheme = ElementTheme.Light;
-                    }
-                }
-            } catch (Exception ex)
+                setTheme();
+            }
+            catch (Exception ex)
             {
                 ContentDialog errorDialog = new ContentDialog
                 {
@@ -135,6 +113,23 @@ namespace POSSystem.Views
                 await errorDialog.ShowAsync();
             }
 
+        }
+
+        private static void setTheme()
+        {
+            var settingsService = ServiceFactory.GetChildOf<ISettingsService>();
+            string theme = settingsService.Load("POSAppTheme");
+            if (App.AppMainWindow?.Content is FrameworkElement frameworkElement)
+            {
+                if (theme == "dark")
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Dark;
+                }
+                else if (theme == "light")
+                {
+                    frameworkElement.RequestedTheme = ElementTheme.Light;
+                }
+            }
         }
     }
 }
