@@ -12,7 +12,6 @@ namespace POSSystem.Tests.Repositories
     public class BrandRepositoryIntegrationTests
     {
         private static readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder().Build();
-        private NpgsqlConnection _connection;
         private IBrandRepository _repository;
 
         [ClassInitialize()]
