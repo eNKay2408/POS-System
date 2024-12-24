@@ -220,21 +220,5 @@ namespace POSSystem.ViewModels
 
             Products = sortedProducts;
         }
-
-        public async Task PayProduct(Product product, int quantity)
-        {
-            try
-            {
-                var checkoutUrl = await _stripeService.CreateCheckoutSession(product, quantity);
-
-                var uri = new Uri(checkoutUrl);
-
-                await _uriLauncher.LaunchUriAsync(uri);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
     }
 }

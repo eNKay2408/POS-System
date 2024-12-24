@@ -9,7 +9,7 @@ namespace POSSystem.Views
 {
     public sealed partial class EmployeesPage : Page
     {
-        public EmployeeViewModel ViewModel { get; set; }
+        private EmployeeViewModel ViewModel { get; set; }
         public EmployeesPage()
         {
             this.InitializeComponent();

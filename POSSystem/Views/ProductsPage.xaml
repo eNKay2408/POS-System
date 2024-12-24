@@ -69,22 +69,20 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Index}" Grid.Column="0" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding Name}" Grid.Column="1" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding Price}" Grid.Column="2" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Column="2" TextWrapping="Wrap">
+                                $<Run Text="{Binding Price}"/>
+                            </TextBlock>
                             <TextBlock Text="{Binding Stock}" Grid.Column="3" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding CategoryName}" Grid.Column="4" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding BrandName}" Grid.Column="5" TextWrapping="Wrap"/>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="6">
-                                <Button Click="UpdateProduct_Click" Margin="4,0" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/update.png" Width="18" Height="18" />
+                            <StackPanel Orientation="Horizontal" Grid.Column="6" HorizontalAlignment="Center">
+                                <Button Click="UpdateProduct_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
                                 </Button>
 
-                                <Button Click="DeleteProduct_Click" Margin="4,0" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/delete.png" Width="18" Height="18" />
-                                </Button>
-
-                                <Button Click="PayProduct_Click" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/pay.png" Width="18" Height="18" />
+                                <Button Click="DeleteProduct_Click" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/delete.png" Width="20" Height="20" />
                                 </Button>
                             </StackPanel>
                         </Grid>

@@ -39,6 +39,7 @@
 
             <converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
             <converters:IntToStringConverter x:Key="IntToStringConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

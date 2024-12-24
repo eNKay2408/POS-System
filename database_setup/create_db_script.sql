@@ -39,6 +39,21 @@ CREATE TABLE employee (
     password VARCHAR(255)
 );
 
+CREATE TABLE invoice (
+    id SERIAL PRIMARY KEY,
+    employeeid INT NOT NULL,
+    total numeric(18, 2) NOT NULL,
+    FOREIGN KEY (employeeid) REFERENCES employee(id)
+);
+
+CREATE TABLE invoice_detail (
+    id SERIAL PRIMARY KEY,
+    invoiceid INT NOT NULL,
+    productid INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (invoiceid) REFERENCES invoice(id),
+    FOREIGN KEY (productid) REFERENCES product(id)
+);
 -- To run this script, you can save it to a file (e.g., create_db.sql) and execute it using the psql command-line tool:
 -- psql -U postgres -f create_db.sql
 -- Replace your_username with your PostgreSQL username. You will be prompted to enter your password.
