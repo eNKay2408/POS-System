@@ -1,4 +1,6 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
 
@@ -14,32 +16,43 @@ namespace POSSystem.Views
             this.DataContext = ViewModel;
         }
 
-        private void AddInvoiceBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void AddInvoiceBtn_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(InvoiceAddPage));
+            Frame.Navigate(typeof(InvoiceAddPage), 0);
         }
 
-        private async void DeleteInvoice_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private async void PayInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var invoice = (Invoice)button.DataContext;
+            var viewModel = (InvoiceViewModel)this.DataContext;
+
+            try
+            {
+                await viewModel.PayInvoice(invoice);
+            }
+            catch (Exception ex)
+            {
+                var dialog = new ContentDialog()
+                {
+                    Title = "Error",
+                    Content = ex.Message,
+                    PrimaryButtonText = "OK",
+                    XamlRoot = this.XamlRoot
+                };
+                await dialog.ShowAsync();
+            }
+        }
+
+        private async void PrintInvoice_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new ContentDialog()
             {
-                Title = "delete invoice clicked",
+                Title = "Print invoice clicked",
                 PrimaryButtonText = "OK",
                 XamlRoot = this.XamlRoot
             };
             await dialog.ShowAsync();
-        }
-
-        private async void UpdateInvoice_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            var dialog = new ContentDialog()
-            {
-                Title = "update invoice clicked",
-                PrimaryButtonText = "OK",
-                XamlRoot = this.XamlRoot
-            };
-            await dialog.ShowAsync();
-
         }
     }
 }

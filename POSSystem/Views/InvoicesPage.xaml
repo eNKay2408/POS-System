@@ -25,9 +25,9 @@
                         <Grid Margin="0,0,0,2" Padding="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="3*" />
                                 <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
                                 <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="NO." FontWeight="Bold" Grid.Column="0"/>
@@ -44,24 +44,24 @@
                         <Grid Padding="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="3*" />
                                 <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
                                 <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind Index}" Grid.Column="0" TextWrapping="Wrap"/>
-                            <TextBlock Text="{x:Bind EmployeeName}" Grid.Column="1" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Index}" Grid.Column="0" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding EmployeeName}" Grid.Column="1" TextWrapping="Wrap" />
                             <TextBlock Grid.Column="2" TextWrapping="Wrap">
-                                $<Run Text="{x:Bind Total}"/>
+                                $<Run Text="{Binding Total}"/>
                             </TextBlock>
-                            <TextBlock Text="{x:Bind Timestamp}" Grid.Column="3" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Timestamp}" Grid.Column="3" TextWrapping="Wrap" />
                             <StackPanel Orientation="Horizontal" Grid.Column="4">
-                                <Button Click="UpdateInvoice_Click" Margin="5,0" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
+                                <Button Click="PayInvoice_Click" Margin="5,0" Background="Transparent" IsEnabled="{Binding IsPaid, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}">
+                                    <Image Source="ms-appx:///Assets/pay.png" Width="20" Height="20" />
                                 </Button>
 
-                                <Button Click="DeleteInvoice_Click" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/delete.png" Width="20" Height="20" />
+                                <Button Click="PrintInvoice_Click" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/printer.png" Width="20" Height="20" />
                                 </Button>
                             </StackPanel>
                         </Grid>
