@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace POSSystem.Models
 {
@@ -10,12 +6,10 @@ namespace POSSystem.Models
     {
         public int Id { get; set; }
         public int EmployeeId { get; set; }
-
-        public DateTime Timestamp { get; set; }
         public string EmployeeName { get; set; }
-        public decimal? Total { get; set; }
-
-        //public List<Product> Products { get; set; }
+        public DateTime Timestamp { get; set; }
+        public decimal Total { get; set; }
+        public bool IsPaid { get; set; }
         public int Index { get; set; }
     }
 }
