@@ -76,17 +76,13 @@
                             <TextBlock Text="{Binding CategoryName}" Grid.Column="4" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding BrandName}" Grid.Column="5" TextWrapping="Wrap"/>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="6">
-                                <Button Click="UpdateProduct_Click" Margin="4,0" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/update.png" Width="18" Height="18" />
+                            <StackPanel Orientation="Horizontal" Grid.Column="6" HorizontalAlignment="Center">
+                                <Button Click="UpdateProduct_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
                                 </Button>
 
-                                <Button Click="DeleteProduct_Click" Margin="4,0" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/delete.png" Width="18" Height="18" />
-                                </Button>
-
-                                <Button Click="PayProduct_Click" Background="Transparent">
-                                    <Image Source="ms-appx:///Assets/pay.png" Width="18" Height="18" />
+                                <Button Click="DeleteProduct_Click" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/delete.png" Width="20" Height="20" />
                                 </Button>
                             </StackPanel>
                         </Grid>
