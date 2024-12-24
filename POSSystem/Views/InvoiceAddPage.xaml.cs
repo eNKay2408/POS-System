@@ -1,46 +1,98 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace POSSystem.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class InvoiceAddPage : Page
     {
-        public InvoiceAddViewModel ViewModel { get; set; } = new InvoiceAddViewModel();
-
-
         public InvoiceAddPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            DataContext = new InvoiceAddViewModel();
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var viewModel = (InvoiceAddViewModel)DataContext;
+                await viewModel.SaveInvoice();
+
+                Frame.Navigate(typeof(InvoicesPage));
+            }
+            catch (Exception ex)
+            {
+                ContentDialog errorDialog = new ContentDialog
+                {
+                    Title = "Error",
+                    Content = ex.Message,
+                    CloseButtonText = "Ok",
+                    XamlRoot = App.AppMainWindow.Content.XamlRoot
+                };
+
+                await errorDialog.ShowAsync();
+            }
+        }
+
+        private async void Discard_Click(object sender, RoutedEventArgs e)
+        {
             var dialog = new ContentDialog()
             {
-                Title = "Save invoice clicked",
-                PrimaryButtonText = "OK",
+                Title = "Discard changes?",
+                Content = "If you discard changes, they will be lost.",
+                PrimaryButtonText = "Discard",
+                CloseButtonText = "Cancel",
                 XamlRoot = this.XamlRoot
             };
-            await dialog.ShowAsync();
+
+            var result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                var viewModel = (InvoiceAddViewModel)DataContext;
+                await viewModel.DiscardChanges();
+                Frame.Navigate(typeof(InvoicesPage));
+            }
         }
 
-        private void Discard_Click(object sender, RoutedEventArgs e)
+        private async void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            Frame.GoBack();
+            var button = (Button)sender;
+            var invoiceItem = (InvoiceItem)button.DataContext;
+
+            var viewModel = (InvoiceAddViewModel)DataContext;
+            await viewModel.DeleteItem(invoiceItem);
         }
 
-        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        private void UpdateItem_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(InvoiceAddProductPage));
+            var button = (Button)sender;
+            var invoiceItem = (InvoiceItem)button.DataContext;
+
+            Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
+        }
+
+        private void AddItem_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (InvoiceAddViewModel)DataContext;
+            var invoiceItem = new InvoiceItem { InvoiceId = viewModel.InvoiceId };
+
+            Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter is int invoiceId)
+            {
+                var viewModel = (InvoiceAddViewModel)DataContext;
+                viewModel.InvoiceId = invoiceId;
+            }
         }
     }
-
 }
