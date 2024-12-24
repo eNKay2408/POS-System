@@ -24,15 +24,14 @@
     <None Remove="Views\AddProductPage.xaml" />
     <None Remove="Views\CategoriesPage.xaml" />
     <None Remove="Views\EmployeesPage.xaml" />
+    <None Remove="Views\InvoiceAddItemPage.xaml" />
     <None Remove="Views\InvoiceAddPage.xaml" />
-    <None Remove="Views\InvoiceAddProductPage.xaml" />
     <None Remove="Views\ItemListTemplate.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\MainWindow.xaml" />
     <None Remove="Views\ProductsPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
-    <None Remove="Views\UserControls\InvoiceAddUpdate_UserCtrl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -148,11 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\UserControl\InvoiceUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\UserControls\InvoiceAddUpdate_UserCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
