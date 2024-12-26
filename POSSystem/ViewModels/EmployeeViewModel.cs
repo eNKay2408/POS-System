@@ -3,6 +3,7 @@ using POSSystem.Repositories;
 using POSSystem.Services;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
@@ -47,7 +48,7 @@ namespace POSSystem.ViewModels
             _employeeRepository = employeeRepository;
         }
 
-        private async Task LoadEmployees()
+        public async Task LoadEmployees()
         {
             try
             {
@@ -84,6 +85,22 @@ namespace POSSystem.ViewModels
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(newName))
+                {
+                    throw new ArgumentException("Employee name cannot be empty.");
+                }
+
+                if (string.IsNullOrWhiteSpace(newEmail))
+                {
+                    throw new ArgumentException("Employee email cannot be empty.");
+                }
+
+                var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                if (!Regex.IsMatch(newEmail, emailPattern))
+                {
+                    throw new ArgumentException("Employee email is not in the correct format.");
+                }
+
                 Employee newEmployee = new Employee
                 {
                     Id = oldId,

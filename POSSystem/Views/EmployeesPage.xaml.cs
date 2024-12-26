@@ -4,6 +4,7 @@ using POSSystem.ViewModels;
 using System;
 using System.Diagnostics;
 using Microsoft.UI.Xaml;
+using System.Threading.Tasks;
 
 namespace POSSystem.Views
 {
@@ -47,7 +48,7 @@ namespace POSSystem.Views
                 }
                 catch (Exception ex)
                 {
-                    DisplayErrorDialog(ex.Message);
+                    await DisplayErrorDialog(ex.Message);
                 }
             }
 
@@ -84,26 +85,39 @@ namespace POSSystem.Views
                 XamlRoot = this.XamlRoot,
             };
 
-            var result = await dialog.ShowAsync();
-
-            if(result == ContentDialogResult.Primary)
+            while (true)
             {
-                string newName = updateNameTextBox.Text;
-                string newEmail = updateEmailTextBox.Text;
-                try
+                var result = await dialog.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
                 {
-                    await ViewModel.UpdateEmployee(employee.Id, newName, newEmail);
+                    string newName = updateNameTextBox.Text;
+                    string newEmail = updateEmailTextBox.Text;
+                    try
+                    {
+                        await ViewModel.UpdateEmployee(employee.Id, newName, newEmail);
+                        break; // Exit the loop if update is successful
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        await DisplayErrorDialog(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayErrorDialog("An unexpected error occurred: " + ex.Message);
+                        break; // Exit the loop on unexpected errors
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    DisplayErrorDialog(ex.Message);
+                    break; // Exit the loop if the user cancels
                 }
             }
         }
 
         // Detail: Title = "ERROR", CloseButtonText = "Ok", XamlRoot = this.XamlRoot
         // Content = contentMessage (parameter passed in)
-        private async void DisplayErrorDialog(string contentMessage)
+        private async Task DisplayErrorDialog(string contentMessage)
         {
             ContentDialog errorDialog = new()
             {
