@@ -1,6 +1,7 @@
 ﻿using POSSystem.Helpers;
 using Stripe;
 using Stripe.Checkout;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,28 +27,31 @@ namespace POSSystem.Services
             StripeConfiguration.ApiKey = _configHelper.GetStripeSecretKey();
         }
 
-        public async Task<string> CreateCheckoutSession(Models.Product product, int quantity)
+        public async Task<string> CreateCheckoutSession(List<Models.InvoiceItem> invoiceItems, decimal total)
         {
+            var lineItems = new List<SessionLineItemOptions>();
+
+            foreach (var item in invoiceItems)
+            {
+                lineItems.Add(new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "usd",
+                        UnitAmount = (long)(item.UnitPrice * 100),
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.ProductName,
+                        },
+                    },
+                    Quantity = item.Quantity,
+                });
+            }
+
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
-                LineItems = new List<SessionLineItemOptions>
-                {
-                    new SessionLineItemOptions
-                    {
-                        PriceData = new SessionLineItemPriceDataOptions
-                        {
-                            Currency = "usd",
-                            UnitAmount = (long)(product.Price * 100),
-                            ProductData = new SessionLineItemPriceDataProductDataOptions
-                            {
-                                Name = product.Name,
-                                Description = $"Category: {product.CategoryName}, Brand: {product.BrandName}",
-                            },
-                        },
-                        Quantity = quantity,
-                    },
-                },
+                LineItems = lineItems,
                 Mode = "payment",
                 SuccessUrl = "https://example.com/success",
                 CancelUrl = "https://example.com/cancel"
@@ -58,9 +62,9 @@ namespace POSSystem.Services
                 var session = await _sessionService.CreateAsync(options);
                 return session.Url;
             }
-            catch (StripeException)
+            catch (StripeException ex)
             {
-                throw;
+                throw new Exception("Failed to create Stripe Checkout session. Details: " + ex.Message, ex);
             }
         }
     }

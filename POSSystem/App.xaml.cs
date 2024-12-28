@@ -34,6 +34,8 @@ namespace POSSystem
             ServiceFactory.Register<ICategoryRepository, CategoryRepository>();
             ServiceFactory.Register<IProductRepository, ProductRepository>();
             ServiceFactory.Register<IEmployeeRepository, EmployeeRepository>();
+            ServiceFactory.Register<IInvoiceRepository, InvoiceRepository>();
+            ServiceFactory.Register<IInvoiceItemRepository, InvoiceItemRepository>();
 
             ServiceFactory.Register<ISettingsService, SettingsService>();
             ServiceFactory.Register<IEncryptionService, EncryptionService>();

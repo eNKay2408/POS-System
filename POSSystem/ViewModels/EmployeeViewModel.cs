@@ -54,7 +54,8 @@ namespace POSSystem.ViewModels
             {
                 var employees = await _employeeRepository.GetAllEmployees();
 
-                foreach(var employee in employees) {
+                foreach (var employee in employees)
+                {
                     employee.Index = employees.IndexOf(employee) + 1;
                 }
 
