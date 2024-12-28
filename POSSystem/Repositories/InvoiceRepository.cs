@@ -48,7 +48,7 @@ namespace POSSystem.Repositories
         {
             try
             {
-                string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total WHERE id = @id";
+                string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, employeename = (SELECT name from employee where id = @employeeid) WHERE id = @id";
                 await _connection.OpenAsync();
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
