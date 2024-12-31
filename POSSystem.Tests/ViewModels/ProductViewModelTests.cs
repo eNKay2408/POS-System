@@ -294,36 +294,5 @@ namespace POSSystem.Tests.ViewModels
             Assert.AreEqual("Product A", _productViewModel.Products[0].Name);
             Assert.AreEqual("Product B", _productViewModel.Products[1].Name);
         }
-
-        [TestMethod()]
-        public async Task PayProduct_WhenCalled_ShouldCallStripeService()
-        {
-            // Arrange
-            var product = new Product { Id = 1, Name = "Product A", Price = 5.5m, Stock = 10, CategoryId = 1, BrandId = 1 };
-            var quantity = 2;
-            var checkoutSessionUrl = "https://example.com/checkout";
-
-            _stripeServiceMock.Setup(service => service.CreateCheckoutSession(product, quantity)).ReturnsAsync(checkoutSessionUrl);
-
-            // Act
-            await _productViewModel.PayProduct(product, quantity);
-
-            // Assert
-            _stripeServiceMock.Verify(service => service.CreateCheckoutSession(product, quantity), Times.Once);
-            _uriLauncherMock.Verify(launcher => launcher.LaunchUriAsync(It.Is<Uri>(u => u.ToString() == checkoutSessionUrl)), Times.Once);
-        }
-
-        [TestMethod()]
-        public async Task PayProduct_WhenStripeServiceThrowsException_ShouldThrowException()
-        {
-            // Arrange
-            var product = new Models.Product { Id = 1, Name = "Product A", Price = 5.5m, Stock = 10, CategoryId = 1, BrandId = 1 };
-            var quantity = 2;
-
-            _stripeServiceMock.Setup(service => service.CreateCheckoutSession(product, quantity)).ThrowsAsync(new Stripe.StripeException());
-
-            // Act & Assert
-            await Assert.ThrowsExceptionAsync<Stripe.StripeException>(() => _productViewModel.PayProduct(product, quantity));
-        }
     }
 }

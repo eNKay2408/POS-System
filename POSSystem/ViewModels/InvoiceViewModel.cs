@@ -51,13 +51,17 @@ namespace POSSystem.ViewModels
             }
         }
 
-        // Constructor for Integration Testing
-        public InvoiceViewModel(IInvoiceRepository invoiceRepository)
+        // Constructor for unit testing
+        public InvoiceViewModel(IInvoiceRepository invoiceRepository, IInvoiceItemRepository invoiceItemRepository, IProductRepository productRepository, IStripeService stripeService, IUriLauncher uriLauncher)
         {
             _invoiceRepository = invoiceRepository;
+            _invoiceItemRepository = invoiceItemRepository;
+            _productRepository = productRepository;
+            _stripeService = stripeService;
+            _uriLauncher = uriLauncher;
         }
 
-        private async Task LoadInvoices()
+        public async Task LoadInvoices()
         {
             try
             {

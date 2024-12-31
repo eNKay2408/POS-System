@@ -6,6 +6,6 @@ namespace POSSystem.Services
 {
     public class UriLauncher : IUriLauncher
     {
-        public Task<bool> LaunchUriAsync(Uri uri) => Launcher.LaunchUriAsync(uri).AsTask();
+        public Task LaunchUriAsync(Uri uri) => Launcher.LaunchUriAsync(uri).AsTask();
     }
 }
