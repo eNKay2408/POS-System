@@ -170,7 +170,13 @@ namespace POSSystem.ViewModels
                 IsPaid = false
             };
 
-            await _invoiceRepository.SaveInvoice(invoice);
+            int invoiceId = await _invoiceRepository.SaveInvoice(invoice);
+
+            foreach(var item in InvoiceItems)
+            {
+                item.InvoiceId = invoiceId;
+                await _invoiceItemRepository.AddInvoiceItem(item);
+            }    
             Clear();
         }
 

@@ -96,21 +96,6 @@ namespace POSSystem.Views
             Frame.Navigate(typeof(InvoiceAddItemPage));
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            //if (e.Parameter is int invoiceId)
-            //{
-            //    var viewModel = (InvoiceAddViewModel)DataContext;
-            //    viewModel.InvoiceId = invoiceId;
-            //}
-            if(e.Parameter is InvoiceItem invoiceItem)
-            {
-                var viewModel = (InvoiceAddViewModel)DataContext;
-                viewModel.InvoiceItems.Add(invoiceItem);
-            }
-        }
 
     }
 }

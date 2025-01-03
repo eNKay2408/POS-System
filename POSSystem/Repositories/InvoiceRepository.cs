@@ -46,11 +46,11 @@ namespace POSSystem.Repositories
 
         
 
-        public async Task SaveInvoice(Invoice invoice)
+        public async Task<int> SaveInvoice(Invoice invoice)
         {
             try
             {
-                string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid, employeename) VALUES (@employeeid, @timestamp, @total, @ispaid, (SELECT name from employee where id = @employeeid))";
+                string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid, employeename) VALUES (@employeeid, @timestamp, @total, @ispaid, (SELECT name from employee where id = @employeeid)) RETURNING id";
                 //string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, employeename = (SELECT name from employee where id = @employeeid) WHERE id = @id";
                 await _connection.OpenAsync();
 
@@ -62,8 +62,9 @@ namespace POSSystem.Repositories
                     //cmd.Parameters.AddWithValue("id", invoice.Id);
                     cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
 
-                    await cmd.ExecuteNonQueryAsync();
+                    return (int)await cmd.ExecuteScalarAsync();
                 }
+                
             }
             catch (Exception ex)
             {
