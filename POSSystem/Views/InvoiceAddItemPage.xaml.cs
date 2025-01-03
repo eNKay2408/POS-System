@@ -51,7 +51,7 @@ namespace POSSystem.Views
                 ViewModel.InvoiceItem.ProductId = ViewModel.CurrentProduct.Id;
                 ViewModel.InvoiceItem.UnitPrice = ViewModel.CurrentProduct.Price.Value;
                 ViewModel.InvoiceItem.ProductName = ViewModel.CurrentProduct.Name;
-
+                
                 if (ViewModel.InvoiceItem.Id == 0)
                 {
                     AddInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);

@@ -44,7 +44,7 @@ namespace POSSystem.Views
 
         public static void AddItemToInvoice(InvoiceItem item)
         {
-            InvoiceAddViewModel.Instance.InvoiceItems.Add(item);
+            InvoiceAddViewModel.Instance.AddItemToInvoice(item);
 
         }
 
@@ -108,6 +108,11 @@ namespace POSSystem.Views
                 var viewModel = (InvoiceAddViewModel)DataContext;
                 viewModel.InvoiceItems.Add(invoiceItem);
             }
+        }
+
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.DeleteInvoiceItem(0);
         }
     }
 }

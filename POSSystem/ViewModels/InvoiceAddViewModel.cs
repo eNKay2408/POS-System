@@ -5,6 +5,7 @@ using POSSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
@@ -72,7 +73,7 @@ namespace POSSystem.ViewModels
             set
             {
                 _total = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Total));
             }
         }
 
@@ -136,6 +137,12 @@ namespace POSSystem.ViewModels
             InvoiceItems = new FullObservableCollection<InvoiceItem>(invoiceItems);
         }
 
+        public void DeleteInvoiceItem(int index)
+        {
+            InvoiceItems.RemoveAt(index);
+            CalculateTotal();
+        }
+
         public async Task DeleteItem(InvoiceItem invoiceItem)
         {
             await _invoiceItemRepository.DeleteInvoiceItem(invoiceItem.Id);
@@ -175,6 +182,49 @@ namespace POSSystem.ViewModels
         {
             InvoiceItems.Clear();
             Total = 0;
+        }
+
+        public void AddItemToInvoice(InvoiceItem invoiceItem)
+        {
+            if (InvoiceItems == null)
+            {
+                InvoiceItems = new FullObservableCollection<InvoiceItem>();
+            }
+            decimal newCost = invoiceItem.Quantity * invoiceItem.UnitPrice;
+
+            var existingItem = InvoiceItems.FirstOrDefault(i => i.ProductId == invoiceItem.ProductId);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += invoiceItem.Quantity;
+                existingItem.SubTotal = existingItem.Quantity * existingItem.UnitPrice;
+            }
+            else
+            {
+                invoiceItem.Index = InvoiceItems.Count;
+                invoiceItem.SubTotal = newCost;
+                InvoiceItems.Add(invoiceItem);
+            }
+            Total += newCost;
+
+            OnPropertyChanged(nameof(InvoiceItems));
+            OnPropertyChanged(nameof(Total));
+        }
+
+        private void CalculateTotal() 
+        {
+            if (InvoiceItems == null)
+            {
+                return;
+            }
+
+            decimal total = 0;
+            foreach (var item in InvoiceItems)
+            {
+                total += item.SubTotal;
+            }
+
+            Total = total;
+            OnPropertyChanged(nameof(_total));
         }
     }
 }

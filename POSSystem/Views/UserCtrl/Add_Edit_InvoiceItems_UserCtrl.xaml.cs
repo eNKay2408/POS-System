@@ -1,0 +1,175 @@
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using POSSystem.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using POSSystem.Helpers;
+using System.ComponentModel;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
+using POSSystem.ViewModels;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace POSSystem.Views.UserCtrl
+{
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class Add_Edit_InvoiceItems_UserCtrl : UserControl
+    {
+        public Add_Edit_InvoiceItems_UserCtrl()
+        {
+            this.InitializeComponent();
+            this.DataContext = this;
+        }
+
+        public static readonly DependencyProperty InvoiceItemsProperty = DependencyProperty.Register(
+            "InvoiceItems",
+            typeof(FullObservableCollection<InvoiceItem>),
+            typeof(Add_Edit_InvoiceItems_UserCtrl),
+            //new PropertyMetadata(null, OnInvoiceItemsChanged)
+            new PropertyMetadata(null)
+        );
+
+        public FullObservableCollection<InvoiceItem> InvoiceItems
+        {
+            get { return (FullObservableCollection<InvoiceItem>)GetValue(InvoiceItemsProperty); }
+            set { SetValue(InvoiceItemsProperty, value); }
+        }
+
+        //private static void OnInvoiceItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    var control = d as Add_Edit_InvoiceItems_UserCtrl;
+        //    control.OnPropertyChanged(nameof(Total));
+        //}
+
+        public static readonly DependencyProperty EmployeesProperty = DependencyProperty.Register(
+            "Employees",
+            typeof(List<Employee>),
+            typeof(Add_Edit_InvoiceItems_UserCtrl),
+            new PropertyMetadata(null)
+        );
+
+        public List<Employee> Employees
+        {
+            get { return (List<Employee>)GetValue(EmployeesProperty); }
+            set { SetValue(EmployeesProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedEmployeeProperty = DependencyProperty.Register(
+            "SelectedEmployee",
+            typeof(Employee),
+            typeof(Add_Edit_InvoiceItems_UserCtrl),
+            new PropertyMetadata(null)
+        );
+
+        public Employee SelectedEmployee
+        {
+            get { return (Employee)GetValue(SelectedEmployeeProperty); }
+            set { SetValue(SelectedEmployeeProperty, value); }
+        }
+
+        public static readonly DependencyProperty TotalProperty = DependencyProperty.Register(
+            "Total",
+            typeof(decimal),
+            typeof(Add_Edit_InvoiceItems_UserCtrl),
+            new PropertyMetadata(0m)
+        );
+
+        public decimal Total
+        {
+            get
+            {
+                return decimal.Round((decimal)GetValue(TotalProperty), 2);
+            }
+            set { SetValue(TotalProperty, (decimal)value); }
+        }
+
+        //private void CalculateTotal()
+        //{
+        //    if (InvoiceItems == null)
+        //    {
+        //        return;
+        //    }
+
+        //    decimal total = 0;
+        //    foreach (var item in InvoiceItems)
+        //    {
+        //        total += item.SubTotal;
+        //    }
+        //    SetValue(TotalProperty, total);
+        //}
+
+        //public void AddItem(InvoiceItem item)
+        //{
+        //    
+        //}
+
+
+        private async void UpdateItem_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var invoiceItem = button?.DataContext as InvoiceItem;
+
+            if (invoiceItem != null)
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Update Item",
+                    Content = $"Update details for {invoiceItem.ProductName} at Index {invoiceItem.Index} in the list",
+                    CloseButtonText = "Close",
+                    XamlRoot = this.XamlRoot
+                };
+
+                await dialog.ShowAsync();
+            }
+        }
+
+        private async void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Delete Item",
+                Content = "test",
+                CloseButtonText = "Close",
+                XamlRoot = this.XamlRoot
+            };
+
+            await dialog.ShowAsync();
+            Total = 999;
+        }
+
+        private void AddItem_Click(object sender, RoutedEventArgs e)
+        {
+            var parentFrame = this.Parent as Frame;
+            if (parentFrame == null)
+            {
+                parentFrame = GetParentFrame(this);
+            }
+
+            parentFrame?.Navigate(typeof(InvoiceAddItemPage));
+        }
+
+        private Frame GetParentFrame(DependencyObject child)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null && !(parent is Frame))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return parent as Frame;
+        }
+
+        //private void OnPropertyChanged(string propertyName)
+        //{
+        //    var handler = PropertyChanged;
+        //    handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+    }
+}
