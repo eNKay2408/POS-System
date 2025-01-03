@@ -6,6 +6,7 @@ using POSSystem.Helpers;
 using System.IO;
 using System;
 using System.Runtime.InteropServices;
+using POSSystem.Views.UserCtrl;
 
 namespace POSSystem
 {
@@ -67,6 +68,8 @@ namespace POSSystem
                 // Reload the theme after setting it for the first time
                 theme = settingsService.Load("POSAppTheme");
             }
+
+            InvoiceAddItemPage.AddInvoiceItemHanlder += InvoiceAddPage.AddItemToInvoice;
 
             AppMainWindow = new MainWindow();
             LoginPage loginPage = new LoginPage();

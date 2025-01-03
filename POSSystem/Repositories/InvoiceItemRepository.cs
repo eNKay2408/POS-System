@@ -34,6 +34,7 @@ namespace POSSystem.Repositories
                     {
                         invoiceItems.Add(new InvoiceItem
                         {
+                            //TODO: remove redundant Id, only InvoiceId and ProductId are enough to make primary keys
                             Id = reader.GetInt32(0),
                             InvoiceId = reader.GetInt32(1),
                             ProductId = reader.GetInt32(2),

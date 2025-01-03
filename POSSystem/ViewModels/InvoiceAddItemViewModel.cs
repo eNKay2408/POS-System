@@ -106,43 +106,5 @@ namespace POSSystem.ViewModels
                 CurrentProduct = Products.Find(p => p.Id == InvoiceItem.ProductId);
             }
         }
-
-        public async Task SaveInvoiceItem()
-        {
-            if (CurrentProduct.Id == 0)
-            {
-                throw new Exception("Please select a product.");
-            }
-
-            if (InvoiceItem.Quantity == 0)
-            {
-                throw new Exception("Please enter a quantity.");
-            }
-
-            if (InvoiceItem.Quantity > CurrentProduct.Stock)
-            {
-                throw new Exception("Quantity exceeds stock.");
-            }
-
-            InvoiceItem.ProductId = CurrentProduct.Id;
-            InvoiceItem.UnitPrice = CurrentProduct.Price.Value;
-
-            try
-            {
-                if (InvoiceItem.Id == 0)
-                {
-                    await _invoiceItemRepository.AddInvoiceItem(InvoiceItem);
-                }
-                else
-                {
-                    await _invoiceItemRepository.UpdateInvoiceItem(InvoiceItem);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        }
     }
 }

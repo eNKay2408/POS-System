@@ -21,7 +21,6 @@ namespace POSSystem.Views
             {
                 var viewModel = (InvoiceAddViewModel)DataContext;
                 await viewModel.SaveInvoice();
-
                 Frame.Navigate(typeof(InvoicesPage));
             }
             catch (Exception ex)
@@ -36,6 +35,14 @@ namespace POSSystem.Views
 
                 await errorDialog.ShowAsync();
             }
+        }
+
+        public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
+        public static event InvoiceItemEventHandler AddInvoiceItemHanlder;
+
+        public static void AddItemToInvoice(InvoiceItem item)
+        {
+            UserCtrl.Add_Edit_InvoiceItems_UserCtrl.AddItemToInvoice(item);
         }
 
         private async void Discard_Click(object sender, RoutedEventArgs e)

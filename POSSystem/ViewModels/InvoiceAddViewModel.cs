@@ -1,4 +1,5 @@
-﻿using POSSystem.Models;
+﻿using POSSystem.Helpers;
+using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
 using System;
@@ -17,7 +18,7 @@ namespace POSSystem.ViewModels
 
         private List<Employee> _employees;
         private Employee _selectedEmployee;
-        private List<InvoiceItem> _invoiceItems;
+        private FullObservableCollection<InvoiceItem> _invoiceItems;
         private int _invoiceId;
         private decimal _total;
 
@@ -41,7 +42,7 @@ namespace POSSystem.ViewModels
             }
         }
 
-        public List<InvoiceItem> InvoiceItems
+        public FullObservableCollection<InvoiceItem> InvoiceItems
         {
             get => _invoiceItems;
             set
@@ -79,7 +80,7 @@ namespace POSSystem.ViewModels
             _productRepository = ServiceFactory.GetChildOf<IProductRepository>();
 
             Employees = new List<Employee>();
-            InvoiceItems = new List<InvoiceItem>();
+            InvoiceItems = new();
 
             LoadData();
         }
@@ -128,7 +129,7 @@ namespace POSSystem.ViewModels
                 item.Index = invoiceItems.IndexOf(item) + 1;
             }
 
-            InvoiceItems = invoiceItems;
+            InvoiceItems = new FullObservableCollection<InvoiceItem>(invoiceItems);
         }
 
         public async Task DeleteItem(InvoiceItem invoiceItem)

@@ -4,42 +4,65 @@ using Microsoft.UI.Xaml.Navigation;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
+using System.Threading.Tasks;
 
 namespace POSSystem.Views
 {
     public sealed partial class InvoiceAddItemPage : Page
     {
+        public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
+        public static event InvoiceItemEventHandler AddInvoiceItemHanlder;
+
+        public InvoiceAddItemViewModel ViewModel { get; set; }
         public InvoiceAddItemPage()
-        {
+        { 
+            ViewModel = new InvoiceAddItemViewModel();
             this.InitializeComponent();
-            this.DataContext = new InvoiceAddItemViewModel();
+            this.DataContext = ViewModel;
         }
 
         private void Discard_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (InvoiceAddItemViewModel)DataContext;
-            Frame.Navigate(typeof(InvoiceAddPage), viewModel.InvoiceItem.InvoiceId);
+            Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var viewModel = (InvoiceAddItemViewModel)DataContext;
-                await viewModel.SaveInvoiceItem();
+                if (ViewModel.CurrentProduct.Id == 0)
+                {
+                    await DisplayErrorDialog("Please select a product.");
+                    return;
+                }
 
-                Frame.Navigate(typeof(InvoiceAddPage), viewModel.InvoiceItem.InvoiceId);
+                if (!int.TryParse(ViewModel.InvoiceItem.Quantity.ToString(), out int quantity) || quantity <= 0)
+                {
+                    await DisplayErrorDialog("Please enter a valid quantity (positive integer).");
+                    return;
+                }
+
+                if (quantity > ViewModel.CurrentProduct.Stock)
+                {
+                    await DisplayErrorDialog("Quantity exceeds stock.");
+                    return;
+                }
+
+                ViewModel.InvoiceItem.ProductId = ViewModel.CurrentProduct.Id;
+                ViewModel.InvoiceItem.UnitPrice = ViewModel.CurrentProduct.Price.Value;
+                ViewModel.InvoiceItem.ProductName = ViewModel.CurrentProduct.Name;
+
+                if (ViewModel.InvoiceItem.Id == 0)
+                {
+                    AddInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);
+                }
+
+                Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
+                //Frame.GoBack();
             }
             catch (Exception ex)
             {
-                var dialog = new ContentDialog()
-                {
-                    Title = "Error",
-                    Content = ex.Message,
-                    PrimaryButtonText = "OK",
-                    XamlRoot = this.XamlRoot
-                };
-                _ = dialog.ShowAsync();
+                await DisplayErrorDialog(ex.Message);
             }
         }
 
@@ -48,9 +71,21 @@ namespace POSSystem.Views
             base.OnNavigatedTo(e);
             if (e.Parameter is InvoiceItem invoiceItem)
             {
-                var viewModel = (InvoiceAddItemViewModel)DataContext;
-                viewModel.InvoiceItem = invoiceItem;
+                ViewModel.InvoiceItem = invoiceItem;
             }
+        }
+
+        private async Task DisplayErrorDialog(string contentMessage)
+        {
+            ContentDialog errorDialog = new()
+            {
+                Title = "ERROR",
+                Content = contentMessage,
+                CloseButtonText = "Ok",
+                XamlRoot = this.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
         }
     }
 }

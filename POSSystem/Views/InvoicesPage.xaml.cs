@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using POSSystem.Models;
 using POSSystem.ViewModels;
+using POSSystem.Views.UserCtrl;
 using System;
 
 namespace POSSystem.Views

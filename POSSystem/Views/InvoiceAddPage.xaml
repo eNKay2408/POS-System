@@ -28,10 +28,12 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
-                    <user_control:Add_Edit_InvoiceItems_Usertrl 
+                    <user_control:Add_Edit_InvoiceItems_UserCtrl 
                         InvoiceItems="{Binding InvoiceItems}" 
                         Employees="{Binding Employees}"
-                        Grid.Row="1"/>
+                        Grid.Row="1"
+                        x:Name="InvoiceItemsUserControl"
+                        />
                 </Grid>
 
                 
