@@ -33,8 +33,8 @@
                         Employees="{x:Bind ViewModel.Employees}"
                         Grid.Row="1"
                         x:Name="InvoiceItemsUserControl"
-                        Total="{x:Bind ViewModel.Total, Mode=TwoWay}"
-                        SelectedEmployee="{x:Bind ViewModel.SelectedEmployee}"
+                        Total="{x:Bind ViewModel.Total, Mode=OneWay}"
+                        SelectedEmployee="{x:Bind ViewModel.SelectedEmployee, Mode=TwoWay}"
                         />
                 </Grid>
 
