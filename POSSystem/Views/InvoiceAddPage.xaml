@@ -29,8 +29,8 @@
 
                 <Grid Grid.Row="0">
                     <user_control:Add_Edit_InvoiceItems_UserCtrl 
-                        InvoiceItems="{Binding InvoiceItems}" 
-                        Employees="{Binding Employees}"
+                        InvoiceItems="{x:Bind ViewModel.InvoiceItems}" 
+                        Employees="{x:Bind ViewModel.Employees}"
                         Grid.Row="1"
                         x:Name="InvoiceItemsUserControl"
                         />

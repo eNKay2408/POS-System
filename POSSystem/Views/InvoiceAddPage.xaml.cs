@@ -9,10 +9,12 @@ namespace POSSystem.Views
 {
     public sealed partial class InvoiceAddPage : Page
     {
+        public InvoiceAddViewModel ViewModel { get; set; }
         public InvoiceAddPage()
         {
             InitializeComponent();
-            DataContext = new InvoiceAddViewModel();
+            ViewModel = InvoiceAddViewModel.Instance;
+            this.DataContext = ViewModel;
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
@@ -42,7 +44,8 @@ namespace POSSystem.Views
 
         public static void AddItemToInvoice(InvoiceItem item)
         {
-            UserCtrl.Add_Edit_InvoiceItems_UserCtrl.AddItemToInvoice(item);
+            InvoiceAddViewModel.Instance.InvoiceItems.Add(item);
+
         }
 
         private async void Discard_Click(object sender, RoutedEventArgs e)
@@ -99,6 +102,11 @@ namespace POSSystem.Views
             {
                 var viewModel = (InvoiceAddViewModel)DataContext;
                 viewModel.InvoiceId = invoiceId;
+            }
+            if(e.Parameter is InvoiceItem invoiceItem)
+            {
+                var viewModel = (InvoiceAddViewModel)DataContext;
+                viewModel.InvoiceItems.Add(invoiceItem);
             }
         }
     }

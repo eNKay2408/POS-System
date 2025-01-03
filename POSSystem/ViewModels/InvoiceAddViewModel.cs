@@ -11,6 +11,10 @@ namespace POSSystem.ViewModels
 {
     public class InvoiceAddViewModel : BaseViewModel
     {
+        private static readonly Lazy<InvoiceAddViewModel> _instance = new Lazy<InvoiceAddViewModel>(() => new InvoiceAddViewModel());
+
+        public static InvoiceAddViewModel Instance => _instance.Value;
+
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IInvoiceItemRepository _invoiceItemRepository;
         private readonly IInvoiceRepository _invoiceRepository;
@@ -48,7 +52,7 @@ namespace POSSystem.ViewModels
             set
             {
                 _invoiceItems = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(InvoiceItems));
             }
         }
 
@@ -72,7 +76,7 @@ namespace POSSystem.ViewModels
             }
         }
 
-        public InvoiceAddViewModel()
+        private InvoiceAddViewModel()
         {
             _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
             _invoiceItemRepository = ServiceFactory.GetChildOf<IInvoiceItemRepository>();
@@ -165,6 +169,12 @@ namespace POSSystem.ViewModels
         {
             await _invoiceItemRepository.DeleteInvoiceItemsByInvoiceId(InvoiceId);
             await _invoiceRepository.DeleteInvoice(InvoiceId);
+        }
+
+        public void ClearInvoiceItems()
+        {
+            InvoiceItems.Clear();
+            Total = 0;
         }
     }
 }

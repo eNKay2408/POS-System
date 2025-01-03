@@ -57,8 +57,10 @@ namespace POSSystem.Views
                     AddInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);
                 }
 
-                Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
-                //Frame.GoBack();
+                //Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
+                //Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem);
+
+                Frame.GoBack();
             }
             catch (Exception ex)
             {
