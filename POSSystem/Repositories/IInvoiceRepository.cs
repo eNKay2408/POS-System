@@ -6,7 +6,7 @@ namespace POSSystem.Repositories
 {
     public interface IInvoiceRepository
     {
-        Task<int> CreateInvoice(Invoice invoice);
+        //Task<int> CreateInvoice(Invoice invoice);
         Task SaveInvoice(Invoice invoice);
         Task<List<Invoice>> GetAllInvoices();
         Task DeleteInvoice(int invoiceId);

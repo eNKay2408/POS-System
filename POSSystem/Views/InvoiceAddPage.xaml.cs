@@ -21,8 +21,7 @@ namespace POSSystem.Views
         {
             try
             {
-                var viewModel = (InvoiceAddViewModel)DataContext;
-                await viewModel.SaveInvoice();
+                await ViewModel.SaveInvoice();
                 Frame.Navigate(typeof(InvoicesPage));
             }
             catch (Exception ex)
@@ -38,9 +37,6 @@ namespace POSSystem.Views
                 await errorDialog.ShowAsync();
             }
         }
-
-        public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
-        public static event InvoiceItemEventHandler AddInvoiceItemHanlder;
 
         public static void AddItemToInvoice(InvoiceItem item)
         {
@@ -64,7 +60,7 @@ namespace POSSystem.Views
             if (result == ContentDialogResult.Primary)
             {
                 var viewModel = (InvoiceAddViewModel)DataContext;
-                await viewModel.DiscardChanges();
+                viewModel.DiscardChanges();
                 Frame.Navigate(typeof(InvoicesPage));
             }
         }
@@ -89,20 +85,21 @@ namespace POSSystem.Views
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = (InvoiceAddViewModel)DataContext;
-            var invoiceItem = new InvoiceItem { InvoiceId = viewModel.InvoiceId };
+            //var invoiceItem = new InvoiceItem { InvoiceId = viewModel.InvoiceId };
 
-            Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
+            //Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
+            Frame.Navigate(typeof(InvoiceAddItemPage));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is int invoiceId)
-            {
-                var viewModel = (InvoiceAddViewModel)DataContext;
-                viewModel.InvoiceId = invoiceId;
-            }
+            //if (e.Parameter is int invoiceId)
+            //{
+            //    var viewModel = (InvoiceAddViewModel)DataContext;
+            //    viewModel.InvoiceId = invoiceId;
+            //}
             if(e.Parameter is InvoiceItem invoiceItem)
             {
                 var viewModel = (InvoiceAddViewModel)DataContext;

@@ -24,7 +24,7 @@ namespace POSSystem.ViewModels
         private List<Employee> _employees;
         private Employee _selectedEmployee;
         private FullObservableCollection<InvoiceItem> _invoiceItems;
-        private int _invoiceId;
+        //private int _invoiceId;
         private decimal _total;
 
         public List<Employee> Employees
@@ -57,15 +57,15 @@ namespace POSSystem.ViewModels
             }
         }
 
-        public int InvoiceId
-        {
-            get => _invoiceId;
-            set
-            {
-                _invoiceId = value;
-                OnPropertyChanged();
-            }
-        }
+        //public int InvoiceId
+        //{
+        //    get => _invoiceId;
+        //    set
+        //    {
+        //        _invoiceId = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         public decimal Total
         {
@@ -93,25 +93,25 @@ namespace POSSystem.ViewModels
         private async void LoadData()
         {
             await LoadEmployees();
-            await LoadInvoiceItems();
-            await CreateInvoice();
+            //await LoadInvoiceItems();
+            //await CreateInvoice();
         }
 
-        public async Task CreateInvoice()
-        {
-            if (InvoiceId == 0)
-            {
-                var invoice = new Invoice
-                {
-                    EmployeeId = 1,
-                    Timestamp = DateTime.Now,
-                    Total = 0,
-                    IsPaid = false
-                };
+        //public async Task CreateInvoice()
+        //{
+        //    if (InvoiceId == 0)
+        //    {
+        //        var invoice = new Invoice
+        //        {
+        //            EmployeeId = 1,
+        //            Timestamp = DateTime.Now,
+        //            Total = 0,
+        //            IsPaid = false
+        //        };
 
-                InvoiceId = await _invoiceRepository.CreateInvoice(invoice);
-            }
-        }
+        //        InvoiceId = await _invoiceRepository.CreateInvoice(invoice);
+        //    }
+        //}
 
         private async Task LoadEmployees()
         {
@@ -119,23 +119,23 @@ namespace POSSystem.ViewModels
             Employees = employees;
         }
 
-        private async Task LoadInvoiceItems()
-        {
-            var invoiceItems = await _invoiceItemRepository.GetInvoiceItemsByInvoiceId(InvoiceId);
-            Total = 0;
+        //private async Task LoadInvoiceItems()
+        //{
+        //    var invoiceItems = await _invoiceItemRepository.GetInvoiceItemsByInvoiceId(InvoiceId);
+        //    Total = 0;
 
-            foreach (var item in invoiceItems)
-            {
-                var product = await _productRepository.GetProductById(item.ProductId);
-                item.ProductName = product.Name;
+        //    foreach (var item in invoiceItems)
+        //    {
+        //        var product = await _productRepository.GetProductById(item.ProductId);
+        //        item.ProductName = product.Name;
 
-                Total += item.SubTotal;
+        //        Total += item.SubTotal;
 
-                item.Index = invoiceItems.IndexOf(item) + 1;
-            }
+        //        item.Index = invoiceItems.IndexOf(item) + 1;
+        //    }
 
-            InvoiceItems = new FullObservableCollection<InvoiceItem>(invoiceItems);
-        }
+        //    InvoiceItems = new FullObservableCollection<InvoiceItem>(invoiceItems);
+        //}
 
         public void DeleteInvoiceItem(int index)
         {
@@ -146,7 +146,7 @@ namespace POSSystem.ViewModels
         public async Task DeleteItem(InvoiceItem invoiceItem)
         {
             await _invoiceItemRepository.DeleteInvoiceItem(invoiceItem.Id);
-            await LoadInvoiceItems();
+            //await LoadInvoiceItems();
         }
 
         public async Task SaveInvoice()
@@ -163,19 +163,20 @@ namespace POSSystem.ViewModels
 
             var invoice = new Invoice
             {
-                Id = InvoiceId,
                 EmployeeId = SelectedEmployee.Id,
                 Timestamp = DateTime.Now,
                 Total = Total,
+                IsPaid = false
             };
 
             await _invoiceRepository.SaveInvoice(invoice);
         }
 
-        public async Task DiscardChanges()
+        public void DiscardChanges()
         {
-            await _invoiceItemRepository.DeleteInvoiceItemsByInvoiceId(InvoiceId);
-            await _invoiceRepository.DeleteInvoice(InvoiceId);
+            //await _invoiceItemRepository.DeleteInvoiceItemsByInvoiceId(InvoiceId);
+            //await _invoiceRepository.DeleteInvoice(InvoiceId);
+            ClearInvoiceItems();
         }
 
         public void ClearInvoiceItems()

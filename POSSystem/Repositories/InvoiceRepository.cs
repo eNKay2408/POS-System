@@ -16,39 +16,42 @@ namespace POSSystem.Repositories
             _connection = new NpgsqlConnection(ConnectionString);
         }
 
-        public async Task<int> CreateInvoice(Invoice invoice)
-        {
-            try
-            {
-                string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid) VALUES (@employeeid, @timestamp, @total, @ispaid) RETURNING id";
-                await _connection.OpenAsync();
+        //public async Task<int> CreateInvoice(Invoice invoice)
+        //{
+        //    try
+        //    {
+        //        string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid) VALUES (@employeeid, @timestamp, @total, @ispaid)";
+        //        await _connection.OpenAsync();
 
-                using (var cmd = new NpgsqlCommand(query, _connection))
-                {
-                    cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
-                    cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
-                    cmd.Parameters.AddWithValue("total", invoice.Total);
-                    cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
+        //        using (var cmd = new NpgsqlCommand(query, _connection))
+        //        {
+        //            cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
+        //            cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
+        //            cmd.Parameters.AddWithValue("total", invoice.Total);
+        //            cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
 
-                    return (int)await cmd.ExecuteScalarAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-            finally
-            {
-                await _connection.CloseAsync();
-            }
-        }
+        //            return (int)await cmd.ExecuteScalarAsync();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        await _connection.CloseAsync();
+        //    }
+        //}
+
+        
 
         public async Task SaveInvoice(Invoice invoice)
         {
             try
             {
-                string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, employeename = (SELECT name from employee where id = @employeeid) WHERE id = @id";
+                string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid, employeename) VALUES (@employeeid, @timestamp, @total, @ispaid, (SELECT name from employee where id = @employeeid))";
+                //string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, employeename = (SELECT name from employee where id = @employeeid) WHERE id = @id";
                 await _connection.OpenAsync();
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
@@ -56,7 +59,8 @@ namespace POSSystem.Repositories
                     cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
                     cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
                     cmd.Parameters.AddWithValue("total", invoice.Total);
-                    cmd.Parameters.AddWithValue("id", invoice.Id);
+                    //cmd.Parameters.AddWithValue("id", invoice.Id);
+                    cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
 
                     await cmd.ExecuteNonQueryAsync();
                 }
