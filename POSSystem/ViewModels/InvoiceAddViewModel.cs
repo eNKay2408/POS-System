@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
@@ -69,7 +70,7 @@ namespace POSSystem.ViewModels
 
         public decimal Total
         {
-            get => _total;
+            get => decimal.Round(_total, 2);
             set
             {
                 _total = value;
@@ -170,19 +171,21 @@ namespace POSSystem.ViewModels
             };
 
             await _invoiceRepository.SaveInvoice(invoice);
+            Clear();
         }
 
         public void DiscardChanges()
         {
             //await _invoiceItemRepository.DeleteInvoiceItemsByInvoiceId(InvoiceId);
             //await _invoiceRepository.DeleteInvoice(InvoiceId);
-            ClearInvoiceItems();
+            Clear();
         }
 
-        public void ClearInvoiceItems()
+        public void Clear()
         {
             InvoiceItems.Clear();
             Total = 0;
+            SelectedEmployee = null;
         }
 
         public void AddItemToInvoice(InvoiceItem invoiceItem)
@@ -225,7 +228,13 @@ namespace POSSystem.ViewModels
             }
 
             Total = total;
-            OnPropertyChanged(nameof(_total));
+            //OnPropertyChanged(nameof(_total));
+        }
+
+        public void DeleteItemFromInvoice(InvoiceItem item)
+        {
+            InvoiceItems.Remove(item);
+            Total -= item.SubTotal;
         }
     }
 }

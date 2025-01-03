@@ -12,6 +12,7 @@ namespace POSSystem.Views
     {
         public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
         public static event InvoiceItemEventHandler AddInvoiceItemHanlder;
+        public static event InvoiceItemEventHandler DeleteInvoiceItemHanlder;
 
         public InvoiceAddItemViewModel ViewModel { get; set; }
         public InvoiceAddItemPage()
@@ -23,7 +24,8 @@ namespace POSSystem.Views
 
         private void Discard_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
+            //Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
+            Frame.GoBack();
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
@@ -68,14 +70,14 @@ namespace POSSystem.Views
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is InvoiceItem invoiceItem)
-            {
-                ViewModel.InvoiceItem = invoiceItem;
-            }
-        }
+        //protected override void OnNavigatedTo(NavigationEventArgs e)
+        //{
+        //    base.OnNavigatedTo(e);
+        //    if (e.Parameter is InvoiceItem invoiceItem)
+        //    {
+        //        ViewModel.InvoiceItem = invoiceItem;
+        //    }
+        //}
 
         private async Task DisplayErrorDialog(string contentMessage)
         {

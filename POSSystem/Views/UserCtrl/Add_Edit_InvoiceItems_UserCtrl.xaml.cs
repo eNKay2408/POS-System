@@ -21,6 +21,8 @@ namespace POSSystem.Views.UserCtrl
     /// </summary>
     public sealed partial class Add_Edit_InvoiceItems_UserCtrl : UserControl
     {
+        public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
+        public event InvoiceItemEventHandler DeleteItemHandler;
         public Add_Edit_InvoiceItems_UserCtrl()
         {
             this.InitializeComponent();
@@ -77,7 +79,7 @@ namespace POSSystem.Views.UserCtrl
             "Total",
             typeof(decimal),
             typeof(Add_Edit_InvoiceItems_UserCtrl),
-            new PropertyMetadata(0m)
+            new PropertyMetadata(0.000m)
         );
 
         public decimal Total
@@ -129,18 +131,13 @@ namespace POSSystem.Views.UserCtrl
             }
         }
 
-        private async void DeleteItem_Click(object sender, RoutedEventArgs e)
+        private void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog
+            var item = (sender as Button)?.DataContext as InvoiceItem;
+            if (item != null)
             {
-                Title = "Delete Item",
-                Content = "test",
-                CloseButtonText = "Close",
-                XamlRoot = this.XamlRoot
-            };
-
-            await dialog.ShowAsync();
-            Total = 999;
+                DeleteItemHandler?.Invoke(item);
+            }
         }
 
         private void AddItem_Click(object sender, RoutedEventArgs e)

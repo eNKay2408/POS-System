@@ -44,6 +44,11 @@ namespace POSSystem.Views
 
         }
 
+        public void DeleteItemFromInvoice(InvoiceItem item)
+        {
+            ViewModel.DeleteItemFromInvoice(item);
+        }
+
         private async void Discard_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new ContentDialog()
@@ -61,7 +66,7 @@ namespace POSSystem.Views
             {
                 var viewModel = (InvoiceAddViewModel)DataContext;
                 viewModel.DiscardChanges();
-                Frame.Navigate(typeof(InvoicesPage));
+                Frame.GoBack();
             }
         }
 
@@ -107,9 +112,5 @@ namespace POSSystem.Views
             }
         }
 
-        private void TestButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.DeleteInvoiceItem(0);
-        }
     }
 }
