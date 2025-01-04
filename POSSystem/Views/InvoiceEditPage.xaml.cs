@@ -5,17 +5,16 @@ using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace POSSystem.Views
 {
-    public sealed partial class InvoiceAddPage : Page
+    public sealed partial class InvoiceEditPage : Page
     {
-        public InvoiceAddViewModel ViewModel { get; set; }
-        public InvoiceAddPage()
+        public InvoiceEditViewModel ViewModel { get; set; }
+        public InvoiceEditPage()
         {
             InitializeComponent();
-            ViewModel = InvoiceAddViewModel.Instance;
+            ViewModel = InvoiceEditViewModel.Instance;
             this.DataContext = ViewModel;
         }
 
@@ -42,7 +41,8 @@ namespace POSSystem.Views
 
         public static void AddItemToInvoice(InvoiceItem item)
         {
-            InvoiceAddViewModel.Instance.AddItemToInvoice(item);
+            InvoiceEditViewModel.Instance.AddItemToInvoice(item);
+
         }
 
         public void DeleteItemFromInvoice(InvoiceItem item)
@@ -54,7 +54,7 @@ namespace POSSystem.Views
         {
             try
             {
-                InvoiceAddViewModel.Instance.UpdateInvoiceItem(item);
+                InvoiceEditViewModel.Instance.UpdateInvoiceItem(item);
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                var viewModel = (InvoiceAddViewModel)DataContext;
+                var viewModel = (InvoiceEditViewModel)DataContext;
                 viewModel.DiscardChanges();
                 Frame.GoBack();
             }
@@ -96,14 +96,14 @@ namespace POSSystem.Views
             var button = (Button)sender;
             var invoiceItem = (InvoiceItem)button.DataContext;
 
-            var viewModel = (InvoiceAddViewModel)DataContext;
+            var viewModel = (InvoiceEditViewModel)DataContext;
             await viewModel.DeleteItem(invoiceItem);
         }
 
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (InvoiceAddViewModel)DataContext;
+            var viewModel = (InvoiceEditViewModel)DataContext;
             //var invoiceItem = new InvoiceItem { InvoiceId = viewModel.InvoiceId };
 
             //Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
@@ -113,11 +113,6 @@ namespace POSSystem.Views
         public void UpdateInvoiceItem_Click(InvoiceItem item)
         {
             Frame.Navigate(typeof(InvoiceAddItemPage), item);
-        }
-
-        public async static Task ModifyEmployee_Handler(Employee employee)
-        {
-            await InvoiceAddViewModel.Instance.ModifyEmployeeAsync(employee);
         }
 
     }

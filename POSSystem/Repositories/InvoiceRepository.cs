@@ -163,5 +163,43 @@ namespace POSSystem.Repositories
                 await _connection.CloseAsync();
             }
         }
+
+        public async Task<Employee> GetEmployeeByInvoiceId(int invoiceId)
+        {
+            try
+            {
+                string query = "SELECT e.* FROM Invoice i JOIN Employee e ON i.employeeid = e.id WHERE i.id = @id";
+                await _connection.OpenAsync();
+
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("id", invoiceId);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new Employee
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Email = reader.GetString(2)
+
+                            };
+                        }
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
     }
 }

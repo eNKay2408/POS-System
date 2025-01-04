@@ -11,5 +11,7 @@ namespace POSSystem.Repositories
         Task<List<Invoice>> GetAllInvoices();
         Task DeleteInvoice(int invoiceId);
         Task UpdateInvoiceIsPaid(int invoiceId, bool isPaid);
+
+        Task<Employee> GetEmployeeByInvoiceId(int invoiceId);
     }
 }
