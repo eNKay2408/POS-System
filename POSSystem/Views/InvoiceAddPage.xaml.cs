@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Navigation;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace POSSystem.Views
 {
@@ -49,6 +50,26 @@ namespace POSSystem.Views
             ViewModel.DeleteItemFromInvoice(item);
         }
 
+        public static async void UpdateInvoiceItem(InvoiceItem item)
+        {
+            try
+            {
+                InvoiceAddViewModel.Instance.UpdateInvoiceItem(item);
+            }
+            catch (Exception ex)
+            {
+                var dialog = new ContentDialog()
+                {
+                    Title = "Error",
+                    Content = ex.Message,
+                    CloseButtonText = "Ok",
+                    XamlRoot = App.AppMainWindow.Content.XamlRoot
+                };
+
+                await dialog.ShowAsync();
+            }
+        }
+
         private async void Discard_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new ContentDialog()
@@ -79,13 +100,6 @@ namespace POSSystem.Views
             await viewModel.DeleteItem(invoiceItem);
         }
 
-        private void UpdateItem_Click(object sender, RoutedEventArgs e)
-        {
-            var button = (Button)sender;
-            var invoiceItem = (InvoiceItem)button.DataContext;
-
-            Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
-        }
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
@@ -96,6 +110,10 @@ namespace POSSystem.Views
             Frame.Navigate(typeof(InvoiceAddItemPage));
         }
 
+        public void UpdateInvoiceItem_Click(InvoiceItem item)
+        {
+            Frame.Navigate(typeof(InvoiceAddItemPage), item);
+        }
 
     }
 }

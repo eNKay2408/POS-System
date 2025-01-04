@@ -70,6 +70,7 @@ namespace POSSystem
             }
 
             InvoiceAddItemPage.AddInvoiceItemHanlder += InvoiceAddPage.AddItemToInvoice;
+            InvoiceAddItemPage.UpdateInvoiceItemHanlder += InvoiceAddPage.UpdateInvoiceItem;
 
             AppMainWindow = new MainWindow();
             LoginPage loginPage = new LoginPage();

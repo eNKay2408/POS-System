@@ -16,14 +16,13 @@ namespace POSSystem.Converters
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="language">The language of the conversion.</param>
         /// <returns>A string representation of the decimal value with 2 decimal places.</returns>
-        /// <exception cref="ArgumentException">Thrown when the value is not a decimal.</exception>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is decimal decimalValue)
             {
                 return decimalValue.ToString("F2"); // Format to 2 decimal places
             }
-            throw new ArgumentException("Value must be a decimal.", nameof(value));
+            return null;
         }
 
         /// <summary>

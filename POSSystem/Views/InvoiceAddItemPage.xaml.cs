@@ -12,7 +12,7 @@ namespace POSSystem.Views
     {
         public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
         public static event InvoiceItemEventHandler AddInvoiceItemHanlder;
-        public static event InvoiceItemEventHandler DeleteInvoiceItemHanlder;
+        public static event InvoiceItemEventHandler UpdateInvoiceItemHanlder;
 
         public InvoiceAddItemViewModel ViewModel { get; set; }
         public InvoiceAddItemPage()
@@ -54,7 +54,11 @@ namespace POSSystem.Views
                 ViewModel.InvoiceItem.UnitPrice = ViewModel.CurrentProduct.Price.Value;
                 ViewModel.InvoiceItem.ProductName = ViewModel.CurrentProduct.Name;
                 
-                if (ViewModel.InvoiceItem.Id == 0)
+                if (_toUpdateInvoiceItem)
+                {
+                    UpdateInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);
+                }
+                else
                 {
                     AddInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);
                 }
@@ -70,14 +74,31 @@ namespace POSSystem.Views
             }
         }
 
-        //protected override void OnNavigatedTo(NavigationEventArgs e)
-        //{
-        //    base.OnNavigatedTo(e);
-        //    if (e.Parameter is InvoiceItem invoiceItem)
-        //    {
-        //        ViewModel.InvoiceItem = invoiceItem;
-        //    }
-        //}
+        private bool _toUpdateInvoiceItem = false;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter is InvoiceItem item)
+            {
+                _toUpdateInvoiceItem = true;
+
+                // to avoid direct binding to the item
+
+                if(ViewModel.InvoiceItem == null)
+                {
+                    ViewModel.InvoiceItem = new InvoiceItem();
+                }
+                ViewModel.InvoiceItem.ProductId = item.ProductId;
+                ViewModel.InvoiceItem.Quantity = item.Quantity;
+                ViewModel.InvoiceItem.UnitPrice = item.UnitPrice;
+                ViewModel.InvoiceItem.ProductName = item.ProductName;
+                ViewModel.InvoiceItem.InvoiceId = item.InvoiceId;
+                ViewModel.InvoiceItem.Id = item.Id;
+                ViewModel.InvoiceItem.Index = item.Index;
+
+                ViewModel.LoadSelectedProduct();
+            }
+        }
 
         private async Task DisplayErrorDialog(string contentMessage)
         {

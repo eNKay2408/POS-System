@@ -23,6 +23,7 @@ namespace POSSystem.Views.UserCtrl
     {
         public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
         public event InvoiceItemEventHandler DeleteItemHandler;
+        public event InvoiceItemEventHandler UpdateItemHandler;
         public Add_Edit_InvoiceItems_UserCtrl()
         {
             this.InitializeComponent();
@@ -91,44 +92,14 @@ namespace POSSystem.Views.UserCtrl
             set { SetValue(TotalProperty, (decimal)value); }
         }
 
-        //private void CalculateTotal()
-        //{
-        //    if (InvoiceItems == null)
-        //    {
-        //        return;
-        //    }
-
-        //    decimal total = 0;
-        //    foreach (var item in InvoiceItems)
-        //    {
-        //        total += item.SubTotal;
-        //    }
-        //    SetValue(TotalProperty, total);
-        //}
-
-        //public void AddItem(InvoiceItem item)
-        //{
-        //    
-        //}
-
-
-        private async void UpdateItem_Click(object sender, RoutedEventArgs e)
+        private void UpdateItem_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var invoiceItem = button?.DataContext as InvoiceItem;
-
-            if (invoiceItem != null)
+            var item = (sender as Button)?.DataContext as InvoiceItem;
+            if(item != null)
             {
-                var dialog = new ContentDialog
-                {
-                    Title = "Update Item",
-                    Content = $"Update details for {invoiceItem.ProductName} at Index {invoiceItem.Index} in the list",
-                    CloseButtonText = "Close",
-                    XamlRoot = this.XamlRoot
-                };
+                UpdateItemHandler?.Invoke(item);
+            }    
 
-                await dialog.ShowAsync();
-            }
         }
 
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
@@ -161,12 +132,5 @@ namespace POSSystem.Views.UserCtrl
             return parent as Frame;
         }
 
-        //private void OnPropertyChanged(string propertyName)
-        //{
-        //    var handler = PropertyChanged;
-        //    handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
-
-        //public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -34,6 +34,7 @@
                         Total="{x:Bind ViewModel.Total, Mode=OneWay}"
                         SelectedEmployee="{x:Bind ViewModel.SelectedEmployee, Mode=TwoWay}"
                         DeleteItemHandler="DeleteItemFromInvoice"
+                        UpdateItemHandler="UpdateInvoiceItem_Click"
                         />
                 </Grid>
 
