@@ -32,7 +32,7 @@ namespace POSSystem.ViewModels
             set
             {
                 _employees = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Employees));
             }
         }
 
@@ -42,7 +42,7 @@ namespace POSSystem.ViewModels
             set
             {
                 _selectedEmployee = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedEmployee));
             }
         }
 
@@ -76,7 +76,9 @@ namespace POSSystem.ViewModels
             _productRepository = ServiceFactory.GetChildOf<IProductRepository>();
 
             Employees = new List<Employee>();
-            InvoiceItems = new();
+            SelectedEmployee = new();
+            InvoiceItems = new FullObservableCollection<InvoiceItem>();
+            Total = 0;
 
             // Register event handlers
             InvoiceAddItemPage.AddInvoiceItemHanlder += InvoiceEditPage.AddItemToInvoice;
@@ -84,10 +86,17 @@ namespace POSSystem.ViewModels
 
         }
 
-        public async void LoadData()
+        public async 
+        Task
+LoadData()
         {
             await LoadEmployees();
             await LoadInvoiceItems();
+        }
+
+        public void SetSelectedEmployee(int employeeId)
+        {
+            SelectedEmployee = Employees.Find(e => e.Id == employeeId);
         }
 
 
@@ -95,8 +104,6 @@ namespace POSSystem.ViewModels
         {
             var employees = await _employeeRepository.GetAllEmployees();
             Employees = employees;
-
-            SelectedEmployee = await _invoiceRepository.GetEmployeeByInvoiceId(InvoiceId);
         }
 
         private async Task LoadInvoiceItems()
@@ -157,8 +164,8 @@ namespace POSSystem.ViewModels
             SelectedEmployee = null;
 
             // Unregister event handlers
-            InvoiceAddItemPage.AddInvoiceItemHanlder -= InvoiceAddPage.AddItemToInvoice;
-            InvoiceAddItemPage.UpdateInvoiceItemHanlder -= InvoiceAddPage.UpdateInvoiceItem;
+            InvoiceAddItemPage.AddInvoiceItemHanlder -= InvoiceEditPage.AddItemToInvoice;
+            InvoiceAddItemPage.UpdateInvoiceItemHanlder -= InvoiceEditPage.UpdateInvoiceItem;
         }
 
         public void AddItemToInvoice(InvoiceItem newItem)

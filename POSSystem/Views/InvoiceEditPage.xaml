@@ -13,17 +13,12 @@
     <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Left">
             <Run Text="Update Invoice" FontSize="30" FontFamily="{StaticResource PoppinsBold}" />
             <Run Text="{x:Bind ViewModel.InvoiceId}" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
-        </TextBlock>
-        <TextBlock Grid.Row="1" Margin="0,0,0,30" HorizontalAlignment="Left">
-            <Run Text="Previous employee: " FontSize="16" FontFamily="{StaticResource PoppinsBold}" />
-            <Run Text="{x:Bind Invoice.EmployeeName}" FontSize="16" FontFamily="{StaticResource PoppinsBold}"/>
         </TextBlock>
 
         <Border BorderBrush="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" 

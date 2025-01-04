@@ -178,13 +178,13 @@ namespace POSSystem.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            return new Employee
+                            Employee e = new Employee()
                             {
                                 Id = reader.GetInt32(0),
                                 Name = reader.GetString(1),
                                 Email = reader.GetString(2)
-
                             };
+                            return e;
                         }
                     }
                 }

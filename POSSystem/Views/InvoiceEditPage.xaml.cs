@@ -119,14 +119,14 @@ namespace POSSystem.Views
             Frame.Navigate(typeof(InvoiceAddItemPage), item);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             if(e.Parameter is Invoice invoice)
             {
                 ViewModel.InvoiceId = invoice.Id;
-                Invoice = invoice;
-                ViewModel.LoadData();
+                await ViewModel.LoadData();
+                ViewModel.SetSelectedEmployee(invoice.EmployeeId);
             }
         }
 
