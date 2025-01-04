@@ -13,14 +13,21 @@
     <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="New Invoice" FontSize="30" FontFamily="{StaticResource PoppinsBold}" 
-               Grid.Row="0" Margin="0,0,0,30" HorizontalAlignment="Left" />
+        <TextBlock Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Left">
+            <Run Text="Update Invoice" FontSize="30" FontFamily="{StaticResource PoppinsBold}" />
+            <Run Text="{x:Bind ViewModel.InvoiceId}" FontSize="30" FontFamily="{StaticResource PoppinsBold}"/>
+        </TextBlock>
+        <TextBlock Grid.Row="1" Margin="0,0,0,30" HorizontalAlignment="Left">
+            <Run Text="Previous employee: " FontSize="16" FontFamily="{StaticResource PoppinsBold}" />
+            <Run Text="{x:Bind Invoice.EmployeeName}" FontSize="16" FontFamily="{StaticResource PoppinsBold}"/>
+        </TextBlock>
 
         <Border BorderBrush="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" 
-            BorderThickness="2" CornerRadius="8" Padding="20" Grid.Row="1">
+            BorderThickness="2" CornerRadius="8" Padding="20" Grid.Row="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*" />
@@ -29,7 +36,7 @@
 
                 <Grid Grid.Row="0">
                     <user_control:Add_Edit_InvoiceItems_UserCtrl 
-                    InvoiceItems="{x:Bind ViewModel.InvoiceItems}" 
+                    InvoiceItems="{x:Bind ViewModel.InvoiceItems, Mode=TwoWay}" 
                     Employees="{x:Bind ViewModel.Employees}"
                     Grid.Row="1"
                     x:Name="InvoiceItemsUserControl"

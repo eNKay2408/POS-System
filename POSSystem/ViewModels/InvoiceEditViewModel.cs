@@ -23,7 +23,7 @@ namespace POSSystem.ViewModels
         private List<Employee> _employees;
         private Employee _selectedEmployee;
         private FullObservableCollection<InvoiceItem> _invoiceItems;
-        //private int _invoiceId;
+        private int _invoiceId;
         private decimal _total;
 
         public List<Employee> Employees
@@ -82,10 +82,9 @@ namespace POSSystem.ViewModels
             InvoiceAddItemPage.AddInvoiceItemHanlder += InvoiceEditPage.AddItemToInvoice;
             InvoiceAddItemPage.UpdateInvoiceItemHanlder += InvoiceEditPage.UpdateInvoiceItem;
 
-            LoadData();
         }
 
-        private async void LoadData()
+        public async void LoadData()
         {
             await LoadEmployees();
             await LoadInvoiceItems();
@@ -136,21 +135,18 @@ namespace POSSystem.ViewModels
                 EmployeeId = SelectedEmployee.Id,
                 Timestamp = DateTime.Now,
                 Total = Total,
-                IsPaid = false
+                IsPaid = false,
+                Id = InvoiceId
             };
 
-            int invoiceId = await _invoiceRepository.SaveInvoice(invoice);
+            await _invoiceRepository.UpdateInvoice(invoice);
 
+            await _invoiceItemRepository.DeleteInvoiceItemsByInvoiceId(InvoiceId);
             foreach (var item in InvoiceItems)
             {
-                item.InvoiceId = invoiceId;
+                item.InvoiceId = InvoiceId;
                 await _invoiceItemRepository.AddInvoiceItem(item);
             }
-            Clear();
-        }
-
-        public void DiscardChanges()
-        {
             Clear();
         }
 

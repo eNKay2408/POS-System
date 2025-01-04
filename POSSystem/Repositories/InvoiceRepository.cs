@@ -201,5 +201,35 @@ namespace POSSystem.Repositories
                 await _connection.CloseAsync();
             }
         }
+
+        public async Task UpdateInvoice(Invoice invoice)
+        {
+            try
+            {
+                string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, ispaid = @ispaid, employeename = (SELECT name from employee WHERE id = @employeeid) WHERE id = @id";
+                await _connection.OpenAsync();
+
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
+                    cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
+                    cmd.Parameters.AddWithValue("total", invoice.Total);
+                    cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
+                    cmd.Parameters.AddWithValue("id", invoice.Id);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
+
     }
 }

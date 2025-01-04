@@ -8,14 +8,18 @@ using System.Runtime.CompilerServices;
 
 namespace POSSystem.Views
 {
+    
     public sealed partial class InvoiceEditPage : Page
     {
+        public Invoice Invoice;
+
         public InvoiceEditViewModel ViewModel { get; set; }
         public InvoiceEditPage()
         {
             InitializeComponent();
             ViewModel = InvoiceEditViewModel.Instance;
             this.DataContext = ViewModel;
+            Invoice = new Invoice();
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
@@ -86,7 +90,7 @@ namespace POSSystem.Views
             if (result == ContentDialogResult.Primary)
             {
                 var viewModel = (InvoiceEditViewModel)DataContext;
-                viewModel.DiscardChanges();
+                viewModel.Clear();
                 Frame.GoBack();
             }
         }
@@ -115,5 +119,21 @@ namespace POSSystem.Views
             Frame.Navigate(typeof(InvoiceAddItemPage), item);
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if(e.Parameter is Invoice invoice)
+            {
+                ViewModel.InvoiceId = invoice.Id;
+                Invoice = invoice;
+                ViewModel.LoadData();
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            ViewModel.Clear();
+        }
     }
 }

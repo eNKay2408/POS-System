@@ -56,16 +56,11 @@ namespace POSSystem.Views
             await dialog.ShowAsync();
         }
 
-        private async void UpdateInvoice_Click(object sender, RoutedEventArgs e)
+        private void UpdateInvoice_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog()
-            {
-                Title = "Update invoice clicked",
-                PrimaryButtonText = "OK",
-                XamlRoot = this.XamlRoot
-            };
-            await dialog.ShowAsync();
-
+            var button = (Button)sender;
+            var invoice = (Invoice)button.DataContext;
+            Frame.Navigate(typeof(InvoiceEditPage), invoice);
         }
     }
 }

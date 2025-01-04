@@ -13,5 +13,7 @@ namespace POSSystem.Repositories
         Task UpdateInvoiceIsPaid(int invoiceId, bool isPaid);
 
         Task<Employee> GetEmployeeByInvoiceId(int invoiceId);
+
+        Task UpdateInvoice(Invoice invoice);
     }
 }

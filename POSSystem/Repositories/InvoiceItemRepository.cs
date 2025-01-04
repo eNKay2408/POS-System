@@ -21,7 +21,7 @@ namespace POSSystem.Repositories
         {
             var invoiceItems = new List<InvoiceItem>();
 
-            string query = "SELECT * FROM InvoiceItem WHERE invoiceid = @invoiceId";
+            string query = "SELECT i.*, p.name FROM InvoiceItem i JOIN product p ON i.productid = p.id WHERE invoiceid = @invoiceId";
             await _connection.OpenAsync();
 
             using (var cmd = new NpgsqlCommand(query, _connection))
@@ -34,12 +34,13 @@ namespace POSSystem.Repositories
                     {
                         invoiceItems.Add(new InvoiceItem
                         {
-                            //TODO: remove redundant Id, only InvoiceId and ProductId are enough to make primary keys
                             Id = reader.GetInt32(0),
                             InvoiceId = reader.GetInt32(1),
                             ProductId = reader.GetInt32(2),
                             Quantity = reader.GetInt32(3),
                             UnitPrice = reader.GetDecimal(4),
+                            SubTotal = reader.GetDecimal(5),
+                            ProductName = reader.GetString(6)
                         });
                     }
                 }
