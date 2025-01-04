@@ -2,6 +2,7 @@
 using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
+using POSSystem.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -78,6 +79,10 @@ namespace POSSystem.ViewModels
             Employees = new List<Employee>();
             InvoiceItems = new();
 
+            // Register event handlers
+            InvoiceAddItemPage.AddInvoiceItemHanlder += InvoiceAddPage.AddItemToInvoice;
+            InvoiceAddItemPage.UpdateInvoiceItemHanlder += InvoiceAddPage.UpdateInvoiceItem;
+
             LoadData();
         }
 
@@ -145,6 +150,10 @@ namespace POSSystem.ViewModels
             InvoiceItems.Clear();
             Total = 0;
             SelectedEmployee = null;
+
+            // Unregister event handlers
+            InvoiceAddItemPage.AddInvoiceItemHanlder -= InvoiceAddPage.AddItemToInvoice;
+            InvoiceAddItemPage.UpdateInvoiceItemHanlder -= InvoiceAddPage.UpdateInvoiceItem;
         }
 
         public void AddItemToInvoice(InvoiceItem newItem)

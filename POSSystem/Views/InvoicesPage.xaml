@@ -56,6 +56,9 @@
                             </TextBlock>
                             <TextBlock Text="{Binding Timestamp}" Grid.Column="3" TextWrapping="Wrap" />
                             <StackPanel Orientation="Horizontal" Grid.Column="4">
+                                <Button Click="UpdateInvoice_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
+                                </Button>
                                 <Button Click="PayInvoice_Click" Margin="5,0" Background="Transparent" IsEnabled="{Binding IsPaid, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}">
                                     <Image Source="ms-appx:///Assets/pay.png" Width="20" Height="20" />
                                 </Button>
