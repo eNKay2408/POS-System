@@ -1,4 +1,5 @@
-﻿using POSSystem.Models;
+﻿using POSSystem.Helpers;
+using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace POSSystem.ViewModels
 {
     //TODO: need to use FullyObservableCollection instead of keep querying the database
-    public class EmployeeViewModel:BaseViewModel
+    public class EmployeeViewModel : BaseViewModel
     {
         private readonly IEmployeeRepository _employeeRepository;
 
@@ -67,11 +68,17 @@ namespace POSSystem.ViewModels
                 throw;
             }
         }
-
+        
         public async Task DeleteEmployee(int employeeID)
         {
             try
             {
+                if (await _employeeRepository.HasReferencingInvoices(employeeID))
+                {
+                    await DialogHelper.DisplayErrorDialog("Cannot delete the employee because there are some invoice(s) with this employee.\nPLEASE DELETE THE INVOICE(S) FIRST!");
+                    return;
+                }
+
                 await _employeeRepository.DeleteEmployee(employeeID);
                 await LoadEmployees();
             }
@@ -118,7 +125,5 @@ namespace POSSystem.ViewModels
                 throw;
             }
         }
-
-
     }
 }

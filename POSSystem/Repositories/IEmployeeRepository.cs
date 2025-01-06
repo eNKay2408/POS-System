@@ -9,13 +9,11 @@ namespace POSSystem.Repositories
         Task SaveEmployee(Employee employee);
 
         Task<Employee> GetEmployeeByEmail(string email);
-
         Task SaveEmployeeFromGoogle(Employee employee);
-
         Task<List<Employee>> GetAllEmployees();
-
         Task DeleteEmployee(int id);
 
         Task UpdateEmployee(Employee employee);
+        Task<bool> HasReferencingInvoices(int employeeId); // New method
     }
 }
