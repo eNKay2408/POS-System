@@ -202,7 +202,6 @@ namespace POSSystem.Repositories
             }
         }
 
-
         public async Task DeleteEmployee(int id)
         {
             try
@@ -214,6 +213,31 @@ namespace POSSystem.Repositories
                 {
                     cmd.Parameters.AddWithValue("Id", id);
                     await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
+
+        public async Task<bool> HasReferencingInvoices(int employeeId)
+        {
+            try
+            {
+                await _connection.OpenAsync();
+                string query = "SELECT COUNT(*) FROM Invoice WHERE EmployeeId = @EmployeeId";
+
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("EmployeeId", employeeId);
+                    var count = (long)await cmd.ExecuteScalarAsync();
+                    return count > 0;
                 }
             }
             catch (Exception ex)

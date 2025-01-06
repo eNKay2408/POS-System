@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.UI.Xaml;
 using System.Threading.Tasks;
+using POSSystem.Helpers;
 
 namespace POSSystem.Views
 {
@@ -49,7 +50,7 @@ namespace POSSystem.Views
                 }
                 catch (Exception ex)
                 {
-                    await DisplayErrorDialog(ex.Message);
+                    await DialogHelper.DisplayErrorDialog(ex.Message);
                 }
             }
 
@@ -103,11 +104,11 @@ namespace POSSystem.Views
                     }
                     catch (ArgumentException ex)
                     {
-                        await DisplayErrorDialog(ex.Message);
+                        await DialogHelper.DisplayErrorDialog(ex.Message);
                     }
                     catch (Exception ex)
                     {
-                        await DisplayErrorDialog("An unexpected error occurred: " + ex.Message);
+                        await DialogHelper.DisplayErrorDialog("An unexpected error occurred: " + ex.Message);
                         break; // Exit the loop on unexpected errors
                     }
                 }
@@ -120,17 +121,6 @@ namespace POSSystem.Views
 
         // Detail: Title = "ERROR", CloseButtonText = "Ok", XamlRoot = this.XamlRoot
         // Content = contentMessage (parameter passed in)
-        private async Task DisplayErrorDialog(string contentMessage)
-        {
-            ContentDialog errorDialog = new()
-            {
-                Title = "ERROR",
-                Content = contentMessage,
-                CloseButtonText = "Ok",
-                XamlRoot = this.XamlRoot
-            };
-
-            await errorDialog.ShowAsync();
-        }
+        
     }
 }

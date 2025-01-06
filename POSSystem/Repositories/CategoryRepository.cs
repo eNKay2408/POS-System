@@ -28,27 +28,37 @@ namespace POSSystem.Repositories
             string query = "SELECT * FROM Category ORDER BY Id";
             await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
-            using (var reader = await cmd.ExecuteReaderAsync())
+            try
             {
-                while (await reader.ReadAsync())
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    categories.Add(new Category
+                    while (await reader.ReadAsync())
                     {
-                        Id = reader.GetInt32(0),
-                        Name = reader.GetString(1)
-                    });
+                        categories.Add(new Category
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1)
+                        });
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetAllCategories: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
 
-            await _connection.CloseAsync();
             return categories;
         }
 
         public async Task<Category> GetCategoryById(int id)
         {
             var categories = await GetAllCategories();
-
             return categories.FirstOrDefault(c => c.Id == id);
         }
 
@@ -63,13 +73,23 @@ namespace POSSystem.Repositories
             string query = "INSERT INTO Category (Name) VALUES (@Name)";
             await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            try
             {
-                cmd.Parameters.AddWithValue("Name", category.Name);
-                await cmd.ExecuteNonQueryAsync();
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("Name", category.Name);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
-
-            await _connection.CloseAsync();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in AddCategory: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
         }
 
         public async Task UpdateCategory(Category category)
@@ -77,14 +97,24 @@ namespace POSSystem.Repositories
             string query = "UPDATE Category SET Name = @Name WHERE Id = @Id";
             await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            try
             {
-                cmd.Parameters.AddWithValue("Id", category.Id);
-                cmd.Parameters.AddWithValue("Name", category.Name);
-                await cmd.ExecuteNonQueryAsync();
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("Id", category.Id);
+                    cmd.Parameters.AddWithValue("Name", category.Name);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
-
-            await _connection.CloseAsync();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in UpdateCategory: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
         }
 
         public async Task DeleteCategory(int id)
@@ -92,13 +122,48 @@ namespace POSSystem.Repositories
             string query = "DELETE FROM Category WHERE Id = @Id";
             await _connection.OpenAsync();
 
-            using (var cmd = new NpgsqlCommand(query, _connection))
+            try
             {
-                cmd.Parameters.AddWithValue("Id", id);
-                await cmd.ExecuteNonQueryAsync();
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("Id", id);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DeleteCategory: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
 
-            await _connection.CloseAsync();
+        public async Task<bool> HasReferencingProducts(int categoryId)
+        {
+            string query = "SELECT COUNT(*) FROM Product WHERE CategoryId = @CategoryId";
+            await _connection.OpenAsync();
+
+            try
+            {
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("CategoryId", categoryId);
+                    var count = (long)await cmd.ExecuteScalarAsync();
+                    return count > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in HasReferencingProducts: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
         }
     }
 }

@@ -11,5 +11,6 @@ namespace POSSystem.Repositories
         Task AddCategory(Category category);
         Task UpdateCategory(Category category);
         Task DeleteCategory(int id);
+        Task<bool> HasReferencingProducts(int categoryId); // New method
     }
 }

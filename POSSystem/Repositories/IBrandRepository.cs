@@ -11,5 +11,7 @@ namespace POSSystem.Repositories
         Task AddBrand(Brand brand);
         Task UpdateBrand(Brand brand);
         Task DeleteBrand(int id);
+
+        Task<bool> HasReferencingProducts(int brandId);
     }
 }
