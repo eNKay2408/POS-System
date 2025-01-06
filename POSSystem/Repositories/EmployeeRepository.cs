@@ -22,11 +22,19 @@ namespace POSSystem.Repositories
             _connection = new NpgsqlConnection(connectionString);
         }
 
+        private async Task EnsureConnectionOpenAsync()
+        {
+            if (_connection.State != System.Data.ConnectionState.Open)
+            {
+                await _connection.OpenAsync();
+            }
+        }
+
         public async Task SaveEmployee(Employee employee)
         {
             try
             {
-                await _connection.OpenAsync();
+                await EnsureConnectionOpenAsync();
                 var existingEmployee = await GetEmployeeByEmail(employee.Email);
 
                 if (existingEmployee != null)
@@ -61,7 +69,7 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await _connection.OpenAsync();
+                await EnsureConnectionOpenAsync();
                 string query = "SELECT * FROM Employee WHERE Email = @Email";
                 Employee employee = null;
 
@@ -100,8 +108,9 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await _connection.OpenAsync();
                 var existingEmployee = await GetEmployeeByEmail(employee.Email);
+
+                await EnsureConnectionOpenAsync();
 
                 if (existingEmployee == null)
                 {
@@ -141,7 +150,7 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await _connection.OpenAsync();
+                await EnsureConnectionOpenAsync();
                 var employees = new List<Employee>();
                 string query = "SELECT * FROM employee";
 
@@ -177,7 +186,7 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await _connection.OpenAsync();
+                await EnsureConnectionOpenAsync();
                 string query = "UPDATE Employee SET Name = @Name, Email = @Email WHERE Id = @Id";
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
@@ -203,7 +212,7 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await _connection.OpenAsync();
+                await EnsureConnectionOpenAsync();
                 string query = "DELETE FROM employee WHERE Id = @Id";
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
@@ -227,7 +236,7 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await _connection.OpenAsync();
+                await EnsureConnectionOpenAsync();
                 string query = "SELECT COUNT(*) FROM Invoice WHERE EmployeeId = @EmployeeId";
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
