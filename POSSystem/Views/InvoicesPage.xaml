@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     xmlns:model="using:POSSystem.Models"    
-    xmlns:viewmodels="using:POSSystem.ViewModels" 
+    xmlns:viewmodels="using:POSSystem.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:InvoiceViewModel}">
 
     <Grid Padding="20" RowDefinitions="Auto, *">
@@ -70,4 +70,6 @@
             </ListView>
         </Border>
     </Grid>
+
+    
 </Page>
