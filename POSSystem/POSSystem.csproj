@@ -27,6 +27,7 @@
     <None Remove="Views\InvoiceAddItemPage.xaml" />
     <None Remove="Views\InvoiceAddPage.xaml" />
     <None Remove="Views\InvoiceEditPage.xaml" />
+    <None Remove="Views\InvoicePrintPage.xaml" />
     <None Remove="Views\ItemListTemplate.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
@@ -103,6 +104,9 @@
     <None Update="Assets\logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\InvoicePrintPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\InvoiceEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

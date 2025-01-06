@@ -83,9 +83,7 @@ namespace POSSystem.ViewModels
 
         }
 
-        public async 
-        Task
-        LoadDataFromDatabase()
+        public async Task LoadDataFromDatabase()
         {
             await LoadEmployees();
             await LoadInvoiceItems();

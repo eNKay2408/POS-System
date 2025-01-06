@@ -63,7 +63,7 @@
                                     <Image Source="ms-appx:///Assets/pay.png" Width="20" Height="20" />
                                 </Button>
 
-                                <Button Click="PrintInvoice_Click" Background="Transparent">
+                                <Button Click="SavePDF_Click" Background="Transparent">
                                     <Image Source="ms-appx:///Assets/printer.png" Width="20" Height="20" />
                                 </Button>
                             </StackPanel>
