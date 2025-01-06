@@ -27,14 +27,14 @@
                                 <ColumnDefinition Width="0.5*" />
                                 <ColumnDefinition Width="2.5*" />
                                 <ColumnDefinition Width="2.5*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1.75*" />
+                                <ColumnDefinition Width="1.75*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="NO." FontWeight="Bold" Grid.Column="0"/>
                             <TextBlock Text="EMPLOYEE NAME" FontWeight="Bold" Grid.Column="1"/>
                             <TextBlock Text="TOTAL" FontWeight="Bold" Grid.Column="2"/>
                             <TextBlock Text="TIMESTAMP" FontWeight="Bold" Grid.Column="3"/>
-                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="4"/>
+                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="4" HorizontalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.HeaderTemplate>
@@ -46,8 +46,8 @@
                                 <ColumnDefinition Width="0.5*" />
                                 <ColumnDefinition Width="2.5*" />
                                 <ColumnDefinition Width="2.5*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1.75*" />
+                                <ColumnDefinition Width="1.75*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Index}" Grid.Column="0" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding EmployeeName}" Grid.Column="1" TextWrapping="Wrap" />
@@ -55,7 +55,7 @@
                                 <Run Text="{Binding Total, Converter={StaticResource DecimalToUSCurrencyConverter}}"/>
                             </TextBlock>
                             <TextBlock Text="{Binding Timestamp}" Grid.Column="3" TextWrapping="Wrap" />
-                            <StackPanel Orientation="Horizontal" Grid.Column="4">
+                            <StackPanel Orientation="Horizontal" Grid.Column="4" HorizontalAlignment="Center">
                                 <Button Click="UpdateInvoice_Click" Margin="5,0" Background="Transparent">
                                     <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
                                 </Button>

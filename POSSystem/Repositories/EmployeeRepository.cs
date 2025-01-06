@@ -17,7 +17,7 @@ namespace POSSystem.Repositories
         }
 
         // Constructor for integration testing
-        public EmployeeRepository(String connectionString)
+        public EmployeeRepository(string connectionString)
         {
             _connection = new NpgsqlConnection(connectionString);
         }
@@ -26,6 +26,7 @@ namespace POSSystem.Repositories
         {
             try
             {
+                await _connection.OpenAsync();
                 var existingEmployee = await GetEmployeeByEmail(employee.Email);
 
                 if (existingEmployee != null)
@@ -35,7 +36,6 @@ namespace POSSystem.Repositories
 
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(employee.Password);
 
-                await _connection.OpenAsync();
                 string query = "INSERT INTO Employee (Name, Email, Password) VALUES (@Name, @Email, @Password)";
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
@@ -100,12 +100,11 @@ namespace POSSystem.Repositories
         {
             try
             {
+                await _connection.OpenAsync();
                 var existingEmployee = await GetEmployeeByEmail(employee.Email);
 
                 if (existingEmployee == null)
                 {
-                    await _connection.OpenAsync();
-
                     string query = "INSERT INTO Employee (Name, Email) VALUES (@Name, @Email)";
 
                     using (var cmd = new NpgsqlCommand(query, _connection))
@@ -117,8 +116,6 @@ namespace POSSystem.Repositories
                 }
                 else
                 {
-                    await _connection.OpenAsync();
-
                     string query = "UPDATE Employee SET Name = @Name WHERE Email = @Email";
 
                     using (var cmd = new NpgsqlCommand(query, _connection))
@@ -144,9 +141,9 @@ namespace POSSystem.Repositories
         {
             try
             {
+                await _connection.OpenAsync();
                 var employees = new List<Employee>();
                 string query = "SELECT * FROM employee";
-                await _connection.OpenAsync();
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 using (var reader = await cmd.ExecuteReaderAsync())

@@ -2,6 +2,7 @@
 using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
+using POSSystem.Views;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

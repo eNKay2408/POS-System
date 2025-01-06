@@ -45,8 +45,12 @@ namespace POSSystem.Views
             {
                 try
                 {
+                    int prevCount = ViewModel.Employees.Count;
                     await ViewModel.DeleteEmployee(employee.Id);
-                    await InvoiceAddPage.ModifyEmployee_Handler(employee);
+                    if(ViewModel.Employees.Count < prevCount)
+                    {
+                        await InvoiceAddPage.ModifyEmployee_Handler(employee);
+                    }    
                 }
                 catch (Exception ex)
                 {
