@@ -34,8 +34,8 @@ namespace POSSystem.Repositories
         {
             try
             {
-                await EnsureConnectionOpenAsync();
                 var existingEmployee = await GetEmployeeByEmail(employee.Email);
+                await EnsureConnectionOpenAsync();
 
                 if (existingEmployee != null)
                 {
