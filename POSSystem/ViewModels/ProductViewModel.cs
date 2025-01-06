@@ -181,7 +181,7 @@ namespace POSSystem.ViewModels
             {
                 if (await _productRepository.HasReferencingInvoices(id))
                 {
-                    await DialogHelper.DisplayErrorDialog("Cannot delete the product because there are some invoice(s) with this product.\nPLEASE DELETE THE INVOICE(S) FIRST!");
+                    await DialogHelper.DisplayErrorDialog("Cannot delete the product because there are some invoice(s) with this product.\nPLEASE DELETE THE INVOICE(S) OR UPDATE IT TO NOT HOLDING INFORMATION ABOUT THE PRODUCT!");
                     return;
                 }
 

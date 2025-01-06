@@ -94,7 +94,7 @@ namespace POSSystem.ViewModels
         {
             if (await _categoryRepository.HasReferencingProducts(categoryId))
             {
-                await DialogHelper.DisplayErrorDialog("Cannot delete the category because there are some product(s) with this category.\nPLEASE DELETE THE PRODUCT(S) FIRST!");
+                await DialogHelper.DisplayErrorDialog("Cannot delete the category because there are some product(s) with this category.\nPLEASE DELETE THE PRODUCT(S) OR UPDATE THE PRODUCT'S CATEGORY!");
                 return;
             }
 

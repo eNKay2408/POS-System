@@ -95,7 +95,7 @@ namespace POSSystem.ViewModels
         {
             if (await _brandRepository.HasReferencingProducts(brandId))
             {
-                await DialogHelper.DisplayErrorDialog("Cannot delete the brand because there are some product(s) with this brand.\nPLEASE DELETE THE PRODUCT(S) FIRST!");
+                await DialogHelper.DisplayErrorDialog("Cannot delete the brand because there are some product(s) with this brand.\nPLEASE DELETE THE PRODUCT(S) OR UPDATE THE PRODUCT'S BRAND!");
                 return;
             }
 

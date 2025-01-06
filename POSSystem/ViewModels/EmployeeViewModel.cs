@@ -75,7 +75,7 @@ namespace POSSystem.ViewModels
             {
                 if (await _employeeRepository.HasReferencingInvoices(employeeID))
                 {
-                    await DialogHelper.DisplayErrorDialog("Cannot delete the employee because there are some invoice(s) with this employee.\nPLEASE DELETE THE INVOICE(S) FIRST!");
+                    await DialogHelper.DisplayErrorDialog("Cannot delete the employee because there are some invoice(s) created by this employee.\nPLEASE DELETE THE INVOICE(S) OR UPDATE IT NOT TO BE REGISTERED WITH THE EMPLOYEE!");
                     return;
                 }
 
