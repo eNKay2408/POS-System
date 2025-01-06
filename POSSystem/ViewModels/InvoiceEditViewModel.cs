@@ -1,19 +1,19 @@
-﻿using POSSystem.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using POSSystem.Helpers;
 using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
 using POSSystem.Views;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace POSSystem.ViewModels
 {
-    public class InvoiceAddViewModel : BaseViewModel
+    public class InvoiceEditViewModel : BaseViewModel
     {
-        private static readonly Lazy<InvoiceAddViewModel> _instance = new Lazy<InvoiceAddViewModel>(() => new InvoiceAddViewModel());
+        private static readonly Lazy<InvoiceEditViewModel> _instance = new Lazy<InvoiceEditViewModel>(() => new InvoiceEditViewModel());
 
-        public static InvoiceAddViewModel Instance => _instance.Value;
+        public static InvoiceEditViewModel Instance => _instance.Value;
 
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IInvoiceItemRepository _invoiceItemRepository;
@@ -23,16 +23,16 @@ namespace POSSystem.ViewModels
         private List<Employee> _employees;
         private Employee _selectedEmployee;
         private FullObservableCollection<InvoiceItem> _invoiceItems;
-        //private int _invoiceId;
+        
         private decimal _total;
 
-        public List<Employee> Employees
+    public List<Employee> Employees
         {
             get => _employees;
             set
             {
                 _employees = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Employees));
             }
         }
 
@@ -42,7 +42,7 @@ namespace POSSystem.ViewModels
             set
             {
                 _selectedEmployee = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedEmployee));
             }
         }
 
@@ -66,7 +66,9 @@ namespace POSSystem.ViewModels
             }
         }
 
-        private InvoiceAddViewModel()
+        public int InvoiceId { get; set; }
+
+        private InvoiceEditViewModel()
         {
             _employeeRepository = ServiceFactory.GetChildOf<IEmployeeRepository>();
             _invoiceItemRepository = ServiceFactory.GetChildOf<IInvoiceItemRepository>();
@@ -74,33 +76,36 @@ namespace POSSystem.ViewModels
             _productRepository = ServiceFactory.GetChildOf<IProductRepository>();
 
             Employees = new List<Employee>();
-            InvoiceItems = new();
-
-            LoadData();
-        }
-
-        // Constructor for unit testing
-        public InvoiceAddViewModel(IEmployeeRepository employeeRepository, IInvoiceItemRepository invoiceItemRepository, IInvoiceRepository invoiceRepository, IProductRepository productRepository)
-        {
-            _employeeRepository = employeeRepository;
-            _invoiceItemRepository = invoiceItemRepository;
-            _invoiceRepository = invoiceRepository;
-            _productRepository = productRepository;
-
-            Employees = new List<Employee>();
+            SelectedEmployee = new();
             InvoiceItems = new FullObservableCollection<InvoiceItem>();
+            Total = 0;
+            InvoiceId = -1;
+
         }
 
-        public async void LoadData()
+        public async Task LoadDataFromDatabase()
         {
             await LoadEmployees();
+            await LoadInvoiceItems();
+        }
+
+        public void SetSelectedEmployee(int employeeId)
+        {
+            SelectedEmployee = Employees.Find(e => e.Id == employeeId);
         }
 
 
-        public async Task LoadEmployees()
+        private async Task LoadEmployees()
         {
             var employees = await _employeeRepository.GetAllEmployees();
             Employees = employees;
+        }
+
+        private async Task LoadInvoiceItems()
+        {
+            var invoiceItems = await _invoiceItemRepository.GetInvoiceItemsByInvoiceId(InvoiceId);
+            InvoiceItems = new FullObservableCollection<InvoiceItem>(invoiceItems);
+            CalculateTotal();
         }
 
         public void DeleteInvoiceItem(int index)
@@ -132,21 +137,18 @@ namespace POSSystem.ViewModels
                 EmployeeId = SelectedEmployee.Id,
                 Timestamp = DateTime.Now,
                 Total = Total,
-                IsPaid = false
+                IsPaid = false,
+                Id = InvoiceId
             };
 
-            int invoiceId = await _invoiceRepository.SaveInvoice(invoice);
+            await _invoiceRepository.UpdateInvoice(invoice);
 
-            foreach(var item in InvoiceItems)
+            await _invoiceItemRepository.DeleteInvoiceItemsByInvoiceId(InvoiceId);
+            foreach (var item in InvoiceItems)
             {
-                item.InvoiceId = invoiceId;
+                item.InvoiceId = InvoiceId;
                 await _invoiceItemRepository.AddInvoiceItem(item);
-            }    
-            Clear();
-        }
-
-        public void DiscardChanges()
-        {
+            }
             Clear();
         }
 
@@ -155,8 +157,9 @@ namespace POSSystem.ViewModels
             InvoiceItems.Clear();
             Total = 0;
             SelectedEmployee = null;
-
+            InvoiceId = -1; // assuming -1 is illegal invoice id
         }
+
 
         public void AddItemToInvoice(InvoiceItem newItem)
         {
@@ -168,13 +171,13 @@ namespace POSSystem.ViewModels
 
             InvoiceItem existingItem = null;
             int maxIndex = -1;
-            foreach(var item in InvoiceItems)
+            foreach (var item in InvoiceItems)
             {
                 if (item.ProductId == newItem.ProductId)
                 {
                     existingItem = item;
                 }
-                if(item.Index > maxIndex)
+                if (item.Index > maxIndex)
                 {
                     maxIndex = item.Index;
                 }
@@ -195,9 +198,11 @@ namespace POSSystem.ViewModels
 
             OnPropertyChanged(nameof(InvoiceItems));
             OnPropertyChanged(nameof(Total));
+
+            _invoiceItemRepository.AddInvoiceItem(newItem);
         }
 
-        private void CalculateTotal() 
+        private void CalculateTotal()
         {
             if (InvoiceItems == null)
             {
@@ -221,21 +226,21 @@ namespace POSSystem.ViewModels
 
         public void UpdateInvoiceItem(InvoiceItem newItem)
         {
-            if (InvoiceItems == null || newItem == null) 
+            if (InvoiceItems == null || newItem == null)
             {
                 return;
             }
 
             bool itemExists = false;
             int existingIndex = 0;
-            for(int i = 0; i < InvoiceItems.Count; i++)
+            for (int i = 0; i < InvoiceItems.Count; i++)
             {
                 if (InvoiceItems[i].ProductId == newItem.ProductId && InvoiceItems[i].Index == newItem.Index)
                 {
                     existingIndex = i;
                 }
 
-                if(InvoiceItems[i].ProductId == newItem.ProductId && InvoiceItems[i].Index != newItem.Index)
+                if (InvoiceItems[i].ProductId == newItem.ProductId && InvoiceItems[i].Index != newItem.Index)
                 {
                     itemExists = true;
                 }
@@ -250,16 +255,8 @@ namespace POSSystem.ViewModels
             InvoiceItems[existingIndex] = newItem;
 
             CalculateTotal();
-            
-        }
 
-        public async Task ModifyEmployeeAsync(Employee employee)
-        {
-            if(SelectedEmployee != null && SelectedEmployee.Id == employee.Id)
-            {
-                SelectedEmployee = null;
-            }
-            await LoadEmployees();
         }
     }
 }
+

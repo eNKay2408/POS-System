@@ -40,6 +40,7 @@
             <converters:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
             <converters:IntToStringConverter x:Key="IntToStringConverter"/>
             <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+            <converters:DecimalToUSCurrencyConverter x:Key="DecimalToUSCurrencyConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -4,6 +4,7 @@ using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
 
+
 namespace POSSystem.Views
 {
     public sealed partial class InvoicesPage : Page
@@ -44,15 +45,47 @@ namespace POSSystem.Views
             }
         }
 
-        private async void PrintInvoice_Click(object sender, RoutedEventArgs e)
+        private async void SavePDF_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog()
+            var button = (Button)sender;
+            var invoice = (Invoice)button.DataContext;
+            Frame.Navigate(typeof(InvoicePrintPage), invoice);
+        }
+
+        private void UpdateInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var invoice = (Invoice)button.DataContext;
+            Frame.Navigate(typeof(InvoiceEditPage), invoice);
+        }
+
+        public enum ParentPageOrigin
+        {
+            InvoiceAddPage,
+            InvoiceEditPage
+        }
+        public static void UpdateInvoiceItem_Click(InvoiceItem item, ParentPageOrigin origin)
+        {
+            if (ParentPageOrigin.InvoiceAddPage == origin)
             {
-                Title = "Print invoice clicked",
-                PrimaryButtonText = "OK",
-                XamlRoot = this.XamlRoot
-            };
-            await dialog.ShowAsync();
+                InvoiceAddPage.UpdateInvoiceItem(item);
+            }
+            else if (ParentPageOrigin.InvoiceEditPage == origin)
+            {
+                InvoiceEditPage.UpdateInvoiceItem(item);
+            }
+        }
+
+        public static void AddInvoiceItem_Click(InvoiceItem item, ParentPageOrigin origin)
+        {
+            if (ParentPageOrigin.InvoiceAddPage == origin)
+            {
+                InvoiceAddPage.AddInvoiceItem(item);
+            }
+            else if (ParentPageOrigin.InvoiceEditPage == origin)
+            {
+                InvoiceEditPage.AddInvoiceItem(item);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace POSSystem.Tests.Converters
     [TestClass()]
     public class DecimalToStringConverterTests
     {
+
         private DecimalToStringConverter _converter;
 
         [TestInitialize]
@@ -17,13 +18,13 @@ namespace POSSystem.Tests.Converters
 
         [TestMethod()]
         [DataRow(1.11, "1.11")]
-        [DataRow(0, "0")]
+        [DataRow(0, "0.00")]
         [DataRow(-1.11, "-1.11")]
-        [DataRow(null, "")]
+        [DataRow(null, null)]
         public void Convert_ShouldReturnExpectedString(object input, object expected)
         {
             // Act
-            var result = _converter.Convert(input, typeof(string), null, "");
+            var result = _converter.Convert(input is double ? (decimal)(double)input : input, typeof(string), null, "");
 
             // Assert
             Assert.AreEqual(expected, result);
@@ -31,7 +32,7 @@ namespace POSSystem.Tests.Converters
 
         [TestMethod()]
         [DataRow("1.11", 1.11)]
-        [DataRow("0", 0)]
+        [DataRow("0.00", 0)]
         [DataRow("-1.11", -1.11)]
         [DataRow("invalid", null)]
         [DataRow("", null)]

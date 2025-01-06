@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     xmlns:model="using:POSSystem.Models"    
-    xmlns:viewmodels="using:POSSystem.ViewModels" 
+    xmlns:viewmodels="using:POSSystem.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:InvoiceViewModel}">
 
     <Grid Padding="20" RowDefinitions="Auto, *">
@@ -24,17 +24,17 @@
                     <DataTemplate>
                         <Grid Margin="0,0,0,2" Padding="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="2.5*" />
+                                <ColumnDefinition Width="2.5*" />
+                                <ColumnDefinition Width="1.75*" />
+                                <ColumnDefinition Width="1.75*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="NO." FontWeight="Bold" Grid.Column="0"/>
                             <TextBlock Text="EMPLOYEE NAME" FontWeight="Bold" Grid.Column="1"/>
                             <TextBlock Text="TOTAL" FontWeight="Bold" Grid.Column="2"/>
                             <TextBlock Text="TIMESTAMP" FontWeight="Bold" Grid.Column="3"/>
-                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="4"/>
+                            <TextBlock Text="ACTIONS" FontWeight="Bold" Grid.Column="4" HorizontalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.HeaderTemplate>
@@ -43,24 +43,27 @@
                     <DataTemplate x:DataType="model:Invoice">
                         <Grid Padding="5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="2.5*" />
+                                <ColumnDefinition Width="2.5*" />
+                                <ColumnDefinition Width="1.75*" />
+                                <ColumnDefinition Width="1.75*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Index}" Grid.Column="0" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding EmployeeName}" Grid.Column="1" TextWrapping="Wrap" />
                             <TextBlock Grid.Column="2" TextWrapping="Wrap">
-                                $<Run Text="{Binding Total}"/>
+                                <Run Text="{Binding Total, Converter={StaticResource DecimalToUSCurrencyConverter}}"/>
                             </TextBlock>
                             <TextBlock Text="{Binding Timestamp}" Grid.Column="3" TextWrapping="Wrap" />
-                            <StackPanel Orientation="Horizontal" Grid.Column="4">
+                            <StackPanel Orientation="Horizontal" Grid.Column="4" HorizontalAlignment="Center">
+                                <Button Click="UpdateInvoice_Click" Margin="5,0" Background="Transparent">
+                                    <Image Source="ms-appx:///Assets/update.png" Width="20" Height="20" />
+                                </Button>
                                 <Button Click="PayInvoice_Click" Margin="5,0" Background="Transparent" IsEnabled="{Binding IsPaid, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}">
                                     <Image Source="ms-appx:///Assets/pay.png" Width="20" Height="20" />
                                 </Button>
 
-                                <Button Click="PrintInvoice_Click" Background="Transparent">
+                                <Button Click="SavePDF_Click" Background="Transparent">
                                     <Image Source="ms-appx:///Assets/printer.png" Width="20" Height="20" />
                                 </Button>
                             </StackPanel>
@@ -70,4 +73,6 @@
             </ListView>
         </Border>
     </Grid>
+
+    
 </Page>

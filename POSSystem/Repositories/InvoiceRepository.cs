@@ -16,11 +16,42 @@ namespace POSSystem.Repositories
             _connection = new NpgsqlConnection(ConnectionString);
         }
 
-        public async Task<int> CreateInvoice(Invoice invoice)
+        //public async Task<int> CreateInvoice(Invoice invoice)
+        //{
+        //    try
+        //    {
+        //        string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid) VALUES (@employeeid, @timestamp, @total, @ispaid)";
+        //        await _connection.OpenAsync();
+
+        //        using (var cmd = new NpgsqlCommand(query, _connection))
+        //        {
+        //            cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
+        //            cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
+        //            cmd.Parameters.AddWithValue("total", invoice.Total);
+        //            cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
+
+        //            return (int)await cmd.ExecuteScalarAsync();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        await _connection.CloseAsync();
+        //    }
+        //}
+
+        
+
+        public async Task<int> SaveInvoice(Invoice invoice)
         {
             try
             {
-                string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid) VALUES (@employeeid, @timestamp, @total, @ispaid) RETURNING id";
+                string query = "INSERT INTO Invoice (employeeid, timestamp, total, ispaid, employeename) VALUES (@employeeid, @timestamp, @total, @ispaid, (SELECT name from employee where id = @employeeid)) RETURNING id";
+                //string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, employeename = (SELECT name from employee where id = @employeeid) WHERE id = @id";
                 await _connection.OpenAsync();
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
@@ -28,38 +59,12 @@ namespace POSSystem.Repositories
                     cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
                     cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
                     cmd.Parameters.AddWithValue("total", invoice.Total);
+                    //cmd.Parameters.AddWithValue("id", invoice.Id);
                     cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
 
                     return (int)await cmd.ExecuteScalarAsync();
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-            finally
-            {
-                await _connection.CloseAsync();
-            }
-        }
-
-        public async Task SaveInvoice(Invoice invoice)
-        {
-            try
-            {
-                string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, employeename = (SELECT name from employee where id = @employeeid) WHERE id = @id";
-                await _connection.OpenAsync();
-
-                using (var cmd = new NpgsqlCommand(query, _connection))
-                {
-                    cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
-                    cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
-                    cmd.Parameters.AddWithValue("total", invoice.Total);
-                    cmd.Parameters.AddWithValue("id", invoice.Id);
-
-                    await cmd.ExecuteNonQueryAsync();
-                }
+                
             }
             catch (Exception ex)
             {
@@ -158,5 +163,73 @@ namespace POSSystem.Repositories
                 await _connection.CloseAsync();
             }
         }
+
+        public async Task<Employee> GetEmployeeByInvoiceId(int invoiceId)
+        {
+            try
+            {
+                string query = "SELECT e.* FROM Invoice i JOIN Employee e ON i.employeeid = e.id WHERE i.id = @id";
+                await _connection.OpenAsync();
+
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("id", invoiceId);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            Employee e = new Employee()
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Email = reader.GetString(2)
+                            };
+                            return e;
+                        }
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
+
+        public async Task UpdateInvoice(Invoice invoice)
+        {
+            try
+            {
+                string query = "UPDATE Invoice SET employeeid = @employeeid, timestamp = @timestamp, total = @total, ispaid = @ispaid, employeename = (SELECT name from employee WHERE id = @employeeid) WHERE id = @id";
+                await _connection.OpenAsync();
+
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("employeeid", invoice.EmployeeId);
+                    cmd.Parameters.AddWithValue("timestamp", invoice.Timestamp);
+                    cmd.Parameters.AddWithValue("total", invoice.Total);
+                    cmd.Parameters.AddWithValue("ispaid", invoice.IsPaid);
+                    cmd.Parameters.AddWithValue("id", invoice.Id);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
+
     }
 }
