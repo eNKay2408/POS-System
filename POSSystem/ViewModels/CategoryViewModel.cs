@@ -1,4 +1,5 @@
-﻿using POSSystem.Models;
+﻿using POSSystem.Helpers;
+using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
 using System;
@@ -91,8 +92,13 @@ namespace POSSystem.ViewModels
 
         public async Task DeleteCategory(int categoryId)
         {
-            await _categoryRepository.DeleteCategory(categoryId);
+            if (await _categoryRepository.HasReferencingProducts(categoryId))
+            {
+                await DialogHelper.DisplayErrorDialog("Cannot delete the category because there are some product(s) with this category.\nPLEASE DELETE THE PRODUCT(S) FIRST!");
+                return;
+            }
 
+            await _categoryRepository.DeleteCategory(categoryId);
             await LoadCategories();
         }
     }
