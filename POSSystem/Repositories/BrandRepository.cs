@@ -145,5 +145,30 @@ namespace POSSystem.Repositories
                 await _connection.CloseAsync();
             }
         }
+
+        public async Task<bool> HasReferencingProducts(int brandId)
+        {
+            string query = "SELECT COUNT(*) FROM Product WHERE BrandId = @BrandId";
+            await _connection.OpenAsync();
+
+            try
+            {
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("BrandId", brandId);
+                    var count = (long)await cmd.ExecuteScalarAsync();
+                    return count > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in HasReferencingProducts: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+        }
     }
 }

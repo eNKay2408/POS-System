@@ -1,4 +1,6 @@
-﻿using POSSystem.Models;
+﻿using Microsoft.UI.Xaml.Controls;
+using POSSystem.Helpers;
+using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
 using System;
@@ -91,8 +93,13 @@ namespace POSSystem.ViewModels
 
         public async Task DeleteBrand(int brandId)
         {
-            await _brandRepository.DeleteBrand(brandId);
+            if (await _brandRepository.HasReferencingProducts(brandId))
+            {
+                await DialogHelper.DisplayErrorDialog("Cannot delete the brand because there are some product(s) with this brand.\nPLEASE DELETE THE PRODUCT(S) FIRST!");
+                return;
+            }
 
+            await _brandRepository.DeleteBrand(brandId);
             await LoadBrands();
         }
     }
