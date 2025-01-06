@@ -1,9 +1,21 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using POSSystem.Views.UserCtrl;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using WinRT.Interop;
+
 
 namespace POSSystem.Views
 {
@@ -47,13 +59,57 @@ namespace POSSystem.Views
 
         private async void PrintInvoice_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog()
+            // Render the current page to a bitmap
+            var renderTargetBitmap = new RenderTargetBitmap();
+            await renderTargetBitmap.RenderAsync(this);
+
+            // Get the pixel buffer and convert it to a stream
+            var pixelBuffer = await renderTargetBitmap.GetPixelsAsync();
+            using (var stream = new InMemoryRandomAccessStream())
             {
-                Title = "Print invoice clicked",
-                PrimaryButtonText = "OK",
-                XamlRoot = this.XamlRoot
-            };
-            await dialog.ShowAsync();
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8,
+                    BitmapAlphaMode.Ignore,
+                    (uint)renderTargetBitmap.PixelWidth,
+                    (uint)renderTargetBitmap.PixelHeight,
+                    96, 96,
+                    pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+
+                // Create a PDF document
+                var pdfDocument = new PdfDocument();
+                var pdfPage = pdfDocument.AddPage();
+                var xGraphics = XGraphics.FromPdfPage(pdfPage);
+                var xImage = XImage.FromStream(stream.AsStream());
+
+                double desiredWidth = pdfPage.Width.Point; // 100% of the page width
+                double desiredHeight = pdfPage.Height.Point; // 100% of the page height
+
+                // Draw the image on the PDF page with the specified dimensions
+                xGraphics.DrawImage(xImage, 0, 0, desiredWidth, desiredHeight);
+
+                // Show the file save picker
+                var savePicker = new FileSavePicker
+                {
+                    SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+                    SuggestedFileName = "Invoice",
+                    FileTypeChoices = { { "PDF", new List<string> { ".pdf" } } }
+                };
+
+                // Get the window handle and initialize the file picker with it
+                var hwnd = WindowNative.GetWindowHandle(App.AppMainWindow);
+                InitializeWithWindow.Initialize(savePicker, hwnd);
+
+                var file = await savePicker.PickSaveFileAsync();
+                if (file != null)
+                {
+                    using (var fileStream = await file.OpenStreamForWriteAsync())
+                    {
+                        pdfDocument.Save(fileStream);
+                    }
+                }
+            }
         }
 
         private void UpdateInvoice_Click(object sender, RoutedEventArgs e)

@@ -5,6 +5,6 @@ namespace POSSystem.Services
 {
     public interface IUriLauncher
     {
-        Task<bool> LaunchUriAsync(Uri uri);
+        Task LaunchUriAsync(Uri uri);
     }
 }

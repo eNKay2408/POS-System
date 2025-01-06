@@ -79,18 +79,30 @@ namespace POSSystem.ViewModels
             LoadData();
         }
 
-        private async void LoadData()
+        // Constructor for unit testing
+        public InvoiceAddViewModel(IEmployeeRepository employeeRepository, IInvoiceItemRepository invoiceItemRepository, IInvoiceRepository invoiceRepository, IProductRepository productRepository)
+        {
+            _employeeRepository = employeeRepository;
+            _invoiceItemRepository = invoiceItemRepository;
+            _invoiceRepository = invoiceRepository;
+            _productRepository = productRepository;
+
+            Employees = new List<Employee>();
+            InvoiceItems = new List<InvoiceItem>();
+        }
+
+        public async void LoadData()
         {
             await LoadEmployees();
         }
 
 
-        private async Task LoadEmployees()
+        public async Task LoadEmployees()
         {
             var employees = await _employeeRepository.GetAllEmployees();
             Employees = employees;
         }
-
+        
         public void DeleteInvoiceItem(int index)
         {
             InvoiceItems.RemoveAt(index);
