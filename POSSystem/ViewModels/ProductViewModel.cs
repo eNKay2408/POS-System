@@ -1,4 +1,5 @@
-﻿using POSSystem.Models;
+﻿using POSSystem.Helpers;
+using POSSystem.Models;
 using POSSystem.Repositories;
 using POSSystem.Services;
 using System;
@@ -176,9 +177,22 @@ namespace POSSystem.ViewModels
 
         public async Task DeleteProduct(int id)
         {
-            await _productRepository.DeleteProduct(id);
+            try
+            {
+                if (await _productRepository.HasReferencingInvoices(id))
+                {
+                    await DialogHelper.DisplayErrorDialog("Cannot delete the product because there are some invoice(s) with this product.\nPLEASE DELETE THE INVOICE(S) FIRST!");
+                    return;
+                }
 
-            await LoadProducts();
+                await _productRepository.DeleteProduct(id);
+                await LoadProducts();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         public async Task FilterProducts()

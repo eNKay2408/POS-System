@@ -11,5 +11,6 @@ namespace POSSystem.Repositories
         Task AddProduct(Product product);
         Task UpdateProduct(Product product);
         Task DeleteProduct(int id);
+        Task<bool> HasReferencingInvoices(int productId); // New method
     }
 }
