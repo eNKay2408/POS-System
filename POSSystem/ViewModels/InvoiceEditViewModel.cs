@@ -23,10 +23,10 @@ namespace POSSystem.ViewModels
         private List<Employee> _employees;
         private Employee _selectedEmployee;
         private FullObservableCollection<InvoiceItem> _invoiceItems;
-        private int _invoiceId;
+        
         private decimal _total;
 
-        public List<Employee> Employees
+    public List<Employee> Employees
         {
             get => _employees;
             set
@@ -79,16 +79,13 @@ namespace POSSystem.ViewModels
             SelectedEmployee = new();
             InvoiceItems = new FullObservableCollection<InvoiceItem>();
             Total = 0;
-
-            // Register event handlers
-            InvoiceAddItemPage.AddInvoiceItemHanlder += InvoiceEditPage.AddItemToInvoice;
-            InvoiceAddItemPage.UpdateInvoiceItemHanlder += InvoiceEditPage.UpdateInvoiceItem;
+            InvoiceId = -1;
 
         }
 
         public async 
         Task
-LoadData()
+        LoadDataFromDatabase()
         {
             await LoadEmployees();
             await LoadInvoiceItems();
@@ -162,11 +159,9 @@ LoadData()
             InvoiceItems.Clear();
             Total = 0;
             SelectedEmployee = null;
-
-            // Unregister event handlers
-            InvoiceAddItemPage.AddInvoiceItemHanlder -= InvoiceEditPage.AddItemToInvoice;
-            InvoiceAddItemPage.UpdateInvoiceItemHanlder -= InvoiceEditPage.UpdateInvoiceItem;
+            InvoiceId = -1; // assuming -1 is illegal invoice id
         }
+
 
         public void AddItemToInvoice(InvoiceItem newItem)
         {
@@ -205,6 +200,8 @@ LoadData()
 
             OnPropertyChanged(nameof(InvoiceItems));
             OnPropertyChanged(nameof(Total));
+
+            _invoiceItemRepository.AddInvoiceItem(newItem);
         }
 
         private void CalculateTotal()

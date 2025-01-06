@@ -79,5 +79,7 @@ namespace POSSystem.Views
             settingsService.Save("POSAppTheme", isDarkTheme ? "dark" : "light");
         }
 
+        
+
     }
 }

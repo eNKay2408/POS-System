@@ -5,12 +5,13 @@ using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
 using System.Threading.Tasks;
+using static POSSystem.Views.InvoicesPage;
 
 namespace POSSystem.Views
 {
     public sealed partial class InvoiceAddItemPage : Page
     {
-        public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem);
+        public delegate void InvoiceItemEventHandler(InvoiceItem invoiceItem, ParentPageOrigin origin);
         public static event InvoiceItemEventHandler AddInvoiceItemHanlder;
         public static event InvoiceItemEventHandler UpdateInvoiceItemHanlder;
 
@@ -56,17 +57,17 @@ namespace POSSystem.Views
                 
                 if (_toUpdateInvoiceItem)
                 {
-                    UpdateInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);
+                    UpdateInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem, _parentPageOrigin);
                 }
                 else
                 {
-                    AddInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem);
+                    AddInvoiceItemHanlder?.Invoke(ViewModel.InvoiceItem, _parentPageOrigin);
                 }
 
-                //Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem.InvoiceId);
-                //Frame.Navigate(typeof(InvoiceAddPage), ViewModel.InvoiceItem);
-
                 Frame.GoBack();
+
+
+                //Frame.GoBack();
             }
             catch (Exception ex)
             {
@@ -75,10 +76,11 @@ namespace POSSystem.Views
         }
 
         private bool _toUpdateInvoiceItem = false;
+        private ParentPageOrigin _parentPageOrigin;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is InvoiceItem item)
+            if (e.Parameter is ValueTuple<InvoiceItem, ParentPageOrigin> parameters)
             {
                 _toUpdateInvoiceItem = true;
 
@@ -88,16 +90,22 @@ namespace POSSystem.Views
                 {
                     ViewModel.InvoiceItem = new InvoiceItem();
                 }
-                ViewModel.InvoiceItem.ProductId = item.ProductId;
-                ViewModel.InvoiceItem.Quantity = item.Quantity;
-                ViewModel.InvoiceItem.UnitPrice = item.UnitPrice;
-                ViewModel.InvoiceItem.ProductName = item.ProductName;
-                ViewModel.InvoiceItem.InvoiceId = item.InvoiceId;
-                ViewModel.InvoiceItem.Id = item.Id;
-                ViewModel.InvoiceItem.Index = item.Index;
+                ViewModel.InvoiceItem.ProductId = parameters.Item1.ProductId;
+                ViewModel.InvoiceItem.Quantity = parameters.Item1.Quantity;
+                ViewModel.InvoiceItem.UnitPrice = parameters.Item1.UnitPrice;
+                ViewModel.InvoiceItem.ProductName = parameters.Item1.ProductName;
+                ViewModel.InvoiceItem.InvoiceId = parameters.Item1.InvoiceId;
+                ViewModel.InvoiceItem.Id = parameters.Item1.Id;
+                ViewModel.InvoiceItem.Index = parameters.Item1.Index;
+
+                _parentPageOrigin = parameters.Item2;
 
                 ViewModel.LoadSelectedProduct();
             }
+            else if(e.Parameter is ParentPageOrigin origin)
+            {
+                _parentPageOrigin = origin;
+            }    
         }
 
         private async Task DisplayErrorDialog(string contentMessage)

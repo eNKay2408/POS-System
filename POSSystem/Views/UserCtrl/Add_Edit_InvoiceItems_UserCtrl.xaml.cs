@@ -111,26 +111,25 @@ namespace POSSystem.Views.UserCtrl
             }
         }
 
-        private void AddItem_Click(object sender, RoutedEventArgs e)
-        {
-            var parentFrame = this.Parent as Frame;
-            if (parentFrame == null)
-            {
-                parentFrame = GetParentFrame(this);
-            }
+        //private void AddItem_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var parentFrame = this.Parent as Frame;
+        //    if (parentFrame == null)
+        //    {
+        //        parentFrame = GetParentFrame(this);
+        //    }
 
-            parentFrame?.Navigate(typeof(InvoiceAddItemPage));
-        }
+        //    parentFrame?.Navigate(typeof(InvoiceAddItemPage));
+        //}
 
-        private Frame GetParentFrame(DependencyObject child)
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
-            while (parent != null && !(parent is Frame))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            return parent as Frame;
-        }
-
+        //private Frame GetParentFrame(DependencyObject child)
+        //{
+        //    DependencyObject parent = VisualTreeHelper.GetParent(child);
+        //    while (parent != null && !(parent is Frame))
+        //    {
+        //        parent = VisualTreeHelper.GetParent(parent);
+        //    }
+        //    return parent as Frame;
+        //}
     }
 }

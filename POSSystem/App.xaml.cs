@@ -69,6 +69,11 @@ namespace POSSystem
                 theme = settingsService.Load("POSAppTheme");
             }
 
+
+            // Register event handler
+            InvoiceAddItemPage.UpdateInvoiceItemHanlder += InvoicesPage.UpdateInvoiceItem_Click;
+            InvoiceAddItemPage.AddInvoiceItemHanlder += InvoicesPage.AddInvoiceItem_Click;
+
            
 
             AppMainWindow = new MainWindow();

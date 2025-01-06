@@ -62,5 +62,34 @@ namespace POSSystem.Views
             var invoice = (Invoice)button.DataContext;
             Frame.Navigate(typeof(InvoiceEditPage), invoice);
         }
+
+        public enum ParentPageOrigin
+        {
+            InvoiceAddPage,
+            InvoiceEditPage
+        }
+        public static void UpdateInvoiceItem_Click(InvoiceItem item, ParentPageOrigin origin)
+        {
+            if (ParentPageOrigin.InvoiceAddPage == origin)
+            {
+                InvoiceAddPage.UpdateInvoiceItem(item);
+            }
+            else if (ParentPageOrigin.InvoiceEditPage == origin)
+            {
+                InvoiceEditPage.UpdateInvoiceItem(item);
+            }
+        }
+
+        public static void AddInvoiceItem_Click(InvoiceItem item, ParentPageOrigin origin)
+        {
+            if (ParentPageOrigin.InvoiceAddPage == origin)
+            {
+                InvoiceAddPage.AddInvoiceItem(item);
+            }
+            else if (ParentPageOrigin.InvoiceEditPage == origin)
+            {
+                InvoiceEditPage.AddInvoiceItem(item);
+            }
+        }
     }
 }

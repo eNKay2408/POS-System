@@ -5,6 +5,7 @@ using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
 using System.Runtime.CompilerServices;
+using static POSSystem.Views.InvoicesPage;
 
 namespace POSSystem.Views
 {
@@ -43,7 +44,7 @@ namespace POSSystem.Views
             }
         }
 
-        public static void AddItemToInvoice(InvoiceItem item)
+        public static void AddInvoiceItem(InvoiceItem item)
         {
             InvoiceEditViewModel.Instance.AddItemToInvoice(item);
 
@@ -89,8 +90,6 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                var viewModel = (InvoiceEditViewModel)DataContext;
-                viewModel.Clear();
                 Frame.GoBack();
             }
         }
@@ -107,33 +106,37 @@ namespace POSSystem.Views
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (InvoiceEditViewModel)DataContext;
-            //var invoiceItem = new InvoiceItem { InvoiceId = viewModel.InvoiceId };
-
-            //Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
-            Frame.Navigate(typeof(InvoiceAddItemPage));
+            Frame.Navigate(typeof(InvoiceAddItemPage), ParentPageOrigin.InvoiceEditPage);
         }
 
         public void UpdateInvoiceItem_Click(InvoiceItem item)
         {
-            Frame.Navigate(typeof(InvoiceAddItemPage), item);
+            Frame.Navigate(typeof(InvoiceAddItemPage), (item, ParentPageOrigin.InvoiceEditPage));
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            
             if(e.Parameter is Invoice invoice)
             {
-                ViewModel.InvoiceId = invoice.Id;
-                await ViewModel.LoadData();
-                ViewModel.SetSelectedEmployee(invoice.EmployeeId);
+                if (ViewModel.InvoiceId != invoice.Id)
+                {
+                    ViewModel.InvoiceId = invoice.Id;
+                    await ViewModel.LoadDataFromDatabase();
+                    ViewModel.SetSelectedEmployee(invoice.EmployeeId);
+                }
             }
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            base.OnNavigatedFrom(e);
-            ViewModel.Clear();
+            base.OnNavigatingFrom(e);
+            
+            if(e.SourcePageType != typeof(InvoiceAddItemPage))
+            {
+                ViewModel.Clear();
+            }
         }
     }
 }

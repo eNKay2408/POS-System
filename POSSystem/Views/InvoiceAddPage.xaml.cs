@@ -6,6 +6,7 @@ using POSSystem.ViewModels;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using static POSSystem.Views.InvoicesPage;
 
 namespace POSSystem.Views
 {
@@ -40,7 +41,7 @@ namespace POSSystem.Views
             }
         }
 
-        public static void AddItemToInvoice(InvoiceItem item)
+        public static void AddInvoiceItem(InvoiceItem item)
         {
             InvoiceAddViewModel.Instance.AddItemToInvoice(item);
         }
@@ -103,16 +104,12 @@ namespace POSSystem.Views
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (InvoiceAddViewModel)DataContext;
-            //var invoiceItem = new InvoiceItem { InvoiceId = viewModel.InvoiceId };
-
-            //Frame.Navigate(typeof(InvoiceAddItemPage), invoiceItem);
-            Frame.Navigate(typeof(InvoiceAddItemPage));
+            Frame.Navigate(typeof(InvoiceAddItemPage), ParentPageOrigin.InvoiceAddPage);
         }
 
         public void UpdateInvoiceItem_Click(InvoiceItem item)
         {
-            Frame.Navigate(typeof(InvoiceAddItemPage), item);
+            Frame.Navigate(typeof(InvoiceAddItemPage), (item, ParentPageOrigin.InvoiceAddPage));
         }
 
         public async static Task ModifyEmployee_Handler(Employee employee)
