@@ -45,6 +45,7 @@ namespace POSSystem.Views
                 try
                 {
                     await ViewModel.DeleteEmployee(employee.Id);
+                    await InvoiceAddPage.ModifyEmployee_Handler(employee);
                 }
                 catch (Exception ex)
                 {
@@ -96,6 +97,8 @@ namespace POSSystem.Views
                     try
                     {
                         await ViewModel.UpdateEmployee(employee.Id, newName, newEmail);
+
+                        await InvoiceAddPage.ModifyEmployee_Handler(employee);
                         break; // Exit the loop if update is successful
                     }
                     catch (ArgumentException ex)

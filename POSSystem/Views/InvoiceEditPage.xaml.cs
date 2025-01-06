@@ -4,19 +4,18 @@ using Microsoft.UI.Xaml.Navigation;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using static POSSystem.Views.InvoicesPage;
 
 namespace POSSystem.Views
 {
-    public sealed partial class InvoiceAddPage : Page
+    
+    public sealed partial class InvoiceEditPage : Page
     {
-        public InvoiceAddViewModel ViewModel { get; set; }
-        public InvoiceAddPage()
+
+        public InvoiceEditViewModel ViewModel { get; set; }
+        public InvoiceEditPage()
         {
-            InitializeComponent();
-            ViewModel = InvoiceAddViewModel.Instance;
+            ViewModel = InvoiceEditViewModel.Instance;
             this.DataContext = ViewModel;
         }
 
@@ -43,7 +42,8 @@ namespace POSSystem.Views
 
         public static void AddInvoiceItem(InvoiceItem item)
         {
-            InvoiceAddViewModel.Instance.AddItemToInvoice(item);
+            InvoiceEditViewModel.Instance.AddItemToInvoice(item);
+
         }
 
         public void DeleteItemFromInvoice(InvoiceItem item)
@@ -55,7 +55,7 @@ namespace POSSystem.Views
         {
             try
             {
-                InvoiceAddViewModel.Instance.UpdateInvoiceItem(item);
+                InvoiceEditViewModel.Instance.UpdateInvoiceItem(item);
             }
             catch (Exception ex)
             {
@@ -86,8 +86,6 @@ namespace POSSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                var viewModel = (InvoiceAddViewModel)DataContext;
-                viewModel.DiscardChanges();
                 Frame.GoBack();
             }
         }
@@ -97,25 +95,45 @@ namespace POSSystem.Views
             var button = (Button)sender;
             var invoiceItem = (InvoiceItem)button.DataContext;
 
-            var viewModel = (InvoiceAddViewModel)DataContext;
+            var viewModel = (InvoiceEditViewModel)DataContext;
             await viewModel.DeleteItem(invoiceItem);
         }
 
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(InvoiceAddItemPage), ParentPageOrigin.InvoiceAddPage);
+            Frame.Navigate(typeof(InvoiceAddItemPage), ParentPageOrigin.InvoiceEditPage);
         }
 
         public void UpdateInvoiceItem_Click(InvoiceItem item)
         {
-            Frame.Navigate(typeof(InvoiceAddItemPage), (item, ParentPageOrigin.InvoiceAddPage));
+            Frame.Navigate(typeof(InvoiceAddItemPage), (item, ParentPageOrigin.InvoiceEditPage));
         }
 
-        public async static Task ModifyEmployee_Handler(Employee employee)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            await InvoiceAddViewModel.Instance.ModifyEmployeeAsync(employee);
+            base.OnNavigatedTo(e);
+            
+            if(e.Parameter is Invoice invoice)
+            {
+                if (ViewModel.InvoiceId != invoice.Id)
+                {
+                    ViewModel.InvoiceId = invoice.Id;
+                    await ViewModel.LoadDataFromDatabase();
+                    ViewModel.SetSelectedEmployee(invoice.EmployeeId);
+                }
+                InitializeComponent();
+            }
         }
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            
+            if(e.SourcePageType != typeof(InvoiceAddItemPage))
+            {
+                ViewModel.Clear();
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using POSSystem.Models;
 using POSSystem.ViewModels;
+using POSSystem.Views.UserCtrl;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -108,6 +109,42 @@ namespace POSSystem.Views
                         pdfDocument.Save(fileStream);
                     }
                 }
+            }
+        }
+
+        private void UpdateInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var invoice = (Invoice)button.DataContext;
+            Frame.Navigate(typeof(InvoiceEditPage), invoice);
+        }
+
+        public enum ParentPageOrigin
+        {
+            InvoiceAddPage,
+            InvoiceEditPage
+        }
+        public static void UpdateInvoiceItem_Click(InvoiceItem item, ParentPageOrigin origin)
+        {
+            if (ParentPageOrigin.InvoiceAddPage == origin)
+            {
+                InvoiceAddPage.UpdateInvoiceItem(item);
+            }
+            else if (ParentPageOrigin.InvoiceEditPage == origin)
+            {
+                InvoiceEditPage.UpdateInvoiceItem(item);
+            }
+        }
+
+        public static void AddInvoiceItem_Click(InvoiceItem item, ParentPageOrigin origin)
+        {
+            if (ParentPageOrigin.InvoiceAddPage == origin)
+            {
+                InvoiceAddPage.AddInvoiceItem(item);
+            }
+            else if (ParentPageOrigin.InvoiceEditPage == origin)
+            {
+                InvoiceEditPage.AddInvoiceItem(item);
             }
         }
     }
