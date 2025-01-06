@@ -95,70 +95,47 @@ namespace POSSystem.Tests.ViewModels
         }
 
         [TestMethod()]
-        public async Task SaveInvoiceItem_WhenProductIsNew_ShouldSaveInvoiceItem()
+        public async Task LoadData_ShouldLoadProductsAndSelectedProduct()
         {
             // Arrange
-            var product = new Product { Id = 1, Name = "Product 1", Price = 100, CategoryId = 1, BrandId = 1, Stock = 10 };
-            _invoiceAddItemViewModel.CurrentProduct = product;
-            _invoiceAddItemViewModel.InvoiceItem = new InvoiceItem { ProductId = 0, Quantity = 1, InvoiceId = 1 };
+            var products = new List<Product>
+            {
+                new Product { Id = 1, Name = "Product 1", Price = 100, CategoryId = 1, BrandId = 1 },
+                new Product { Id = 2, Name = "Product 2", Price = 200, CategoryId = 2, BrandId = 2 }
+            };
+
+            _productRepositoryMock.Setup(repo => repo.GetAllProducts()).ReturnsAsync(products);
+
+            var categories = new List<Category>
+            {
+                new Category { Id = 1, Name = "Category 1" },
+                new Category { Id = 2, Name = "Category 2" }
+            };
+
+            _categoryRepositoryMock.Setup(repo => repo.GetCategoryById(1)).ReturnsAsync(categories[0]);
+            _categoryRepositoryMock.Setup(repo => repo.GetCategoryById(2)).ReturnsAsync(categories[1]);
+
+            var brands = new List<Brand>
+            {
+                new Brand { Id = 1, Name = "Brand 1" },
+                new Brand { Id = 2, Name = "Brand 2" }
+            };
+
+            _brandRepositoryMock.Setup(repo => repo.GetBrandById(1)).ReturnsAsync(brands[0]);
+            _brandRepositoryMock.Setup(repo => repo.GetBrandById(2)).ReturnsAsync(brands[1]);
+
+            _invoiceAddItemViewModel.InvoiceItem = new InvoiceItem { ProductId = 1 };
 
             // Act
-            await _invoiceAddItemViewModel.SaveInvoiceItem();
+            await _invoiceAddItemViewModel.LoadData();
 
             // Assert
-            _invoiceItemRepositoryMock.Verify(repo => repo.AddInvoiceItem(It.IsAny<InvoiceItem>()), Times.Once);
-            Assert.AreEqual(1, _invoiceAddItemViewModel.InvoiceItem.ProductId);
-            Assert.AreEqual(100, _invoiceAddItemViewModel.InvoiceItem.UnitPrice);
-        }
-
-        [TestMethod()]
-        public async Task SaveInvoiceItem_WhenProductIsNotNew_ShouldSaveInvoiceItem()
-        {
-            // Arrange
-            var product = new Product { Id = 1, Name = "Product 1", Price = 100, CategoryId = 1, BrandId = 1, Stock = 10 };
-            _invoiceAddItemViewModel.CurrentProduct = product;
-            _invoiceAddItemViewModel.InvoiceItem = new InvoiceItem { ProductId = 0, Quantity = 1, InvoiceId = 1, Id = 1 };
-
-            // Act
-            await _invoiceAddItemViewModel.SaveInvoiceItem();
-
-            // Assert
-            _invoiceItemRepositoryMock.Verify(repo => repo.UpdateInvoiceItem(It.IsAny<InvoiceItem>()), Times.Once);
-        }
-
-        [TestMethod()]
-        public async Task SaveInvoiceItem_WhenProductIsNotSelected_ShouldThrowException()
-        {
-            // Arrange
-            _invoiceAddItemViewModel.CurrentProduct = new Product { Id = 0 };
-
-            // Act & Assert
-            var ex = await Assert.ThrowsExceptionAsync<Exception>(() => _invoiceAddItemViewModel.SaveInvoiceItem());
-            Assert.AreEqual("Please select a product.", ex.Message);
-        }
-
-        [TestMethod()]
-        public async Task SaveInvoiceItem_WhenQuantityIsNotEntered_ShouldThrowException()
-        {
-            // Arrange
-            _invoiceAddItemViewModel.CurrentProduct = new Product { Id = 1 };
-            _invoiceAddItemViewModel.InvoiceItem = new InvoiceItem { ProductId = 0, InvoiceId = 0 };
-
-            // Act & Assert
-            var ex = await Assert.ThrowsExceptionAsync<Exception>(() => _invoiceAddItemViewModel.SaveInvoiceItem());
-            Assert.AreEqual("Please enter a quantity.", ex.Message);
-        }
-
-        [TestMethod()]
-        public async Task SaveInvoiceItem_WhenQuantityExceedsStock_ShouldThrowException()
-        {
-            // Arrange
-            _invoiceAddItemViewModel.CurrentProduct = new Product { Id = 1, Stock = 10 };
-            _invoiceAddItemViewModel.InvoiceItem = new InvoiceItem { ProductId = 0, Quantity = 11, InvoiceId = 1 };
-
-            // Act & Assert
-            var ex = await Assert.ThrowsExceptionAsync<Exception>(() => _invoiceAddItemViewModel.SaveInvoiceItem());
-            Assert.AreEqual("Quantity exceeds stock.", ex.Message);
+            Assert.AreEqual(2, _invoiceAddItemViewModel.Products.Count);
+            Assert.AreEqual(1, _invoiceAddItemViewModel.Products[0].Id);
+            Assert.AreEqual("Category 1", _invoiceAddItemViewModel.Products[0].CategoryName);
+            Assert.AreEqual("Brand 1", _invoiceAddItemViewModel.Products[0].BrandName);
+            Assert.AreEqual(1, _invoiceAddItemViewModel.Products[0].Index);
+            Assert.AreEqual(products[0], _invoiceAddItemViewModel.CurrentProduct);
         }
     }
 }

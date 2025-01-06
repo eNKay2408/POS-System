@@ -84,7 +84,11 @@ namespace POSSystem.Views
             {
                 _toUpdateInvoiceItem = true;
 
-                // to avoid direct binding to the item
+                // To avoid direct binding to the item because the user may
+                // try to update to an already existed item in the list
+                // In that case, we want to notify to the user and cancel the operation
+                // If direct binding, the object is already altered by the user
+                // when they confirm the update-operation
 
                 if(ViewModel.InvoiceItem == null)
                 {
@@ -99,8 +103,6 @@ namespace POSSystem.Views
                 ViewModel.InvoiceItem.Index = parameters.Item1.Index;
 
                 _parentPageOrigin = parameters.Item2;
-
-                ViewModel.LoadSelectedProduct();
             }
             else if(e.Parameter is ParentPageOrigin origin)
             {

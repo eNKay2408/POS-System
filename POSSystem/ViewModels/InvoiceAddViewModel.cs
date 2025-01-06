@@ -88,7 +88,7 @@ namespace POSSystem.ViewModels
             _productRepository = productRepository;
 
             Employees = new List<Employee>();
-            InvoiceItems = new List<InvoiceItem>();
+            InvoiceItems = new FullObservableCollection<InvoiceItem>();
         }
 
         public async void LoadData()
@@ -103,11 +103,7 @@ namespace POSSystem.ViewModels
             Employees = employees;
         }
 
-<<<<<<< HEAD
         public void DeleteInvoiceItem(int index)
-=======
-        public async Task LoadInvoiceItems()
->>>>>>> f4258c7b8e83325b4041d1b900430b5a58a3cd8e
         {
             InvoiceItems.RemoveAt(index);
             CalculateTotal();

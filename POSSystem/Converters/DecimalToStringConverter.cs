@@ -21,6 +21,11 @@ namespace POSSystem.Converters
             if (value is decimal decimalValue)
             {
                 return decimalValue.ToString("F2"); // Format to 2 decimal places
+            }else if (value is int  intValue)
+            {
+                //explicit conversion to decimal
+                decimal d = intValue;
+                return d.ToString("F2");
             }
             return null;
         }
