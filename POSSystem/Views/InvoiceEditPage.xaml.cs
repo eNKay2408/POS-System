@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml.Navigation;
 using POSSystem.Models;
 using POSSystem.ViewModels;
 using System;
-using System.Runtime.CompilerServices;
 using static POSSystem.Views.InvoicesPage;
 
 namespace POSSystem.Views
@@ -12,15 +11,12 @@ namespace POSSystem.Views
     
     public sealed partial class InvoiceEditPage : Page
     {
-        public Invoice Invoice;
 
         public InvoiceEditViewModel ViewModel { get; set; }
         public InvoiceEditPage()
         {
-            InitializeComponent();
             ViewModel = InvoiceEditViewModel.Instance;
             this.DataContext = ViewModel;
-            Invoice = new Invoice();
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
@@ -126,6 +122,7 @@ namespace POSSystem.Views
                     await ViewModel.LoadDataFromDatabase();
                     ViewModel.SetSelectedEmployee(invoice.EmployeeId);
                 }
+                InitializeComponent();
             }
         }
 
