@@ -82,9 +82,8 @@ namespace POSSystem.Views
                 var xGraphics = XGraphics.FromPdfPage(pdfPage);
                 var xImage = XImage.FromStream(stream.AsStream());
 
-                // Specify the desired width and height for the image
-                double desiredWidth = pdfPage.Width.Point * 0.8; // 80% of the page width
-                double desiredHeight = pdfPage.Height.Point * 0.8; // 80% of the page height
+                double desiredWidth = pdfPage.Width.Point; // 100% of the page width
+                double desiredHeight = pdfPage.Height.Point; // 100% of the page height
 
                 // Draw the image on the PDF page with the specified dimensions
                 xGraphics.DrawImage(xImage, 0, 0, desiredWidth, desiredHeight);
