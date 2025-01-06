@@ -75,6 +75,16 @@ namespace POSSystem.ViewModels
             }
         }
 
+        // Constructor for unit testing
+        public InvoiceAddItemViewModel(IInvoiceRepository invoiceRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IBrandRepository brandRepository, IInvoiceItemRepository invoiceItemRepository)
+        {
+            _invoiceRepository = invoiceRepository;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _brandRepository = brandRepository;
+            _invoiceItemRepository = invoiceItemRepository;
+        }
+
         public async Task LoadData()
         {
             await LoadProducts();
